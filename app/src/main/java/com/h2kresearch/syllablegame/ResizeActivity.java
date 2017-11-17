@@ -13,6 +13,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import com.h2kresearch.syllablegame.TableImageView.SelectViewListener;
+import com.h2kresearch.syllablegame.com.h2kresearch.syllablegame.utils.CommonUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -94,7 +95,7 @@ public class ResizeActivity extends AppCompatActivity implements SelectViewListe
     bCol[0] = true;
 
     for(int i=0; i<mChar.length; i++) {
-      char[] deChar = characterDeCombination(mChar[i].charAt(0));
+      char[] deChar = CommonUtils.characterDeCombination(mChar[i].charAt(0));
 
       for(int j=0; j<chRow.length; j++) {
         if(deChar[0] == chRow[j]) {
@@ -137,7 +138,7 @@ public class ResizeActivity extends AppCompatActivity implements SelectViewListe
         imageView.setNormalImageID(image1ID);
         imageView.setSelectImageID(image2ID);
 
-        String str = characterCombination(chRow[j], chCol[i], ' ') + "";
+        String str = CommonUtils.characterCombination(chRow[j], chCol[i], ' ') + "";
         imageView.setChar(chRow[j], chCol[i], ' ');
         imageView.setString(str);
 
@@ -188,50 +189,5 @@ public class ResizeActivity extends AppCompatActivity implements SelectViewListe
     if (!exist) {
       mSelect.add(view);
     }
-  }
-
-  public char characterCombination(char cho, char jung, char jong) {
-
-    char ret_val;
-
-    // Function for Character Combination
-    final char[] CHO_SUNG = {'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ',
-        'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'};
-    final char[] JUNG_SUNG = {'ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ',
-        'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ'};
-    final char[] JONG_SUNG = {' ', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ',
-        'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'};
-
-    int choIndex = Arrays.binarySearch(CHO_SUNG, cho);
-    int jungIndex = Arrays.binarySearch(JUNG_SUNG, jung);
-    int jongIndex = Arrays.binarySearch(JONG_SUNG, jong);
-
-    ret_val = (char) (0xAC00 + ((choIndex * 21) + jungIndex) * 28 + jongIndex);
-//    Log.d("Combination Output", ""+ret_val);
-
-    return ret_val;
-  }
-
-  public char[] characterDeCombination(char text) {
-
-    char[] ch = new char[3];
-
-    // Function for Character Combination
-    final char[] CHO_SUNG = {'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ',
-        'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'};
-    final char[] JUNG_SUNG = {'ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ',
-        'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ'};
-    final char[] JONG_SUNG = {' ', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ',
-        'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'};
-
-    int choIndex = ((((text - 0xAC00) - (text - 0xAC00) % 28 ) ) / 28 ) / 21;
-    int jungIndex = ((((text - 0xAC00) - (text - 0xAC00) % 28 ) ) / 28 ) % 21;
-    int jongIndex = (text - 0xAC00) % 28;
-
-    ch[0] = CHO_SUNG[choIndex];
-    ch[1] = JUNG_SUNG[jungIndex];
-    ch[2] = JONG_SUNG[jongIndex];
-
-    return ch;
   }
 }
