@@ -1,7 +1,6 @@
 package com.h2kresearch.syllablegame;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -89,6 +89,7 @@ public class ResizeActivity extends AppCompatActivity implements SelectViewListe
     int col = chCol.length;
     boolean[] bRow = new boolean[chRow.length];
     boolean[] bCol = new boolean[chCol.length];
+    int num = 1;
 
     bRow[0] = true;
     bCol[0] = true;
@@ -105,9 +106,14 @@ public class ResizeActivity extends AppCompatActivity implements SelectViewListe
       for(int j=0; j<chCol.length; j++) {
         if(deChar[1] == chCol[j]) {
           bCol[j] = true;
+          num++;
         }
       }
     }
+
+    // weight
+    LinearLayout.LayoutParams hParams = (LinearLayout.LayoutParams)tableLayout.getLayoutParams();
+    hParams.weight = num;
 
     for (int j = 0; j < row; j++) {
 
@@ -136,6 +142,7 @@ public class ResizeActivity extends AppCompatActivity implements SelectViewListe
         int image2ID = getResources().getIdentifier(image2Name, "drawable", getPackageName());
         imageView.setNormalImageID(image1ID);
         imageView.setSelectImageID(image2ID);
+        imageView.mRatio = 2;
 
         String str = characterCombination(chRow[j], chCol[i], ' ') + "";
         imageView.setChar(chRow[j], chCol[i], ' ');
@@ -233,5 +240,11 @@ public class ResizeActivity extends AppCompatActivity implements SelectViewListe
     ch[2] = JONG_SUNG[jongIndex];
 
     return ch;
+  }
+
+  @Override
+  public void onBackPressed() {
+    super.onBackPressed();
+    mTTS.shutdown();
   }
 }

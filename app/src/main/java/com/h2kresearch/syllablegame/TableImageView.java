@@ -17,6 +17,9 @@ public class TableImageView extends AppCompatImageView {
   // Select Image
   int mSelectImage = 0;
 
+  // Ratio
+  int mRatio = 4;
+
   // Selection
   boolean mSelect = false;
 
@@ -107,7 +110,7 @@ public class TableImageView extends AppCompatImageView {
 //    setImageResource(resource);
 
     Bitmap bmp = BitmapFactory.decodeResource(getResources(), resource);
-    Bitmap resizeBitmap = Bitmap.createScaledBitmap(bmp, bmp.getWidth()/4, bmp.getHeight()/4, true);
+    Bitmap resizeBitmap = Bitmap.createScaledBitmap(bmp, bmp.getWidth()/mRatio, bmp.getHeight()/mRatio, true);
 //    bmp.recycle();
 //    BitmapDrawable bitmapDrawable = (BitmapDrawable) getDrawable();
 //    if(bitmapDrawable != null) {
