@@ -13,11 +13,12 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import com.h2kresearch.syllablegame.TableImageView.SelectViewListener;
+import com.h2kresearch.syllablegame.com.h2kresearch.syllablegame.utils.CommonUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity
-  implements SelectViewListener {
+    implements SelectViewListener {
 
   // Select List
   ArrayList<TableImageView> mSelect = new ArrayList<TableImageView>();
@@ -62,13 +63,13 @@ public class MainActivity extends AppCompatActivity
     mRightButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
-        if(mSelectMode) {
+        if (mSelectMode) {
           // 완료
           mIntent = new Intent(MainActivity.this, ResizeActivity.class);
 
           // Selection
           String[] str = new String[mSelect.size()];
-          for(int i=0; i<mSelect.size(); i++){
+          for (int i = 0; i < mSelect.size(); i++) {
             str[i] = mSelect.get(i).mStr;
           }
           mIntent.putExtra("select", str);
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity
     mLeftButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
-        if(mSelectMode) {
+        if (mSelectMode) {
           // 취소
           cancelAllView();
 
@@ -104,14 +105,14 @@ public class MainActivity extends AppCompatActivity
     });
 
     // Table
-    TableLayout tableLayout = (TableLayout)findViewById(R.id.TableLayout);
+    TableLayout tableLayout = (TableLayout) findViewById(R.id.TableLayout);
 
     char[] chRow = {' ', 'ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'};
     char[] chCol = {' ', 'ㅏ', 'ㅑ', 'ㅓ', 'ㅕ', 'ㅗ', 'ㅛ', 'ㅜ', 'ㅠ', 'ㅡ', 'ㅣ'};
     int row = chRow.length;
     int col = chCol.length;
 
-    for(int j=0; j<row; j++) {
+    for (int j = 0; j < row; j++) {
 
       // New Row
       TableRow tableRow = new TableRow(this);
@@ -129,8 +130,8 @@ public class MainActivity extends AppCompatActivity
         imageView.setNormalImageID(image1ID);
         imageView.setSelectImageID(image2ID);
 
-        String str = characterCombination(chRow[j], chCol[i],' ')+"";
-        imageView.setChar(chRow[j], chCol[i],' ');
+        String str = CommonUtils.characterCombination(chRow[j], chCol[i], ' ') + "";
+        imageView.setChar(chRow[j], chCol[i], ' ');
         imageView.setString(str);
 
         // Set Image
@@ -143,7 +144,7 @@ public class MainActivity extends AppCompatActivity
         params.width = 0;
         params.weight = 1;
         imageView.setAdjustViewBounds(true);
-        imageView.setPadding(6,6,6,6);
+        imageView.setPadding(6, 6, 6, 6);
       }
 
       // Add Row
@@ -180,13 +181,11 @@ public class MainActivity extends AppCompatActivity
       // Cancel Other Image
       if (!mSelect.isEmpty()) {
         for (int i = 0; i < mSelect.size(); i++) {
-          if(mSelect.get(i).getNormalImageID() != view.getNormalImageID()) {
+          if (mSelect.get(i).getNormalImageID() != view.getNormalImageID()) {
             mSelect.get(i).cancelImage();
             mSelect.remove(i);
             i--;
-          }
-          else
-          {
+          } else {
             // Exist
             exist = true;
 
@@ -197,39 +196,39 @@ public class MainActivity extends AppCompatActivity
       }
 
       // Not Exist
-      if(!exist) {
+      if (!exist) {
         mSelect.add(view);
       }
 
-    // For Select Mode
+      // For Select Mode
     } else {
 
       boolean select = view.mSelect;
 
       // Select
-      if(select) {
+      if (select) {
 
         boolean exist = false;
 
         if (!mSelect.isEmpty()) {
           for (int i = 0; i < mSelect.size(); i++) {
-            if(mSelect.get(i).getNormalImageID() == view.getNormalImageID()) {
+            if (mSelect.get(i).getNormalImageID() == view.getNormalImageID()) {
               exist = true;
             }
           }
         }
 
         // Not Exist
-        if(!exist) {
+        if (!exist) {
           mSelect.add(view);
         }
 
-      // Cancel
+        // Cancel
       } else {
 
         if (!mSelect.isEmpty()) {
           for (int i = 0; i < mSelect.size(); i++) {
-            if(mSelect.get(i).getNormalImageID() == view.getNormalImageID()) {
+            if (mSelect.get(i).getNormalImageID() == view.getNormalImageID()) {
               mSelect.remove(i);
             }
           }
@@ -237,27 +236,5 @@ public class MainActivity extends AppCompatActivity
 
       }
     }
-  }
-
-  public char characterCombination(char cho, char jung, char jong) {
-
-    char ret_val;
-
-    // Function for Character Combination
-    final char[] CHO_SUNG = {'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ',
-        'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'};
-    final char[] JUNG_SUNG = {'ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ',
-        'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ'};
-    final char[] JONG_SUNG = {' ', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ',
-        'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'};
-
-    int choIndex = Arrays.binarySearch(CHO_SUNG, cho);
-    int jungIndex = Arrays.binarySearch(JUNG_SUNG, jung);
-    int jongIndex = Arrays.binarySearch(JONG_SUNG, jong);
-
-    ret_val = (char) (0xAC00 + ((choIndex * 21) + jungIndex) * 28 + jongIndex);
-//    Log.d("Combination Output", ""+ret_val);
-
-    return ret_val;
   }
 }

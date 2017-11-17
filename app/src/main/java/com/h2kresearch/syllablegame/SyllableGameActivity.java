@@ -9,19 +9,16 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import com.h2kresearch.syllablegame.com.h2kresearch.syllablegame.utils.CommonUtils;
 import java.util.Locale;
 
 import static android.speech.tts.TextToSpeech.ERROR;
@@ -44,13 +41,6 @@ public class SyllableGameActivity extends AppCompatActivity {
   int[] consonantsIdList;
   int[] vowelLeftIdList;
   int[] vowelBottomIdList;
-
-  final char[] ChoSung = {'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ',
-      'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'};
-  final char[] JungSung = {'ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ',
-      'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ'};
-  final char[] JongSung = {' ', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ',
-      'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'};
 
   char currentConsonant;
   char currentVowel;
@@ -269,7 +259,8 @@ public class SyllableGameActivity extends AppCompatActivity {
 
             if (frame_consonant.getChildCount() == 1 && (frame_vowelLeft.getChildCount() == 1
                 || frame_vowelBottom.getChildCount() == 1)) {
-              char completeWord = CharacterCombination(currentConsonant, currentVowel, ' ');
+              char completeWord = CommonUtils
+                  .characterCombination(currentConsonant, currentVowel, ' ');
 
               tts.setPitch(1f);
               tts.setSpeechRate(0.8f);
@@ -334,14 +325,4 @@ public class SyllableGameActivity extends AppCompatActivity {
     }
   }
 
-  public char CharacterCombination(char ch1, char ch2, char ch3) {
-    char ret_val;
-
-    int a = Arrays.binarySearch(ChoSung, ch1);
-    int b = Arrays.binarySearch(JungSung, ch2);
-    int c = Arrays.binarySearch(JongSung, ch3);
-
-    ret_val = (char) (0xAC00 + ((a * 21) + b) * 28 + c);
-    return ret_val;
-  }
 }
