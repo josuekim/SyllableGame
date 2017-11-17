@@ -1,6 +1,7 @@
 package com.h2kresearch.syllablegame;
 
 import android.content.ClipData;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -58,6 +60,9 @@ public class SyllableGameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_syllable_game);
+
+        Intent preIntent = getIntent();
+        String[] select = preIntent.getStringArrayExtra("select");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);

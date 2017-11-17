@@ -10,7 +10,11 @@
         android:supportsRtl="true"
 
         android:theme="@style/Theme.AppCompat.NoActionBar.FullScreen">
-        <activity android:name=".SyllableGameActivity" android:screenOrientation="landscape">
+        <activity android:name=".SyllableGameActivity"
+          android:screenOrientation="landscape">
+        </activity>
+        <activity android:name=".MainActivity"
+          android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
