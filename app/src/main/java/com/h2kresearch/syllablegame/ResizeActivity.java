@@ -16,20 +16,15 @@ import com.h2kresearch.syllablegame.TableImageView.SelectViewListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity
-  implements SelectViewListener {
+public class ResizeActivity extends AppCompatActivity implements SelectViewListener {
 
   // Select List
   ArrayList<TableImageView> mSelect = new ArrayList<TableImageView>();
 
   // Layout
   LinearLayout mLinearLayout;
-  TextView mTextView;
   TextView mLeftButton;
   TextView mRightButton;
-
-  // Mode Change
-  boolean mSelectMode = false;
 
   // TTS
   TextToSpeech mTTS;
@@ -37,10 +32,17 @@ public class MainActivity extends AppCompatActivity
   // Intent
   Intent mIntent;
 
+  // Select Character
+  String[] mChar;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+    setContentView(R.layout.activity_resize);
+
+    // Pre Intent
+    Intent preIntent = getIntent();
+    mChar = preIntent.getStringArrayExtra("select");
 
     // TTS
     mTTS = new TextToSpeech(this, new OnInitListener() {
@@ -55,68 +57,74 @@ public class MainActivity extends AppCompatActivity
     mLinearLayout = (LinearLayout) findViewById(R.id.LinearLayout);
 
     // TextView
-    mTextView = (TextView) findViewById(R.id.textView);
     mLeftButton = (TextView) findViewById(R.id.textViewL);
     mRightButton = (TextView) findViewById(R.id.textViewR);
 
     mRightButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
-        if(mSelectMode) {
-          // 완료
-          mIntent = new Intent(MainActivity.this, ResizeActivity.class);
+        // 오늘의 학습
+        mIntent = new Intent(ResizeActivity.this, SyllableGameActivity.class);
 
-          // Selection
-          String[] str = new String[mSelect.size()];
-          for(int i=0; i<mSelect.size(); i++){
-            str[i] = mSelect.get(i).mStr;
-          }
-          mIntent.putExtra("select", str);
+        mIntent.putExtra("select", mChar);
 //          mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-          startActivity(mIntent);
-        } else {
-          // 선택
-          mTextView.setText("음절 선택");
-          mLinearLayout.setBackgroundColor(Color.parseColor("#FCE4EC"));
-          mSelectMode = true;
-          mRightButton.setText("완료");
-          mLeftButton.setText("취소");
-        }
+        startActivity(mIntent);
       }
     });
 
     mLeftButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
-        if(mSelectMode) {
-          // 취소
-          cancelAllView();
-
-          mTextView.setText("똑똑한 음절표");
-          mLinearLayout.setBackgroundColor(Color.parseColor("#E0F2F1"));
-          mSelectMode = false;
-          mRightButton.setText("선택");
-          mLeftButton.setText("이전");
-        } else {
-          // 이전
-        }
+        // 전체 보기
+        onBackPressed();
       }
     });
 
     // Table
-    TableLayout tableLayout = (TableLayout)findViewById(R.id.TableLayout);
+    TableLayout tableLayout = (TableLayout) findViewById(R.id.TableLayout);
 
     char[] chRow = {' ', 'ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'};
     char[] chCol = {' ', 'ㅏ', 'ㅑ', 'ㅓ', 'ㅕ', 'ㅗ', 'ㅛ', 'ㅜ', 'ㅠ', 'ㅡ', 'ㅣ'};
     int row = chRow.length;
     int col = chCol.length;
+    boolean[] bRow = new boolean[chRow.length];
+    boolean[] bCol = new boolean[chCol.length];
 
-    for(int j=0; j<row; j++) {
+    bRow[0] = true;
+    bCol[0] = true;
+
+    for(int i=0; i<mChar.length; i++) {
+      char[] deChar = characterDeCombination(mChar[i].charAt(0));
+
+      for(int j=0; j<chRow.length; j++) {
+        if(deChar[0] == chRow[j]) {
+          bRow[j] = true;
+        }
+      }
+
+      for(int j=0; j<chCol.length; j++) {
+        if(deChar[1] == chCol[j]) {
+          bCol[j] = true;
+        }
+      }
+    }
+
+    for (int j = 0; j < row; j++) {
+
+      // Check
+      if (!bRow[j]) {
+        continue;
+      }
 
       // New Row
       TableRow tableRow = new TableRow(this);
 
       for (int i = 0; i < col; i++) {
+
+        // Check
+        if (!bCol[i]) {
+          continue;
+        }
 
         // New ImageView
         TableImageView imageView = new TableImageView(this);
@@ -129,8 +137,8 @@ public class MainActivity extends AppCompatActivity
         imageView.setNormalImageID(image1ID);
         imageView.setSelectImageID(image2ID);
 
-        String str = characterCombination(chRow[j], chCol[i],' ')+"";
-        imageView.setChar(chRow[j], chCol[i],' ');
+        String str = characterCombination(chRow[j], chCol[i], ' ') + "";
+        imageView.setChar(chRow[j], chCol[i], ' ');
         imageView.setString(str);
 
         // Set Image
@@ -143,99 +151,42 @@ public class MainActivity extends AppCompatActivity
         params.width = 0;
         params.weight = 1;
         imageView.setAdjustViewBounds(true);
-        imageView.setPadding(6,6,6,6);
+        imageView.setPadding(6, 6, 6, 6);
       }
 
       // Add Row
       tableLayout.addView(tableRow);
     }
+
   }
 
   @Override
-  protected void onDestroy() {
-    super.onDestroy();
-    mTTS.shutdown();
-  }
+  public void selectView(TableImageView view) {
+    boolean exist = false;
 
-  void cancelAllView() {
+    // Select This Image
+    view.selectImage();
+
+    // Cancel Other Image
     if (!mSelect.isEmpty()) {
       for (int i = 0; i < mSelect.size(); i++) {
-        mSelect.get(i).cancelImage();
+        if (mSelect.get(i).getNormalImageID() != view.getNormalImageID()) {
+          mSelect.get(i).cancelImage();
+          mSelect.remove(i);
+          i--;
+        } else {
+          // Exist
+          exist = true;
+
+          // Sound at the second time
+          mTTS.speak(view.mStr, TextToSpeech.QUEUE_FLUSH, null);
+        }
       }
-      mSelect.clear();
     }
-  }
 
-
-  public void selectView(TableImageView view) {
-
-    // For Study Mode
-    if (!mSelectMode) {
-
-      boolean exist = false;
-
-      // Select This Image
-      view.selectImage();
-
-      // Cancel Other Image
-      if (!mSelect.isEmpty()) {
-        for (int i = 0; i < mSelect.size(); i++) {
-          if(mSelect.get(i).getNormalImageID() != view.getNormalImageID()) {
-            mSelect.get(i).cancelImage();
-            mSelect.remove(i);
-            i--;
-          }
-          else
-          {
-            // Exist
-            exist = true;
-
-            // Sound at the second time
-            mTTS.speak(view.mStr, TextToSpeech.QUEUE_FLUSH, null);
-          }
-        }
-      }
-
-      // Not Exist
-      if(!exist) {
-        mSelect.add(view);
-      }
-
-    // For Select Mode
-    } else {
-
-      boolean select = view.mSelect;
-
-      // Select
-      if(select) {
-
-        boolean exist = false;
-
-        if (!mSelect.isEmpty()) {
-          for (int i = 0; i < mSelect.size(); i++) {
-            if(mSelect.get(i).getNormalImageID() == view.getNormalImageID()) {
-              exist = true;
-            }
-          }
-        }
-
-        // Not Exist
-        if(!exist) {
-          mSelect.add(view);
-        }
-
-      // Cancel
-      } else {
-
-        if (!mSelect.isEmpty()) {
-          for (int i = 0; i < mSelect.size(); i++) {
-            if(mSelect.get(i).getNormalImageID() == view.getNormalImageID()) {
-              mSelect.remove(i);
-            }
-          }
-        }
-
-      }
+    // Not Exist
+    if (!exist) {
+      mSelect.add(view);
     }
   }
 
@@ -259,5 +210,28 @@ public class MainActivity extends AppCompatActivity
 //    Log.d("Combination Output", ""+ret_val);
 
     return ret_val;
+  }
+
+  public char[] characterDeCombination(char text) {
+
+    char[] ch = new char[3];
+
+    // Function for Character Combination
+    final char[] CHO_SUNG = {'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ',
+        'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'};
+    final char[] JUNG_SUNG = {'ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ',
+        'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ'};
+    final char[] JONG_SUNG = {' ', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ',
+        'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'};
+
+    int choIndex = ((((text - 0xAC00) - (text - 0xAC00) % 28 ) ) / 28 ) / 21;
+    int jungIndex = ((((text - 0xAC00) - (text - 0xAC00) % 28 ) ) / 28 ) % 21;
+    int jongIndex = (text - 0xAC00) % 28;
+
+    ch[0] = CHO_SUNG[choIndex];
+    ch[1] = JUNG_SUNG[jungIndex];
+    ch[2] = JONG_SUNG[jongIndex];
+
+    return ch;
   }
 }
