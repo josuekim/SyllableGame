@@ -21,7 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ResizeActivity"></activity>
+        <activity
+          android:name=".ResizeActivity"
+          android:screenOrientation="landscape"></activity>
     </application>
 
 </manifest>
