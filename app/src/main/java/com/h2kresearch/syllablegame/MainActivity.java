@@ -100,9 +100,14 @@ public class MainActivity extends AppCompatActivity
           mLeftButton.setText("이전");
         } else {
           // 이전
+          onBackPressed();
         }
       }
     });
+
+    // Table Row Col List
+    ArrayList<TableRowColImageView> rowList = new ArrayList<TableRowColImageView>();
+    ArrayList<TableRowColImageView> colList = new ArrayList<TableRowColImageView>();
 
     // Table
     TableLayout tableLayout = (TableLayout) findViewById(R.id.TableLayout);
@@ -119,32 +124,94 @@ public class MainActivity extends AppCompatActivity
 
       for (int i = 0; i < col; i++) {
 
-        // New ImageView
-        TableImageView imageView = new TableImageView(this);
+        if( j == 0) {
+          // New ImageView
+          TableRowColImageView imageView = new TableRowColImageView(this);
+          colList.add(imageView);
 
-        // Find ImageID
-        String image1Name = "han" + (j * col * 2 + i * 2);
-        String image2Name = "han" + (j * col * 2 + (i * 2) + 1);
-        int image1ID = getResources().getIdentifier(image1Name, "drawable", getPackageName());
-        int image2ID = getResources().getIdentifier(image2Name, "drawable", getPackageName());
-        imageView.setNormalImageID(image1ID);
-        imageView.setSelectImageID(image2ID);
+          // Find ImageID
+          String image1Name = "han" + (j * col * 2 + i * 2);
+          String image2Name = "han" + (j * col * 2 + (i * 2) + 1);
+          int image1ID = getResources().getIdentifier(image1Name, "drawable", getPackageName());
+          int image2ID = getResources().getIdentifier(image2Name, "drawable", getPackageName());
+          imageView.setNormalImageID(image1ID);
+          imageView.setSelectImageID(image2ID);
 
-        String str = CommonUtils.characterCombination(chRow[j], chCol[i], ' ') + "";
-        imageView.setChar(chRow[j], chCol[i], ' ');
-        imageView.setString(str);
+          String str = CommonUtils.characterCombination(chRow[j], chCol[i], ' ') + "";
+          imageView.setChar(chRow[j], chCol[i], ' ');
+          imageView.setString(str);
 
-        // Set Image
-        imageView.setImage(image1ID);
+          // Set Image
+          imageView.setImage(image1ID);
 
-        // Add ImageView
-        tableRow.addView(imageView);
+          // Add ImageView
+          tableRow.addView(imageView);
 
-        TableRow.LayoutParams params = (TableRow.LayoutParams) imageView.getLayoutParams();
-        params.width = 0;
-        params.weight = 1;
-        imageView.setAdjustViewBounds(true);
-        imageView.setPadding(6, 6, 6, 6);
+          TableRow.LayoutParams params = (TableRow.LayoutParams) imageView.getLayoutParams();
+          params.width = 0;
+          params.weight = 1;
+          imageView.setAdjustViewBounds(true);
+          imageView.setPadding(6, 6, 6, 6);
+
+        } else if( i == 0 ) {
+          // New ImageView
+          TableRowColImageView imageView = new TableRowColImageView(this);
+          rowList.add(imageView);
+
+          // Find ImageID
+          String image1Name = "han" + (j * col * 2 + i * 2);
+          String image2Name = "han" + (j * col * 2 + (i * 2) + 1);
+          int image1ID = getResources().getIdentifier(image1Name, "drawable", getPackageName());
+          int image2ID = getResources().getIdentifier(image2Name, "drawable", getPackageName());
+          imageView.setNormalImageID(image1ID);
+          imageView.setSelectImageID(image2ID);
+
+          String str = CommonUtils.characterCombination(chRow[j], chCol[i], ' ') + "";
+          imageView.setChar(chRow[j], chCol[i], ' ');
+          imageView.setString(str);
+
+          // Set Image
+          imageView.setImage(image1ID);
+
+          // Add ImageView
+          tableRow.addView(imageView);
+
+          TableRow.LayoutParams params = (TableRow.LayoutParams) imageView.getLayoutParams();
+          params.width = 0;
+          params.weight = 1;
+          imageView.setAdjustViewBounds(true);
+          imageView.setPadding(6, 6, 6, 6);
+
+        } else {
+          // New ImageView
+          TableImageView imageView = new TableImageView(this);
+          colList.get(i).mList.add(imageView);
+          rowList.get(j-1).mList.add(imageView); //TBC
+
+          // Find ImageID
+          String image1Name = "han" + (j * col * 2 + i * 2);
+          String image2Name = "han" + (j * col * 2 + (i * 2) + 1);
+          int image1ID = getResources().getIdentifier(image1Name, "drawable", getPackageName());
+          int image2ID = getResources().getIdentifier(image2Name, "drawable", getPackageName());
+          imageView.setNormalImageID(image1ID);
+          imageView.setSelectImageID(image2ID);
+
+          String str = CommonUtils.characterCombination(chRow[j], chCol[i], ' ') + "";
+          imageView.setChar(chRow[j], chCol[i], ' ');
+          imageView.setString(str);
+
+          // Set Image
+          imageView.setImage(image1ID);
+
+          // Add ImageView
+          tableRow.addView(imageView);
+
+          TableRow.LayoutParams params = (TableRow.LayoutParams) imageView.getLayoutParams();
+          params.width = 0;
+          params.weight = 1;
+          imageView.setAdjustViewBounds(true);
+          imageView.setPadding(6, 6, 6, 6);
+        }
       }
 
       // Add Row

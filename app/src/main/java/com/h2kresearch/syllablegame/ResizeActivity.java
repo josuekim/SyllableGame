@@ -65,7 +65,8 @@ public class ResizeActivity extends AppCompatActivity implements SelectViewListe
       @Override
       public void onClick(View view) {
         // 오늘의 학습
-        mIntent = new Intent(ResizeActivity.this, SyllableGameActivity.class);
+//        mIntent = new Intent(ResizeActivity.this, SyllableGameActivity.class);
+        mIntent = new Intent(ResizeActivity.this, LessonActivity.class);
 
         mIntent.putExtra("select", mChar);
 //          mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -100,21 +101,29 @@ public class ResizeActivity extends AppCompatActivity implements SelectViewListe
 
       for(int j=0; j<chRow.length; j++) {
         if(deChar[0] == chRow[j]) {
-          bRow[j] = true;
+          if(!bRow[j]) {
+            bRow[j] = true;
+          }
         }
       }
 
       for(int j=0; j<chCol.length; j++) {
         if(deChar[1] == chCol[j]) {
-          bCol[j] = true;
-          num++;
+          if(!bCol[j]) {
+            bCol[j] = true;
+            num++;
+          }
         }
       }
     }
 
     // weight
     LinearLayout.LayoutParams hParams = (LinearLayout.LayoutParams)tableLayout.getLayoutParams();
-    hParams.weight = num;
+    if(num > 5) {
+      hParams.weight = num;
+    } else {
+      hParams.weight = num * 0.33f;
+    }
 
     for (int j = 0; j < row; j++) {
 
@@ -196,5 +205,11 @@ public class ResizeActivity extends AppCompatActivity implements SelectViewListe
     if (!exist) {
       mSelect.add(view);
     }
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    mTTS.shutdown();
   }
 }

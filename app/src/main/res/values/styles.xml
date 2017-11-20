@@ -10,6 +10,7 @@
 
     <style name="Theme.AppCompat.NoActionBar.FullScreen" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowFullscreen">true</item>
+        <item name="colorControlNormal">#BDBDBD</item>
     </style>
 
 </resources>

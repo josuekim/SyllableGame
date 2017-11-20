@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context="com.h2kresearch.syllablegame.LoginActivity">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+    <Space
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1" />
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="2"
+      android:orientation="horizontal">
+      <Space
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+      <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        app:srcCompat="@drawable/apptitle"
+        tools:layout_editor_absoluteX="670dp"
+        tools:layout_editor_absoluteY="321dp" />
+      <Space
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+    </LinearLayout>
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="4"
+      android:orientation="horizontal">
+      <Space
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+      <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:orientation="vertical">
+        <EditText
+          android:id="@+id/editText1"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="1"
+          android:ems="10"
+          android:hint="이메일 주소"
+          android:inputType="textEmailAddress"
+          android:textColor="#000000"
+          android:textColorHint="#CBCCCC"
+          android:textSize="28sp" />
+        <EditText
+          android:id="@+id/editText2"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="1"
+          android:ems="10"
+          android:hint="비밀번호"
+          android:inputType="textPassword"
+          android:textColor="#000000"
+          android:textColorHint="#CBCCCC"
+          android:textSize="28sp" />
+        <Space
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="0.1" />
+        <Button
+          android:id="@+id/button"
+          android:textStyle="bold"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="1"
+          android:background="@drawable/roundcorner"
+          android:enabled="false"
+          android:text="로그인"
+          android:textAllCaps="false"
+          android:textColor="@color/button_text"
+          android:textSize="32sp" />
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="1"
+          android:orientation="horizontal">
+          <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5" />
+          <TextView
+            android:id="@+id/textView1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center_vertical"
+            android:text="아이디 찾기"
+            android:textAlignment="center"
+            android:textColor="#7C7C7C"
+            android:textSize="24sp" />
+          <TextView
+            android:id="@+id/textView5"
+            android:layout_width="3dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="#BCBCBC"
+            android:text="간격"
+            android:textColor="#00FF0000" />
+          <TextView
+            android:id="@+id/textView2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center_vertical"
+            android:text="비밀번호 찾기"
+            android:textAlignment="center"
+            android:textColor="#7C7C7C"
+            android:textSize="24sp" />
+          <TextView
+            android:id="@+id/textView6"
+            android:layout_width="3dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="#BCBCBC"
+            android:text="간격"
+            android:textColor="#00FF0000" />
+          <TextView
+            android:id="@+id/textView3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center_vertical"
+            android:text="회원가입"
+            android:textAlignment="center"
+            android:textColor="#7C7C7C"
+            android:textSize="24sp" />
+          <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5" />
+        </LinearLayout>
+      </LinearLayout>
+      <Space
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+    </LinearLayout>
+    <Space
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1" />
+  </LinearLayout>
+</android.support.constraint.ConstraintLayout>

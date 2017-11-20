@@ -45,10 +45,10 @@ public class TableImageView extends AppCompatImageView {
       public void onClick(View view) {
         if(!mSelect) {
           selectImage();
-          mCallback.selectView((TableImageView)view);
+          updateImage();
         } else {
           cancelImage();
-          mCallback.selectView((TableImageView)view);
+          updateImage();
         }
       }
     });
@@ -74,6 +74,11 @@ public class TableImageView extends AppCompatImageView {
   void cancelImage(){
     setImage(mImage);
     mSelect = false;
+
+  }
+
+  void updateImage(){
+    mCallback.selectView(this);
   }
 
   // Resource ID
