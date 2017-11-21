@@ -7,11 +7,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class LessonActivity extends AppCompatActivity {
 
   // Intent
   Intent mGameIntent;
+  Intent mResultIntent;
+
+  // Layout
+  TextView mLeftButton;
+  TextView mRightButton;
 
   // Button
   Button mButton1;
@@ -25,11 +31,30 @@ public class LessonActivity extends AppCompatActivity {
 
     // Next Intent
     mGameIntent = new Intent(LessonActivity.this, SyllableGameActivity.class);
+    mResultIntent = new Intent(LessonActivity.this, ResultActivity.class);
 
     // Pre Intent
     Intent preIntent = getIntent();
     String[] select = preIntent.getStringArrayExtra("select");
     mGameIntent.putExtra("select", select);
+
+    // Layout
+    mLeftButton = (TextView) findViewById(R.id.textViewL);
+    mRightButton = (TextView) findViewById(R.id.textViewR);
+
+    mLeftButton.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View view) {
+       onBackPressed();
+      }
+    });
+
+    mRightButton.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        startActivity(mResultIntent);
+      }
+    });
 
     // Button
     mButton1 = (Button)findViewById(R.id.button1);
