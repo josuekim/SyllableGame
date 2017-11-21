@@ -13,6 +13,7 @@ public class LessonActivity extends AppCompatActivity {
 
   // Intent
   Intent mGameIntent;
+  Intent mGameIntent2;
   Intent mResultIntent;
 
   // Layout
@@ -31,12 +32,14 @@ public class LessonActivity extends AppCompatActivity {
 
     // Next Intent
     mGameIntent = new Intent(LessonActivity.this, SyllableGameActivity.class);
+    mGameIntent2 = new Intent(LessonActivity.this, SyllableGameActivity2.class);
     mResultIntent = new Intent(LessonActivity.this, ResultActivity.class);
 
     // Pre Intent
     Intent preIntent = getIntent();
     String[] select = preIntent.getStringArrayExtra("select");
     mGameIntent.putExtra("select", select);
+    mGameIntent2.putExtra("select", select);
 
     // Layout
     mLeftButton = (TextView) findViewById(R.id.textViewL);
@@ -89,7 +92,7 @@ public class LessonActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
           @Override
           public void run() {
-            startActivity(mGameIntent);
+            startActivity(mGameIntent2);
           }
         }, 1000);
       }

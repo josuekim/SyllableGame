@@ -1,6 +1,8 @@
 package com.h2kresearch.syllablegame.com.h2kresearch.syllablegame.utils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.TreeSet;
 
 /**
  * Created by Josh on 2017. 11. 17..
@@ -51,6 +53,51 @@ public class CommonUtils {
     ch[2] = JongSung[jongIndex];
 
     return ch;
+  }
+
+  /***
+   * 중복 음소 제거 function
+   * @param array
+   * @return 중복 제거한 선택 된 음소 List
+   */
+  public static Object[] removeDuplicateArray(String[] array){
+    Object[] removeArray=null;
+
+    TreeSet ts=new TreeSet();
+
+    for(int i=0; i<array.length; i++){
+      ts.add(array[i]);
+    }
+
+    removeArray= ts.toArray();
+
+    return removeArray;
+  }
+
+  /***
+   * 자음 모음 분리 후 각 각의 List에 저장하는 function
+   * @param select
+   * @return List
+   */
+  public static ArrayList<String[]> deCombinationList(String[] select){
+
+    char[] tempWord;
+    String resultConsonants = "";
+    String resultVowels = "";
+
+    for(String word : select){
+      tempWord = CommonUtils.characterDeCombination(word.charAt(0));
+      resultConsonants += String.valueOf(tempWord[0]) + "|";
+      resultVowels += String.valueOf(tempWord[1]) + "|";
+    }
+
+    String[] consonantsArray = resultConsonants.split("\\|");
+    String[] vowelsArray = resultVowels.split("\\|");
+    ArrayList<String[]> resultList = new ArrayList<String[]>();
+    resultList.add(consonantsArray);
+    resultList.add(vowelsArray);
+
+    return resultList;
   }
 
 }

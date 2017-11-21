@@ -14,29 +14,34 @@
       android:theme="@style/Theme.AppCompat.NoActionBar.FullScreen">
         <activity
           android:name=".SyllableGameActivity"
-          android:screenOrientation="landscape" />
+          android:screenOrientation="landscape"/>
+        <activity
+          android:name=".SyllableGameActivity2"
+          android:screenOrientation="landscape"/>
         <activity
           android:name=".MainActivity"
-          android:screenOrientation="landscape" />
+          android:screenOrientation="landscape"/>
         <activity
           android:name=".ResizeActivity"
-          android:screenOrientation="landscape" />
+          android:screenOrientation="landscape"/>
         <activity
           android:name=".LoginActivity"
           android:screenOrientation="landscape"
           android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
           android:name=".SignActivity"
           android:screenOrientation="landscape"
-          android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".LessonActivity" />
-        <activity android:name=".ResultActivity"></activity>
+          android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+          android:name=".LessonActivity"
+          android:screenOrientation="landscape"/>
+        <activity android:name=".ResultActivity"/>
     </application>
 
 </manifest>
