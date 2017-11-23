@@ -103,10 +103,10 @@ public class MainActivity extends AppCompatActivity
           mLinearLayout.setBackgroundColor(Color.parseColor("#E0F2F1"));
           mSelectMode = false;
           mRightButton.setText("선택");
-          mLeftButton.setText("이전");
+          mLeftButton.setText("");
         } else {
           // 이전
-          onBackPressed();
+          //onBackPressed();
         }
       }
     });
@@ -309,5 +309,10 @@ public class MainActivity extends AppCompatActivity
 
       }
     }
+  }
+
+  @Override
+  public void onBackPressed() {
+    super.onBackPressed();
   }
 }

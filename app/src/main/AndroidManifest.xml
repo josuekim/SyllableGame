@@ -27,7 +27,7 @@
         <activity
           android:name=".LoginActivity"
           android:screenOrientation="landscape"
-          android:windowSoftInputMode="stateAlwaysHidden">
+          android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -37,11 +37,12 @@
         <activity
           android:name=".SignActivity"
           android:screenOrientation="landscape"
-          android:windowSoftInputMode="stateAlwaysHidden"/>
+          android:windowSoftInputMode="adjustPan|stateAlwaysHidden"/>
         <activity
           android:name=".LessonActivity"
           android:screenOrientation="landscape"/>
-        <activity android:name=".ResultActivity"/>
+        <activity android:name=".ResultActivity"
+          android:screenOrientation="landscape"/>
     </application>
 
 </manifest>

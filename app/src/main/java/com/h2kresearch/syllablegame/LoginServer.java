@@ -30,7 +30,7 @@ public class LoginServer extends AsyncTask {
     try {
       // 서버연결
       URL url = new URL(
-          "http://110.76.77.86:4000/test");
+          "http://110.76.77.86:3000/androidSignup");
       HttpURLConnection conn = (HttpURLConnection) url.openConnection();
       conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
       conn.setRequestMethod("POST");

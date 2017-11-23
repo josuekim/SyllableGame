@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SignActivity extends AppCompatActivity {
 
@@ -30,9 +31,9 @@ public class SignActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_sign);
 
-    mID = (EditText)findViewById(R.id.editText1);
-    mPW = (EditText)findViewById(R.id.editText2);
-    mPW2 = (EditText)findViewById(R.id.editText3);
+    mID = (EditText) findViewById(R.id.editText1);
+    mPW = (EditText) findViewById(R.id.editText2);
+    mPW2 = (EditText) findViewById(R.id.editText3);
 
     mID.addTextChangedListener(new TextWatcher() {
       @Override
@@ -122,11 +123,23 @@ public class SignActivity extends AppCompatActivity {
     });
 
     mMainIntent = new Intent(SignActivity.this, MainActivity.class);
-    mSignButton = (Button)findViewById(R.id.button);
+    mSignButton = (Button) findViewById(R.id.button);
     mSignButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
-        startActivity(mMainIntent);
+
+        // 회원가입 & 로그인
+        String id = mID.getText().toString();
+        String pw = mPW.getText().toString();
+        String pw2 = mPW2.getText().toString();
+
+        if (pw == pw2) {
+          LoginServer loginServer = new LoginServer(id, pw);
+          loginServer.execute();
+          startActivity(mMainIntent);
+        } else {
+          Toast.makeText(getApplicationContext(), "비밀번호가 서로 다릅니다.", Toast.LENGTH_LONG).show();
+        }
       }
     });
 

@@ -1,6 +1,7 @@
 package com.h2kresearch.syllablegame;
 
 import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Point;
@@ -10,16 +11,21 @@ import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,37 +66,40 @@ public class SyllableGameActivity extends AppCompatActivity {
   int completeCnt = 0;
 
   enum ConsonantType {
-    CONSONANT1("ㄱ"),CONSONANT2("ㄴ"),CONSONANT3("ㄷ"),CONSONANT4("ㄹ"),CONSONANT5("ㅁ"),CONSONANT6("ㅂ"),
-    CONSONANT7("ㅅ"),CONSONANT8("ㅇ"),CONSONANT9("ㅈ"),CONSONANT10("ㅊ"),CONSONANT11("ㅋ"),CONSONANT12("ㅌ"),
-    CONSONANT13("ㅍ"),CONSONANT14("ㅎ");
+    CONSONANT1("ㄱ"), CONSONANT2("ㄴ"), CONSONANT3("ㄷ"), CONSONANT4("ㄹ"), CONSONANT5("ㅁ"), CONSONANT6(
+        "ㅂ"),
+    CONSONANT7("ㅅ"), CONSONANT8("ㅇ"), CONSONANT9("ㅈ"), CONSONANT10("ㅊ"), CONSONANT11(
+        "ㅋ"), CONSONANT12("ㅌ"),
+    CONSONANT13("ㅍ"), CONSONANT14("ㅎ");
 
     String con;
 
-    ConsonantType(String con){
+    ConsonantType(String con) {
       this.con = con;
     }
 
-    public String getName(){
+    public String getName() {
       return con;
     }
   }
 
   enum VowelType {
-    VOWEL1("ㅏ","R"),VOWEL2("ㅑ","R"),VOWEL3("ㅓ","R"),VOWEL4("ㅕ","R"),VOWEL5("ㅗ","B"),
-    VOWEL6("ㅛ","B"),VOWEL7("ㅜ","B"),VOWEL8("ㅠ","B"),VOWEL9("ㅡ","B"),VOWEL10("ㅣ","R");
+    VOWEL1("ㅏ", "R"), VOWEL2("ㅑ", "R"), VOWEL3("ㅓ", "R"), VOWEL4("ㅕ", "R"), VOWEL5("ㅗ", "B"),
+    VOWEL6("ㅛ", "B"), VOWEL7("ㅜ", "B"), VOWEL8("ㅠ", "B"), VOWEL9("ㅡ", "B"), VOWEL10("ㅣ", "R");
 
     String vow;
     String side;
-    VowelType(String vow, String side){
+
+    VowelType(String vow, String side) {
       this.vow = vow;
       this.side = side;
     }
 
-    public String getVow(){
+    public String getVow() {
       return vow;
     }
 
-    public String getSide(){
+    public String getSide() {
       return side;
     }
   }
@@ -127,16 +136,17 @@ public class SyllableGameActivity extends AppCompatActivity {
     backBtn.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        mLessonIntent = new Intent(SyllableGameActivity.this, LessonActivity.class);
-        mLessonIntent.putExtra("select", select);
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-          @Override
-          public void run() {
-            startActivity(mLessonIntent);
-          }
-        }, 100);
+//        mLessonIntent = new Intent(SyllableGameActivity.this, LessonActivity.class);
+//        mLessonIntent.putExtra("select", select);
+//
+//        Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//          @Override
+//          public void run() {
+//            startActivity(mLessonIntent);
+//          }
+//        }, 100);
+        onBackPressed();
       }
     });
 
@@ -149,20 +159,22 @@ public class SyllableGameActivity extends AppCompatActivity {
     consonantsIdList = new int[dec_consonants.length];
     img_consonant = new ImageView[dec_consonants.length];
 
-    for(ConsonantType ct : ConsonantType.values()){
-      for(int i = 0; i < dec_consonants.length; i++){
-        if(ct.getName().equals(dec_consonants[i].toString())){
+    for (ConsonantType ct : ConsonantType.values()) {
+      for (int i = 0; i < dec_consonants.length; i++) {
+        if (ct.getName().equals(dec_consonants[i].toString())) {
           img_consonant[i] = new ImageView(this);
-          LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams((int) xPixels, LayoutParams.WRAP_CONTENT);
-          layoutParams.gravity= Gravity.TOP;
+          LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((int) xPixels,
+              LayoutParams.WRAP_CONTENT);
+          layoutParams.gravity = Gravity.TOP;
           img_consonant[i].setLayoutParams(layoutParams);
           img_consonant[i].setAdjustViewBounds(true);
-          img_consonant[i].setPadding(0,10,5,0);
-          resourceId = getResources().getIdentifier("consonant" + (ct.ordinal()+1), "drawable", getPackageName());
+          img_consonant[i].setPadding(0, 10, 5, 0);
+          resourceId = getResources()
+              .getIdentifier("consonant" + (ct.ordinal() + 1), "drawable", getPackageName());
           img_consonant[i].setImageResource(resourceId);
           consonantList.addView(img_consonant[i]);
           img_consonant[i].setOnTouchListener(mTouchListener);
-          img_consonant[i].setId(i+100);
+          img_consonant[i].setId(i + 100);
           consonantsIdList[i] = img_consonant[i].getId();
           img_consonant[i].setContentDescription(dec_consonants[i].toString());
         }
@@ -171,12 +183,12 @@ public class SyllableGameActivity extends AppCompatActivity {
 
     int countRight = 0;
     int countBottom = 0;
-    for(VowelType vt : VowelType.values()){
-      for(int i = 0; i <dec_vowels.length; i++){
-        if(vt.getVow().equals(dec_vowels[i].toString())){
-          if(vt.getSide().equals("R")){
+    for (VowelType vt : VowelType.values()) {
+      for (int i = 0; i < dec_vowels.length; i++) {
+        if (vt.getVow().equals(dec_vowels[i].toString())) {
+          if (vt.getSide().equals("R")) {
             countRight++;
-          }else if(vt.getSide().equals("B")){
+          } else if (vt.getSide().equals("B")) {
             countBottom++;
           }
         }
@@ -189,40 +201,46 @@ public class SyllableGameActivity extends AppCompatActivity {
     img_vowelBottom = new ImageView[countBottom];
     countRight = 0;
     countBottom = 0;
-    for(VowelType vt : VowelType.values()){
-      for(int i = 0; i <dec_vowels.length; i++) {
+    for (VowelType vt : VowelType.values()) {
+      for (int i = 0; i < dec_vowels.length; i++) {
         if (vt.getVow().equals(dec_vowels[i].toString())) {
-          if(vt.getSide().equals("R")){
+          if (vt.getSide().equals("R")) {
             xPixels = TypedValue
-                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 96, getResources().getDisplayMetrics());
+                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 96,
+                    getResources().getDisplayMetrics());
             img_vowelRight[countRight] = new ImageView(this);
-            LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams((int) xPixels, LayoutParams.WRAP_CONTENT);
-            layoutParams.gravity= Gravity.TOP;
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((int) xPixels,
+                LayoutParams.WRAP_CONTENT);
+            layoutParams.gravity = Gravity.TOP;
             img_vowelRight[countRight].setLayoutParams(layoutParams);
             img_vowelRight[countRight].setAdjustViewBounds(true);
-            img_vowelRight[countRight].setPadding(0,10,10,0);
-            resourceId = getResources().getIdentifier("vowel" + (vt.ordinal()+1), "drawable", getPackageName());
+            img_vowelRight[countRight].setPadding(0, 10, 10, 0);
+            resourceId = getResources()
+                .getIdentifier("vowel" + (vt.ordinal() + 1), "drawable", getPackageName());
             img_vowelRight[countRight].setImageResource(resourceId);
             vowelList.addView(img_vowelRight[countRight]);
             img_vowelRight[countRight].setOnTouchListener(mTouchListener);
-            img_vowelRight[countRight].setId(i+200);
+            img_vowelRight[countRight].setId(i + 200);
             vowelRightIdList[countRight] = img_vowelRight[countRight].getId();
             img_vowelRight[countRight].setContentDescription(dec_vowels[i].toString());
             countRight++;
-          }else if(vt.getSide().equals("B")){
+          } else if (vt.getSide().equals("B")) {
             xPixels = TypedValue
-                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 77, getResources().getDisplayMetrics());
+                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 77,
+                    getResources().getDisplayMetrics());
             img_vowelBottom[countBottom] = new ImageView(this);
-            LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams((int) xPixels, LayoutParams.WRAP_CONTENT);
-            layoutParams.gravity= Gravity.TOP;
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((int) xPixels,
+                LayoutParams.WRAP_CONTENT);
+            layoutParams.gravity = Gravity.TOP;
             img_vowelBottom[countBottom].setLayoutParams(layoutParams);
             img_vowelBottom[countBottom].setAdjustViewBounds(true);
-            img_vowelBottom[countBottom].setPadding(0,10,10,0);
-            resourceId = getResources().getIdentifier("vowel" + (vt.ordinal()+1), "drawable", getPackageName());
+            img_vowelBottom[countBottom].setPadding(0, 10, 10, 0);
+            resourceId = getResources()
+                .getIdentifier("vowel" + (vt.ordinal() + 1), "drawable", getPackageName());
             img_vowelBottom[countBottom].setImageResource(resourceId);
             vowelList.addView(img_vowelBottom[countBottom]);
             img_vowelBottom[countBottom].setOnTouchListener(mTouchListener);
-            img_vowelBottom[countBottom].setId(i+300);
+            img_vowelBottom[countBottom].setId(i + 300);
             vowelBottomIdList[countBottom] = img_vowelBottom[countBottom].getId();
             img_vowelBottom[countBottom].setContentDescription(dec_vowels[i].toString());
             countBottom++;
@@ -453,4 +471,55 @@ public class SyllableGameActivity extends AppCompatActivity {
     }
   }
 
+  @Override
+  public void onWindowFocusChanged(boolean hasFocus) {
+    super.onWindowFocusChanged(hasFocus);
+
+    // Display Metrics
+//    DisplayMetrics displayMetrics = new DisplayMetrics();
+//    getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+//    int dp = Math.round(height / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+
+    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)frame_vowelRight.getLayoutParams();
+
+    // Linear Layout (Total Size)
+    LinearLayout linearLayout = (LinearLayout) findViewById(R.id.LinearLayout);
+    int maxWidth = linearLayout.getWidth();
+    int maxHeight = linearLayout.getHeight();
+
+    // Width/Height Ratio
+    int originalW = frame_consonant.getWidth();
+    int originalH = frame_consonant.getHeight();
+    int originalM = ((RelativeLayout.LayoutParams)frame_vowelRight.getLayoutParams()).getMarginStart();
+
+    // Ratio
+    float ratio = (float) originalW / (float) originalH;
+    ratio = 0.8f;
+
+    // Target Size
+    float limit = 0.5f;
+    int height = (int) (maxHeight * limit);
+    int width = (int) (height * ratio);
+    float scale = (float)width / (float)originalW;
+    int margin = (int) (originalM * scale);
+
+    // Assign
+    frame_consonant.getLayoutParams().width = width;
+    frame_consonant.getLayoutParams().height = height;
+
+    frame_vowelRight.getLayoutParams().width = height;
+    frame_vowelRight.getLayoutParams().height = width;
+    ((RelativeLayout.LayoutParams)frame_vowelRight.getLayoutParams()).leftMargin = margin;
+    ((RelativeLayout.LayoutParams)frame_vowelRight.getLayoutParams()).setMarginStart(margin);
+
+    frame_vowelBottom.getLayoutParams().width = width;
+    frame_vowelBottom.getLayoutParams().height = width;
+
+    // Margin
+//    int originalM = ((RelativeLayout.LayoutParams) frame_vowelRight.getLayoutParams())
+//        .getMarginStart();
+//    originalM = 147;
+//    int margin = (int) (originalM * scale);
+//    ((RelativeLayout.LayoutParams) frame_vowelRight.getLayoutParams()).setMarginStart(margin);
+  }
 }

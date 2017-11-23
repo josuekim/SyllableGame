@@ -77,7 +77,7 @@ public class LessonActivity extends AppCompatActivity {
           public void run() {
             startActivity(mGameIntent);
           }
-        }, 1000);
+        }, 500);
       }
     });
 
@@ -94,7 +94,7 @@ public class LessonActivity extends AppCompatActivity {
           public void run() {
             startActivity(mGameIntent2);
           }
-        }, 1000);
+        }, 500);
       }
     });
 
@@ -111,7 +111,7 @@ public class LessonActivity extends AppCompatActivity {
           public void run() {
             startActivity(mGameIntent);
           }
-        }, 1000);
+        }, 500);
       }
     });
   }
