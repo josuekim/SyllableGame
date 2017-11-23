@@ -98,6 +98,13 @@ public class LoginActivity extends AppCompatActivity {
     mLoginButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
+        // 로그인
+        String id = mID.getText().toString();
+        String pw = mPW.getText().toString();
+
+        LoginServer loginServer = new LoginServer(id, pw);
+        loginServer.execute();
+
         startActivity(mMainIntent);
       }
     });

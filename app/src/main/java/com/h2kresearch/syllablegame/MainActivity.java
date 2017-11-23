@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.h2kresearch.syllablegame.TableImageView.SelectViewListener;
 import com.h2kresearch.syllablegame.com.h2kresearch.syllablegame.utils.CommonUtils;
 import java.util.ArrayList;
@@ -64,17 +65,22 @@ public class MainActivity extends AppCompatActivity
       @Override
       public void onClick(View view) {
         if (mSelectMode) {
-          // 완료
-          mIntent = new Intent(MainActivity.this, ResizeActivity.class);
+          // 선택된 음절이 있을 경우
+          if (mSelect.size() > 0) {
+            // 완료
+            mIntent = new Intent(MainActivity.this, ResizeActivity.class);
 
-          // Selection
-          String[] str = new String[mSelect.size()];
-          for (int i = 0; i < mSelect.size(); i++) {
-            str[i] = mSelect.get(i).mStr;
-          }
-          mIntent.putExtra("select", str);
+            // Selection
+            String[] str = new String[mSelect.size()];
+            for (int i = 0; i < mSelect.size(); i++) {
+              str[i] = mSelect.get(i).mStr;
+            }
+            mIntent.putExtra("select", str);
 //          mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-          startActivity(mIntent);
+            startActivity(mIntent);
+          } else {
+            Toast.makeText(getApplicationContext(), "음절을 선택해 주세요.", Toast.LENGTH_LONG);
+          }
         } else {
           // 선택
           mTextView.setText("음절 선택");
@@ -97,10 +103,10 @@ public class MainActivity extends AppCompatActivity
           mLinearLayout.setBackgroundColor(Color.parseColor("#E0F2F1"));
           mSelectMode = false;
           mRightButton.setText("선택");
-          mLeftButton.setText("이전");
+          mLeftButton.setText("");
         } else {
           // 이전
-          onBackPressed();
+          //onBackPressed();
         }
       }
     });
@@ -124,7 +130,7 @@ public class MainActivity extends AppCompatActivity
 
       for (int i = 0; i < col; i++) {
 
-        if( j == 0) {
+        if (j == 0) {
           // New ImageView
           TableRowColImageView imageView = new TableRowColImageView(this);
           colList.add(imageView);
@@ -153,7 +159,7 @@ public class MainActivity extends AppCompatActivity
           imageView.setAdjustViewBounds(true);
           imageView.setPadding(6, 6, 6, 6);
 
-        } else if( i == 0 ) {
+        } else if (i == 0) {
           // New ImageView
           TableRowColImageView imageView = new TableRowColImageView(this);
           rowList.add(imageView);
@@ -186,7 +192,7 @@ public class MainActivity extends AppCompatActivity
           // New ImageView
           TableImageView imageView = new TableImageView(this);
           colList.get(i).mList.add(imageView);
-          rowList.get(j-1).mList.add(imageView); //TBC
+          rowList.get(j - 1).mList.add(imageView); //TBC
 
           // Find ImageID
           String image1Name = "han" + (j * col * 2 + i * 2);
@@ -303,5 +309,10 @@ public class MainActivity extends AppCompatActivity
 
       }
     }
+  }
+
+  @Override
+  public void onBackPressed() {
+    super.onBackPressed();
   }
 }

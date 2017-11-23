@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class LessonActivity extends AppCompatActivity {
 
@@ -14,6 +15,11 @@ public class LessonActivity extends AppCompatActivity {
   Intent mGameIntent;
   Intent mGameIntent2;
   Intent mGameIntent3;
+  Intent mResultIntent;
+
+  // Layout
+  TextView mLeftButton;
+  TextView mRightButton;
 
   // Button
   Button mButton1;
@@ -29,6 +35,7 @@ public class LessonActivity extends AppCompatActivity {
     mGameIntent = new Intent(LessonActivity.this, SyllableGameActivity.class);
     mGameIntent2 = new Intent(LessonActivity.this, SyllableGameActivity2.class);
     mGameIntent3 = new Intent(LessonActivity.this, SyllableGameActivity3.class);
+    mResultIntent = new Intent(LessonActivity.this, ResultActivity.class);
 
     // Pre Intent
     Intent preIntent = getIntent();
@@ -36,6 +43,24 @@ public class LessonActivity extends AppCompatActivity {
     mGameIntent.putExtra("select", select);
     mGameIntent2.putExtra("select", select);
     mGameIntent3.putExtra("select", select);
+
+    // Layout
+    mLeftButton = (TextView) findViewById(R.id.textViewL);
+    mRightButton = (TextView) findViewById(R.id.textViewR);
+
+    mLeftButton.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View view) {
+       onBackPressed();
+      }
+    });
+
+    mRightButton.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        startActivity(mResultIntent);
+      }
+    });
 
     // Button
     mButton1 = (Button)findViewById(R.id.button1);
@@ -55,7 +80,7 @@ public class LessonActivity extends AppCompatActivity {
           public void run() {
             startActivity(mGameIntent);
           }
-        }, 1000);
+        }, 500);
       }
     });
 
@@ -72,7 +97,7 @@ public class LessonActivity extends AppCompatActivity {
           public void run() {
             startActivity(mGameIntent2);
           }
-        }, 1000);
+        }, 500);
       }
     });
 
@@ -89,7 +114,7 @@ public class LessonActivity extends AppCompatActivity {
           public void run() {
             startActivity(mGameIntent3);
           }
-        }, 1000);
+        }, 500);
       }
     });
   }
