@@ -14,6 +14,7 @@ public class LessonActivity extends AppCompatActivity {
   // Intent
   Intent mGameIntent;
   Intent mGameIntent2;
+  Intent mGameIntent3;
   Intent mResultIntent;
 
   // Layout
@@ -33,6 +34,7 @@ public class LessonActivity extends AppCompatActivity {
     // Next Intent
     mGameIntent = new Intent(LessonActivity.this, SyllableGameActivity.class);
     mGameIntent2 = new Intent(LessonActivity.this, SyllableGameActivity2.class);
+    mGameIntent3 = new Intent(LessonActivity.this, SyllableGameActivity3.class);
     mResultIntent = new Intent(LessonActivity.this, ResultActivity.class);
 
     // Pre Intent
@@ -40,6 +42,7 @@ public class LessonActivity extends AppCompatActivity {
     String[] select = preIntent.getStringArrayExtra("select");
     mGameIntent.putExtra("select", select);
     mGameIntent2.putExtra("select", select);
+    mGameIntent3.putExtra("select", select);
 
     // Layout
     mLeftButton = (TextView) findViewById(R.id.textViewL);
@@ -109,7 +112,7 @@ public class LessonActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
           @Override
           public void run() {
-            startActivity(mGameIntent);
+            startActivity(mGameIntent3);
           }
         }, 500);
       }

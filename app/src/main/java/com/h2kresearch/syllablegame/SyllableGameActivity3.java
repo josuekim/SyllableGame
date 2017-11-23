@@ -26,12 +26,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.h2kresearch.syllablegame.com.h2kresearch.syllablegame.utils.CommonUtils;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Random;
 
-public class SyllableGameActivity2 extends AppCompatActivity {
+public class SyllableGameActivity3 extends AppCompatActivity {
 
   private TextToSpeech tts;
 
@@ -122,7 +120,6 @@ public class SyllableGameActivity2 extends AppCompatActivity {
     Random rand = new Random(System.currentTimeMillis());
     int conInt = rand.nextInt(cons.size());
     correctAnswer[0] = getResources().getIdentifier("consonant" + cons.get(conInt), "drawable", getPackageName());
-    frame_consonant.setBackground(getResources().getDrawable(getResources().getIdentifier("consonant" + cons.get(conInt) +"_blur", "drawable", getPackageName())));
 
     for(int i = 0; i < img_consonant.length; i++){
       if(correctAnswer[0] == (int)img_consonant[i].getTag()){
@@ -134,8 +131,6 @@ public class SyllableGameActivity2 extends AppCompatActivity {
     int vowInt = vows.get(rand.nextInt(vows.size()));
     if((vowInt >= 1 && vowInt <= 4) || vowInt ==10){
       correctAnswer[1] = getResources().getIdentifier("vowel" + (vowInt), "drawable", getPackageName());
-      frame_vowelRight.setBackground(getResources().getDrawable(getResources().getIdentifier("vowel" + (vowInt) +"_blur", "drawable", getPackageName())));
-      frame_vowelBottom.setBackground(getResources().getDrawable(R.drawable.blank_3));
       for(int i = 0; i < img_vowelRight.length; i++){
         if(correctAnswer[1] == (int)img_vowelRight[i].getTag()){
           vowelRightId = img_vowelRight[i].getId();
@@ -145,8 +140,6 @@ public class SyllableGameActivity2 extends AppCompatActivity {
       }
     }else{
       correctAnswer[2] = getResources().getIdentifier("vowel" + (vowInt), "drawable", getPackageName());
-      frame_vowelBottom.setBackground(getResources().getDrawable(getResources().getIdentifier("vowel" + (vowInt) +"_blur", "drawable", getPackageName())));
-      frame_vowelRight.setBackground(getResources().getDrawable(R.drawable.blank_2));
       for(int i = 0; i < img_vowelBottom.length; i++){
         if(correctAnswer[2] == (int)img_vowelBottom[i].getTag()){
           vowelBottomId = img_vowelBottom[i].getId();
@@ -168,16 +161,16 @@ public class SyllableGameActivity2 extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_syllable_game2);
+    setContentView(R.layout.activity_syllable_game3);
+
+    Intent preIntent = getIntent();
+    select = preIntent.getStringArrayExtra("select");
 
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolBar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayShowTitleEnabled(false);
     TextView tv = (TextView) findViewById(R.id.toolbar_title);
-    tv.setText("음소 조합 연습");
-
-    Intent preIntent = getIntent();
-    select = preIntent.getStringArrayExtra("select");
+    tv.setText("음소 조합 확인");
 
     ArrayList<String[]> wordList = CommonUtils.deCombinationList(select);
     dec_consonants = CommonUtils.removeDuplicateArray(wordList.get(0));
@@ -199,17 +192,16 @@ public class SyllableGameActivity2 extends AppCompatActivity {
     backBtn.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-//        mLessonIntent = new Intent(SyllableGameActivity2.this, LessonActivity.class);
-//        mLessonIntent.putExtra("select", select);
-//
-//        Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//          @Override
-//          public void run() {
-//            startActivity(mLessonIntent);
-//          }
-//        }, 100);
-        onBackPressed();
+        mLessonIntent = new Intent(SyllableGameActivity3.this, LessonActivity.class);
+        mLessonIntent.putExtra("select", select);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+          @Override
+          public void run() {
+            startActivity(mLessonIntent);
+          }
+        }, 100);
       }
     });
 
@@ -368,7 +360,7 @@ public class SyllableGameActivity2 extends AppCompatActivity {
       switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
           ClipData clipData = ClipData.newPlainText("", "");
-          v.startDrag(clipData, new SyllableGameActivity2.ImageDrag(v, (int) event.getX(), (int) event.getY()), v, 0);
+          v.startDrag(clipData, new ImageDrag(v, (int) event.getX(), (int) event.getY()), v, 0);
           v.setVisibility(View.INVISIBLE);
 
           return true;
@@ -449,7 +441,7 @@ public class SyllableGameActivity2 extends AppCompatActivity {
               tts.setSpeechRate(0.8f);
               tts.speak(String.valueOf(completeWord), TextToSpeech.QUEUE_FLUSH, null);
 
-              Toast.makeText(SyllableGameActivity2.this, "우와 멋진데~", Toast.LENGTH_SHORT).show();
+              Toast.makeText(SyllableGameActivity3.this, "우와 멋진데~", Toast.LENGTH_SHORT).show();
 
             }
 
@@ -492,7 +484,7 @@ public class SyllableGameActivity2 extends AppCompatActivity {
             } else {
               img_counting.setImageDrawable(getResources().getDrawable(R.drawable.count10));
 
-              mLessonIntent = new Intent(SyllableGameActivity2.this, LessonActivity.class);
+              mLessonIntent = new Intent(SyllableGameActivity3.this, LessonActivity.class);
               mLessonIntent.putExtra("select", select);
 
               Handler handler = new Handler();
