@@ -4,7 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context="com.example.ishsrain.smarttable.MainActivity">
+  tools:context="com.h2kresearch.syllablegame.MainActivity">
 
   <ScrollView
     android:layout_width="0dp"
@@ -50,7 +50,7 @@
           android:paddingLeft="20dp"
           android:paddingRight="20dp"
           android:gravity="center_vertical|center_horizontal"
-          android:text="똑똑한 음절표"
+          android:text="음절표"
           android:textAlignment="gravity"
           android:textColor="#01848F"
           android:textSize="28dp" />

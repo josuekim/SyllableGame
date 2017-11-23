@@ -19,6 +19,9 @@
           android:name=".SyllableGameActivity2"
           android:screenOrientation="landscape"/>
         <activity
+          android:name=".SyllableGameActivity3"
+          android:screenOrientation="landscape"/>
+        <activity
           android:name=".MainActivity"
           android:screenOrientation="landscape"/>
         <activity
