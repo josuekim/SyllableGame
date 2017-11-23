@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/backgroundColor"
+  tools:context="com.h2kresearch.syllablegame.SyllableGameActivity3">
+
+  <LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:orientation="vertical"
+    android:layout_marginRight="0dp"
+    app:layout_constraintRight_toRightOf="parent"
+    android:layout_marginLeft="0dp"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:layout_marginTop="0dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    android:layout_marginBottom="0dp"
+    android:weightSum="10"
+    tools:layout_constraintTop_creator="1"
+    tools:layout_constraintRight_creator="1"
+    tools:layout_constraintBottom_creator="1"
+    android:layout_marginStart="0dp"
+    android:layout_marginEnd="0dp"
+    tools:layout_constraintLeft_creator="1">
+
+    <include
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      layout="@layout/toolbar"
+      android:layout_marginBottom="5dp"/>
+
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="8"
+      android:weightSum="10"
+      android:orientation="horizontal">
+
+
+      <Space
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+      <RelativeLayout
+        android:layout_weight="8"
+        android:layout_width="0dp"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+          android:id="@+id/vowelBottom"
+          android:layout_width="200dp"
+          android:layout_height="198dp"
+          android:background="@drawable/blank_3"
+          android:layout_below="@+id/vowelRight"
+          android:layout_alignStart="@+id/consonantBlock">
+
+        </FrameLayout>
+
+        <FrameLayout
+          android:id="@+id/consonantBlock"
+          android:layout_width="200dp"
+          android:layout_height="250dp"
+          android:layout_marginTop="60dp"
+          android:layout_marginStart="205dp"
+          android:layout_alignParentStart="true"
+          android:layout_alignParentTop="true"
+          android:background="@drawable/blank_1">
+
+        </FrameLayout>
+
+        <FrameLayout
+          android:id="@+id/vowelRight"
+          android:layout_width="250dp"
+          android:layout_height="199dp"
+          android:layout_marginBottom="-1dp"
+          android:layout_marginStart="147dp"
+          android:layout_alignStart="@+id/consonantBlock"
+          android:layout_alignTop="@+id/consonantBlock"
+          android:background="@drawable/blank_2">
+
+        </FrameLayout>
+      </RelativeLayout>
+
+      <Space
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_marginTop="50dp"
+      android:layout_weight="2"
+      android:orientation="horizontal">
+
+      <HorizontalScrollView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:background="@drawable/button_border">
+
+        <LinearLayout
+          android:id="@+id/consonantList"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:orientation="horizontal">
+
+        </LinearLayout>
+      </HorizontalScrollView>
+
+      <HorizontalScrollView
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/button_border1">
+
+        <LinearLayout
+          android:id="@+id/vowelList"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:orientation="horizontal">
+
+
+        </LinearLayout>
+      </HorizontalScrollView>
+    </LinearLayout>
+
+  </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
