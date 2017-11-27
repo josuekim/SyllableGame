@@ -514,12 +514,5 @@ public class SyllableGameActivity extends AppCompatActivity {
 
     frame_vowelBottom.getLayoutParams().width = width;
     frame_vowelBottom.getLayoutParams().height = width;
-
-    // Margin
-//    int originalM = ((RelativeLayout.LayoutParams) frame_vowelRight.getLayoutParams())
-//        .getMarginStart();
-//    originalM = 147;
-//    int margin = (int) (originalM * scale);
-//    ((RelativeLayout.LayoutParams) frame_vowelRight.getLayoutParams()).setMarginStart(margin);
   }
 }

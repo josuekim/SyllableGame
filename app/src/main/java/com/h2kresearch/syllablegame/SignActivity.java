@@ -129,12 +129,13 @@ public class SignActivity extends AppCompatActivity {
       public void onClick(View view) {
 
         // 회원가입 & 로그인
+        String url = "http://110.76.77.86:3000/androidSignup";
         String id = mID.getText().toString();
         String pw = mPW.getText().toString();
         String pw2 = mPW2.getText().toString();
 
         if (pw == pw2) {
-          LoginServer loginServer = new LoginServer(id, pw);
+          LoginServer loginServer = new LoginServer(url, id, pw);
           loginServer.execute();
           startActivity(mMainIntent);
         } else {

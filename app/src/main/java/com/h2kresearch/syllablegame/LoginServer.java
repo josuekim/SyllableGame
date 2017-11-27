@@ -13,11 +13,15 @@ import java.net.URL;
 
 public class LoginServer extends AsyncTask {
 
+  // URL
+  String mURL;
+
   //ID
   String mID;
   String mPW;
 
-  public LoginServer(String id, String pw) {
+  public LoginServer(String URL, String id, String pw) {
+    mURL = URL;
     mID = id;
     mPW = pw;
   }
@@ -29,8 +33,9 @@ public class LoginServer extends AsyncTask {
     String param = "u_id=" + mID + "&u_pw=" + mPW + "";
     try {
       // 서버연결
-      URL url = new URL(
-          "http://110.76.77.86:3000/androidSignup");
+      URL url = new URL(mURL);
+//      URL url = new URL(
+//          "http://110.76.77.86:3000/androidSignup");
       HttpURLConnection conn = (HttpURLConnection) url.openConnection();
       conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
       conn.setRequestMethod("POST");

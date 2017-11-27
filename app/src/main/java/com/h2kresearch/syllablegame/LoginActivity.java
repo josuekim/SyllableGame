@@ -99,10 +99,11 @@ public class LoginActivity extends AppCompatActivity {
       @Override
       public void onClick(View view) {
         // 로그인
+        String url = "http://110.76.77.86:3000/androidLogin";
         String id = mID.getText().toString();
         String pw = mPW.getText().toString();
 
-        LoginServer loginServer = new LoginServer(id, pw);
+        LoginServer loginServer = new LoginServer(url, id, pw);
         loginServer.execute();
 
         startActivity(mMainIntent);
