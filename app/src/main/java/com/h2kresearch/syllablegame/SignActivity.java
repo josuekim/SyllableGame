@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.h2kresearch.syllablegame.database.DatabaseAccess;
 import com.h2kresearch.syllablegame.utils.CommonUtils;
 
 public class SignActivity extends AppCompatActivity {
@@ -126,6 +127,7 @@ public class SignActivity extends AppCompatActivity {
     });
 
     mMainIntent = new Intent(SignActivity.this, MainActivity.class);
+    mMainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     mSignButton = (Button) findViewById(R.id.button);
     mSignButton.setOnClickListener(new OnClickListener() {
       @Override
@@ -136,11 +138,31 @@ public class SignActivity extends AppCompatActivity {
         String id = mID.getText().toString();
         String pw = mPW.getText().toString();
 
+        // Check Network State
         String network = CommonUtils.getWhatKindOfNetwork(getApplicationContext());
-        if(!network.equals(CommonUtils.NONE_STATE)) {
+        if (!network.equals(CommonUtils.NONE_STATE)) {
+          // Login Server
           LoginServer loginServer = new LoginServer(url, id, pw);
           loginServer.execute();
-          startActivity(mMainIntent);
+
+          // Update Local DB
+          boolean loginResult = true; // TBA
+          if (loginResult) {
+            // Auto Login Check
+            DatabaseAccess db = DatabaseAccess.getInstance(getApplicationContext());
+            db.open();
+
+            if (db.signup(id, pw) < 0) {
+              Toast.makeText(getApplicationContext(), "Local DB Check!", Toast.LENGTH_LONG).show();
+            }
+
+            // Next Intent
+            startActivity(mMainIntent);
+          } else {
+            Toast.makeText(getApplicationContext(), "회원 가입에 실패했습니다.", Toast.LENGTH_LONG).show();
+          }
+        } else {
+          Toast.makeText(getApplicationContext(), "인터넷에 연결하세요.", Toast.LENGTH_LONG).show();
         }
       }
     });

@@ -45,6 +45,11 @@ public class ResizeActivity extends AppCompatActivity implements SelectViewListe
     Intent preIntent = getIntent();
     mChar = preIntent.getStringArrayExtra("select");
 
+    // Next Intent
+    mIntent = new Intent(ResizeActivity.this, LessonActivity.class);
+    mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    mIntent.putExtra("select", mChar);
+
     // TTS
     mTTS = new TextToSpeech(this, new OnInitListener() {
       @Override
@@ -65,11 +70,6 @@ public class ResizeActivity extends AppCompatActivity implements SelectViewListe
       @Override
       public void onClick(View view) {
         // 오늘의 학습
-//        mIntent = new Intent(ResizeActivity.this, SyllableGameActivity.class);
-        mIntent = new Intent(ResizeActivity.this, LessonActivity.class);
-
-        mIntent.putExtra("select", mChar);
-//          mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(mIntent);
       }
     });

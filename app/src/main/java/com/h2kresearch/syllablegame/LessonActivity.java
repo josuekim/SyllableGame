@@ -33,9 +33,13 @@ public class LessonActivity extends AppCompatActivity {
 
     // Next Intent
     mGameIntent = new Intent(LessonActivity.this, SyllableGameActivity.class);
+    mGameIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     mGameIntent2 = new Intent(LessonActivity.this, SyllableGameActivity2.class);
+    mGameIntent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     mGameIntent3 = new Intent(LessonActivity.this, SyllableGameActivity3.class);
+    mGameIntent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     mResultIntent = new Intent(LessonActivity.this, ResultActivity.class);
+    mResultIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
     // Pre Intent
     Intent preIntent = getIntent();

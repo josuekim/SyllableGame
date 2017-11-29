@@ -1,9 +1,12 @@
 package com.h2kresearch.syllablegame;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +17,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.h2kresearch.syllablegame.TableImageView.SelectViewListener;
+import com.h2kresearch.syllablegame.database.DatabaseAccess;
+import com.h2kresearch.syllablegame.model.ConfigurationModel;
 import com.h2kresearch.syllablegame.utils.CommonUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,11 +43,18 @@ public class MainActivity extends AppCompatActivity
 
   // Intent
   Intent mIntent;
+  Intent mLoginIntent;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+
+    // Intent
+    mIntent = new Intent(MainActivity.this, ResizeActivity.class);
+    mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    mLoginIntent = new Intent(MainActivity.this, LoginActivity.class);
+    mLoginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
     // TTS
     mTTS = new TextToSpeech(this, new OnInitListener() {
@@ -68,7 +80,6 @@ public class MainActivity extends AppCompatActivity
           // 선택된 음절이 있을 경우
           if (mSelect.size() > 0) {
             // 완료
-            mIntent = new Intent(MainActivity.this, ResizeActivity.class);
 
             // Selection
             String[] str = new String[mSelect.size()];
@@ -76,7 +87,6 @@ public class MainActivity extends AppCompatActivity
               str[i] = mSelect.get(i).mStr;
             }
             mIntent.putExtra("select", str);
-//          mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(mIntent);
           } else {
             Toast.makeText(getApplicationContext(), "음절을 선택해 주세요.", Toast.LENGTH_LONG);
@@ -103,10 +113,19 @@ public class MainActivity extends AppCompatActivity
           mLinearLayout.setBackgroundColor(Color.parseColor("#E0F2F1"));
           mSelectMode = false;
           mRightButton.setText("선택");
-          mLeftButton.setText("");
+          mLeftButton.setText("로그아웃");
         } else {
           // 이전
           //onBackPressed();
+
+          // DB Update
+          ConfigurationModel conf = ConfigurationModel.getInstance();
+          DatabaseAccess db = DatabaseAccess.getInstance(getApplicationContext());
+          db.open();
+          db.logout(conf.getEmail());
+
+          // Logout
+          startActivity(mLoginIntent);
         }
       }
     });
@@ -313,6 +332,24 @@ public class MainActivity extends AppCompatActivity
 
   @Override
   public void onBackPressed() {
-    super.onBackPressed();
+    //super.onBackPressed();
+
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setTitle("알림");
+    builder.setMessage("앱을 종료하시겠습니까?");
+    builder.setPositiveButton("예",
+        new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int which) {
+            ActivityCompat.finishAffinity(MainActivity.this);
+          }
+        });
+    builder.setNegativeButton("아니오",
+        new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int which) {
+//            Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.",Toast.LENGTH_LONG).show();
+          }
+        });
+    builder.show();
+
   }
 }

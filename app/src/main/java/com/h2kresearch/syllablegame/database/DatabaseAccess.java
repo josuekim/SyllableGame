@@ -107,4 +107,43 @@ public class DatabaseAccess {
     return false;
   }
 
+  public boolean logout(String id) {
+
+    // Access DB
+    Cursor cursor = database.rawQuery("SELECT * FROM hangul_user_info", null);
+    cursor.moveToFirst();
+
+    // Find User
+    while ( !cursor.isAfterLast() ) {
+      if(cursor.getString(1).equals(id)) {
+
+        // Update DB
+        int index = cursor.getInt(0);
+        ContentValues cv = new ContentValues();
+        cv.put("session", "N");
+        database.update("hangul_user_info", cv, "_id="+index, null);
+
+        // Return true
+        return true;
+      }
+      cursor.moveToNext();
+    }
+    cursor.close();
+
+    // Wrong ID or PW
+    return false;
+  }
+
+  public long signup(String id, String pw) {
+
+    // Insert DB
+    ContentValues cv = new ContentValues();
+    cv.put("email", id);
+    cv.put("password", pw);
+    cv.put("session", "Y");
+
+    // return index
+    return database.insert("hangul_user_info", null, cv);
+  }
+
 }

@@ -42,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
 
     // Next Intent
     mMainIntent = new Intent(LoginActivity.this, MainActivity.class);
+    mMainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
     // Auto Login Check
     mDB = DatabaseAccess.getInstance(this);
@@ -138,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
           loginServer.execute();
 
           // TBA
-          loginResult = true;
+          loginResult = false;
         }
 
         // Re-Login Local DB
@@ -157,6 +158,7 @@ public class LoginActivity extends AppCompatActivity {
     });
 
     mSignIntent = new Intent(LoginActivity.this, SignActivity.class);
+    mSignIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     mSignButton = (TextView) findViewById(R.id.textView3);
     mSignButton.setOnClickListener(new OnClickListener() {
       @Override

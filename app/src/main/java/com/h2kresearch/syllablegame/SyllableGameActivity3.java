@@ -195,16 +195,17 @@ public class SyllableGameActivity3 extends AppCompatActivity {
     backBtn.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        mLessonIntent = new Intent(SyllableGameActivity3.this, LessonActivity.class);
-        mLessonIntent.putExtra("select", select);
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-          @Override
-          public void run() {
-            startActivity(mLessonIntent);
-          }
-        }, 100);
+//        mLessonIntent = new Intent(SyllableGameActivity3.this, LessonActivity.class);
+//        mLessonIntent.putExtra("select", select);
+//
+//        Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//          @Override
+//          public void run() {
+//            startActivity(mLessonIntent);
+//          }
+//        }, 100);
+        onBackPressed();
       }
     });
 
