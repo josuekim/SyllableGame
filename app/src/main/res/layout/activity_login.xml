@@ -9,161 +9,137 @@
   <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     android:background="#FFFFFF"
-    android:orientation="vertical"
+    android:gravity="center_vertical|center_horizontal"
+    android:orientation="horizontal"
+    android:weightSum="3"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
-    <Space
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_weight="1" />
-    <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_weight="2"
-      android:orientation="horizontal">
-      <Space
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
-      <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        app:srcCompat="@drawable/apptitle"
-        tools:layout_editor_absoluteX="670dp"
-        tools:layout_editor_absoluteY="321dp" />
-      <Space
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
-    </LinearLayout>
-    <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_weight="4"
-      android:orientation="horizontal">
-      <Space
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
+    <ScrollView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="2">
       <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="3"
         android:orientation="vertical">
-        <EditText
-          android:id="@+id/editText1"
-          android:layout_width="match_parent"
-          android:layout_height="0dp"
-          android:layout_weight="1"
-          android:ems="10"
-          android:hint="이메일 주소"
-          android:imeOptions="flagNoExtractUi"
-          android:inputType="textEmailAddress"
-          android:textColor="#000000"
-          android:textColorHint="#CBCCCC"
-          android:textSize="28sp" />
-        <EditText
-          android:id="@+id/editText2"
-          android:layout_width="match_parent"
-          android:layout_height="0dp"
-          android:layout_weight="1"
-          android:ems="10"
-          android:hint="비밀번호"
-          android:imeOptions="flagNoExtractUi"
-          android:inputType="textPassword"
-          android:textColor="#000000"
-          android:textColorHint="#CBCCCC"
-          android:textSize="28sp" />
-        <Space
-          android:layout_width="match_parent"
-          android:layout_height="0dp"
-          android:layout_weight="0.1" />
-        <Button
-          android:id="@+id/button"
-          android:textStyle="bold"
-          android:layout_width="match_parent"
-          android:layout_height="0dp"
-          android:layout_weight="1"
-          android:background="@drawable/roundcorner"
-          android:enabled="false"
-          android:text="로그인"
-          android:textAllCaps="false"
-          android:textColor="@color/button_text"
-          android:textSize="32sp" />
         <LinearLayout
           android:layout_width="match_parent"
-          android:layout_height="0dp"
-          android:layout_weight="1"
-          android:orientation="horizontal">
-          <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5" />
-          <TextView
-            android:id="@+id/textView1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:gravity="center_vertical"
-            android:text="아이디 찾기"
-            android:textAlignment="center"
-            android:textColor="#7C7C7C"
-            android:textSize="24sp" />
-          <TextView
-            android:id="@+id/textView5"
-            android:layout_width="3dp"
+          android:layout_height="wrap_content"
+          android:padding="10dp"
+          android:gravity="center_vertical|center_horizontal"
+          android:orientation="vertical">
+          <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:adjustViewBounds="true"
+            app:srcCompat="@drawable/apptitle"
+            tools:layout_editor_absoluteX="670dp"
+            tools:layout_editor_absoluteY="321dp" />
+        </LinearLayout>
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+          <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="#BCBCBC"
-            android:text="간격"
-            android:textColor="#00FF0000" />
-          <TextView
-            android:id="@+id/textView2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:gravity="center_vertical"
-            android:text="비밀번호 찾기"
-            android:textAlignment="center"
-            android:textColor="#7C7C7C"
-            android:textSize="24sp" />
-          <TextView
-            android:id="@+id/textView6"
-            android:layout_width="3dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
+            <EditText
+              android:id="@+id/editText1"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:ems="10"
+              android:gravity="bottom"
+              android:hint="이메일 주소"
+              android:imeOptions="flagNoExtractUi"
+              android:inputType="textEmailAddress"
+              android:textColor="#000000"
+              android:textColorHint="#CBCCCC"
+              android:textSize="20dp" />
+            <EditText
+              android:id="@+id/editText2"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:ems="10"
+              android:gravity="bottom"
+              android:hint="비밀번호"
+              android:imeOptions="flagNoExtractUi"
+              android:inputType="textPassword"
+              android:textColor="#000000"
+              android:textColorHint="#CBCCCC"
+              android:textSize="20dp" />
+            <Button
+              android:id="@+id/button"
+              android:textStyle="bold"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/roundcorner"
+              android:enabled="false"
+              android:text="로그인"
+              android:textAllCaps="false"
+              android:textColor="@color/button_text"
+              android:textSize="20dp" />
+          </LinearLayout>
+          <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="#BCBCBC"
-            android:text="간격"
-            android:textColor="#00FF0000" />
-          <TextView
-            android:id="@+id/textView3"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
             android:gravity="center_vertical"
-            android:text="회원가입"
-            android:textAlignment="center"
-            android:textColor="#7C7C7C"
-            android:textSize="24sp" />
-          <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5" />
+            android:orientation="horizontal">
+            <TextView
+              android:id="@+id/textView1"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="2"
+              android:gravity="center_vertical"
+              android:text="아이디 찾기"
+              android:textAlignment="center"
+              android:textColor="#7C7C7C"
+              android:textSize="18dp" />
+            <TextView
+              android:id="@+id/textView5"
+              android:layout_width="3dp"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_vertical"
+              android:background="#BCBCBC"
+              android:text="간격"
+              android:textColor="#00FF0000" />
+            <TextView
+              android:id="@+id/textView2"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="2"
+              android:gravity="center_vertical"
+              android:text="비밀번호 찾기"
+              android:textAlignment="center"
+              android:textColor="#7C7C7C"
+              android:textSize="18dp" />
+            <TextView
+              android:id="@+id/textView6"
+              android:layout_width="3dp"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_vertical"
+              android:background="#BCBCBC"
+              android:text="간격"
+              android:textColor="#00FF0000" />
+            <TextView
+              android:id="@+id/textView3"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="2"
+              android:gravity="center_vertical"
+              android:text="회원가입"
+              android:textAlignment="center"
+              android:textColor="#7C7C7C"
+              android:textSize="18dp" />
+          </LinearLayout>
         </LinearLayout>
       </LinearLayout>
-      <Space
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
-    </LinearLayout>
-    <Space
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_weight="1" />
+    </ScrollView>
   </LinearLayout>
 </android.support.constraint.ConstraintLayout>

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.h2kresearch.syllablegame.com.h2kresearch.syllablegame.utils.CommonUtils;
 
 public class SignActivity extends AppCompatActivity {
 
@@ -48,7 +49,7 @@ public class SignActivity extends AppCompatActivity {
 
       @Override
       public void afterTextChanged(Editable editable) {
-        if (editable.length() > 0) {
+        if (editable.length() > 0 && CommonUtils.validateEmail(editable.toString())) {
           mIDComplete = true;
         } else {
           mIDComplete = false;
@@ -77,7 +78,7 @@ public class SignActivity extends AppCompatActivity {
 
       @Override
       public void afterTextChanged(Editable editable) {
-        if (editable.length() > 0) {
+        if (editable.length() > 0 && CommonUtils.validatePassword(editable.toString())) {
           mPWComplete = true;
         } else {
           mPWComplete = false;
@@ -93,7 +94,7 @@ public class SignActivity extends AppCompatActivity {
       }
     });
 
-    mPW.addTextChangedListener(new TextWatcher() {
+    mPW2.addTextChangedListener(new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -106,7 +107,9 @@ public class SignActivity extends AppCompatActivity {
 
       @Override
       public void afterTextChanged(Editable editable) {
-        if (editable.length() > 0) {
+        String pw = mPW.getText().toString();
+        String pw2 = editable.toString();
+        if (editable.length() > 0 && pw.equals(pw2)) {
           mPW2Complete = true;
         } else {
           mPW2Complete = false;
@@ -132,17 +135,16 @@ public class SignActivity extends AppCompatActivity {
         String url = "http://110.76.77.86:3000/androidSignup";
         String id = mID.getText().toString();
         String pw = mPW.getText().toString();
-        String pw2 = mPW2.getText().toString();
+//        String pw2 = mPW2.getText().toString();
 
-        if (pw == pw2) {
+//        if (pw == pw2) {
           LoginServer loginServer = new LoginServer(url, id, pw);
           loginServer.execute();
           startActivity(mMainIntent);
-        } else {
-          Toast.makeText(getApplicationContext(), "비밀번호가 서로 다릅니다.", Toast.LENGTH_LONG).show();
-        }
+//        } else {
+//          Toast.makeText(getApplicationContext(), "비밀번호가 서로 다릅니다.", Toast.LENGTH_LONG).show();
+//        }
       }
     });
-
   }
 }

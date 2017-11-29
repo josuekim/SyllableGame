@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import com.h2kresearch.syllablegame.com.h2kresearch.syllablegame.utils.CommonUtils;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -32,8 +33,8 @@ public class LoginActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
 
-    mID = (EditText)findViewById(R.id.editText1);
-    mPW = (EditText)findViewById(R.id.editText2);
+    mID = (EditText) findViewById(R.id.editText1);
+    mPW = (EditText) findViewById(R.id.editText2);
 
     mID.addTextChangedListener(new TextWatcher() {
       @Override
@@ -48,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
 
       @Override
       public void afterTextChanged(Editable editable) {
-        if (editable.length() > 0) {
+        if (editable.length() > 0 && CommonUtils.validateEmail(editable.toString())) {
           mIDComplete = true;
         } else {
           mIDComplete = false;
@@ -77,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
 
       @Override
       public void afterTextChanged(Editable editable) {
-        if (editable.length() > 0) {
+        if (editable.length() > 0 && CommonUtils.validatePassword(editable.toString())) {
           mPWComplete = true;
         } else {
           mPWComplete = false;
@@ -94,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
     });
 
     mMainIntent = new Intent(LoginActivity.this, MainActivity.class);
-    mLoginButton = (Button)findViewById(R.id.button);
+    mLoginButton = (Button) findViewById(R.id.button);
     mLoginButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -111,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
     });
 
     mSignIntent = new Intent(LoginActivity.this, SignActivity.class);
-    mSignButton = (TextView)findViewById(R.id.textView3);
+    mSignButton = (TextView) findViewById(R.id.textView3);
     mSignButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
