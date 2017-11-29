@@ -10,7 +10,11 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import com.h2kresearch.syllablegame.com.h2kresearch.syllablegame.utils.CommonUtils;
+import android.widget.Toast;
+import com.h2kresearch.syllablegame.database.DatabaseAccess;
+import com.h2kresearch.syllablegame.helper.DbOpenHelper;
+import com.h2kresearch.syllablegame.model.ConfigurationModel;
+import com.h2kresearch.syllablegame.utils.CommonUtils;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -28,10 +32,30 @@ public class LoginActivity extends AppCompatActivity {
   Intent mSignIntent;
   TextView mSignButton;
 
+  // Database
+  DatabaseAccess mDB;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
+
+    // Next Intent
+    mMainIntent = new Intent(LoginActivity.this, MainActivity.class);
+
+    // Auto Login Check
+    mDB = DatabaseAccess.getInstance(this);
+    mDB.open();
+    String email = mDB.findAutoLoginUser();
+    if(email != null && !email.equals("")) {
+
+      // Assign Global User
+      ConfigurationModel conf = ConfigurationModel.getInstance();
+      conf.setEmail(email);
+
+      // Login Skip
+      startActivity(mMainIntent);
+    }
 
     mID = (EditText) findViewById(R.id.editText1);
     mPW = (EditText) findViewById(R.id.editText2);
@@ -94,7 +118,6 @@ public class LoginActivity extends AppCompatActivity {
       }
     });
 
-    mMainIntent = new Intent(LoginActivity.this, MainActivity.class);
     mLoginButton = (Button) findViewById(R.id.button);
     mLoginButton.setOnClickListener(new OnClickListener() {
       @Override
@@ -104,10 +127,32 @@ public class LoginActivity extends AppCompatActivity {
         String id = mID.getText().toString();
         String pw = mPW.getText().toString();
 
-        LoginServer loginServer = new LoginServer(url, id, pw);
-        loginServer.execute();
+        // Login DB
+        boolean loginResult = false;
 
-        startActivity(mMainIntent);
+        // Network
+        String network = CommonUtils.getWhatKindOfNetwork(getApplicationContext());
+        if(!network.equals(CommonUtils.NONE_STATE)){
+          // Access Server
+          LoginServer loginServer = new LoginServer(url, id, pw);
+          loginServer.execute();
+
+          // TBA
+          loginResult = true;
+        }
+
+        // Re-Login Local DB
+        if(!loginResult){
+          // Access Local DB
+          loginResult = mDB.login(id, pw);
+        }
+
+        // Login Success
+        if(loginResult) {
+          startActivity(mMainIntent);
+        } else {
+          Toast.makeText(getApplicationContext(), "아이디와 비밀번호를 확인해 주세요.", Toast.LENGTH_LONG).show();
+        }
       }
     });
 

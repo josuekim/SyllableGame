@@ -1,5 +1,6 @@
 package com.h2kresearch.syllablegame.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -55,6 +56,55 @@ public class DatabaseAccess {
     }
     cursor.close();
     return list;
+  }
+
+  public String findAutoLoginUser(){
+
+    // Access DB
+    Cursor cursor = database.rawQuery("SELECT * FROM hangul_user_info", null);
+    cursor.moveToFirst();
+
+    // Find "Y"
+    while ( !cursor.isAfterLast() ){
+      if(cursor.getString(3).equals("Y")) {
+
+        // Return User Email
+        return cursor.getString(1);
+      }
+      cursor.moveToNext();
+    }
+    cursor.close();
+
+    // No one
+    return null;
+  }
+
+  public boolean login(String id, String pw) {
+
+    // Access DB
+    Cursor cursor = database.rawQuery("SELECT * FROM hangul_user_info", null);
+    cursor.moveToFirst();
+
+    // Find User
+    while ( !cursor.isAfterLast() ) {
+        if(cursor.getString(1).equals(id)
+            && cursor.getString(2).equals(pw)) {
+
+          // Update DB
+          int index = cursor.getInt(0);
+          ContentValues cv = new ContentValues();
+          cv.put("session", "Y");
+          database.update("hangul_user_info", cv, "_id="+index, null);
+
+          // Return true
+          return true;
+        }
+        cursor.moveToNext();
+    }
+    cursor.close();
+
+    // Wrong ID or PW
+    return false;
   }
 
 }

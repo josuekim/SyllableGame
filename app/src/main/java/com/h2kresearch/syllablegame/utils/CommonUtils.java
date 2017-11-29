@@ -1,5 +1,8 @@
 package com.h2kresearch.syllablegame.utils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TreeSet;
@@ -129,6 +132,28 @@ public class CommonUtils {
   public static boolean validatePassword(String pwStr) {
     Matcher matcher = VALID_PASSWOLD_REGEX_ALPHA_NUM.matcher(pwStr);
     return matcher.matches();
+  }
+
+  public static final String WIFI_STATE = "WIFI";
+  public static final String MOBILE_STATE = "MOBILE";
+  public static final String NONE_STATE = "NONE";
+
+  /***
+   * 네트워크 종류
+   * @param context
+   * @return 네트워크 종류
+   */
+  public static String getWhatKindOfNetwork(Context context){
+    ConnectivityManager cm = (ConnectivityManager)     context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+    if (activeNetwork != null) {
+      if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
+        return WIFI_STATE;
+      } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
+        return MOBILE_STATE;
+      }
+    }
+    return NONE_STATE;
   }
 
 }

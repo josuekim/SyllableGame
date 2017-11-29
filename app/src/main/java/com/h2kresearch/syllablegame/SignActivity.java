@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.h2kresearch.syllablegame.com.h2kresearch.syllablegame.utils.CommonUtils;
+import com.h2kresearch.syllablegame.utils.CommonUtils;
 
 public class SignActivity extends AppCompatActivity {
 
@@ -135,15 +135,13 @@ public class SignActivity extends AppCompatActivity {
         String url = "http://110.76.77.86:3000/androidSignup";
         String id = mID.getText().toString();
         String pw = mPW.getText().toString();
-//        String pw2 = mPW2.getText().toString();
 
-//        if (pw == pw2) {
+        String network = CommonUtils.getWhatKindOfNetwork(getApplicationContext());
+        if(!network.equals(CommonUtils.NONE_STATE)) {
           LoginServer loginServer = new LoginServer(url, id, pw);
           loginServer.execute();
           startActivity(mMainIntent);
-//        } else {
-//          Toast.makeText(getApplicationContext(), "비밀번호가 서로 다릅니다.", Toast.LENGTH_LONG).show();
-//        }
+        }
       }
     });
   }
