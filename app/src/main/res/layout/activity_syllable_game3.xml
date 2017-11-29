@@ -86,6 +86,13 @@
           android:background="@drawable/blank_2">
 
         </FrameLayout>
+        <ImageView
+          android:id="@+id/repeatButton"
+          android:layout_width="45dp"
+          android:layout_height="45dp"
+          android:layout_alignParentBottom="true"
+          android:layout_alignParentEnd="true"
+          app:srcCompat="@drawable/listen"/>
       </RelativeLayout>
 
       <Space

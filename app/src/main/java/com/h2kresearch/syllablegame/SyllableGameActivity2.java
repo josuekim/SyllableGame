@@ -24,7 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.h2kresearch.syllablegame.com.h2kresearch.syllablegame.utils.CommonUtils;
+import com.h2kresearch.syllablegame.utils.CommonUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;

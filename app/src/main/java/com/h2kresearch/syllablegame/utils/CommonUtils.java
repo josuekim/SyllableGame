@@ -1,4 +1,4 @@
-package com.h2kresearch.syllablegame.com.h2kresearch.syllablegame.utils;
+package com.h2kresearch.syllablegame.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

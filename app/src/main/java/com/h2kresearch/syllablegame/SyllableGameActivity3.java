@@ -2,6 +2,7 @@ package com.h2kresearch.syllablegame;
 
 import static android.speech.tts.TextToSpeech.ERROR;
 
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -24,7 +25,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.h2kresearch.syllablegame.com.h2kresearch.syllablegame.utils.CommonUtils;
+import com.bumptech.glide.Glide;
+import com.h2kresearch.syllablegame.utils.CommonUtils;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Random;
@@ -188,6 +190,7 @@ public class SyllableGameActivity3 extends AppCompatActivity {
     frame_vowelBottom = (FrameLayout) findViewById(R.id.vowelBottom);
     frame_vowelBottom.setOnDragListener(mDragListener);
 
+
     TextView backBtn = (TextView) findViewById(R.id.backButton);
     backBtn.setOnClickListener(new OnClickListener() {
       @Override
@@ -202,6 +205,19 @@ public class SyllableGameActivity3 extends AppCompatActivity {
             startActivity(mLessonIntent);
           }
         }, 100);
+      }
+    });
+
+    ImageView listenBtn = (ImageView) findViewById(R.id.repeatButton);
+    listenBtn.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        char completeWord = CommonUtils
+            .characterCombination(currentConsonant, currentVowel, ' ');
+
+        tts.setPitch(1f);
+        tts.setSpeechRate(0.8f);
+        tts.speak(String.valueOf(completeWord), TextToSpeech.QUEUE_FLUSH, null);
       }
     });
 
@@ -400,8 +416,8 @@ public class SyllableGameActivity3 extends AppCompatActivity {
               if (consonantsId == view.getId()) {
                 frame_consonant.removeAllViews();
                 flag2 = true;
+                currentConsonant = view.getContentDescription().charAt(0);
               }
-              currentConsonant = view.getContentDescription().charAt(0);
 
             } else if (v.getId() == R.id.vowelRight) {
               flag1 = true;
@@ -409,8 +425,8 @@ public class SyllableGameActivity3 extends AppCompatActivity {
                 frame_vowelRight.removeAllViews();
                 frame_vowelBottom.removeAllViews();
                 flag2 = true;
+                currentVowel = view.getContentDescription().charAt(0);
               }
-              currentVowel = view.getContentDescription().charAt(0);
 
             } else if (v.getId() == R.id.vowelBottom) {
               flag1 = true;
@@ -418,8 +434,8 @@ public class SyllableGameActivity3 extends AppCompatActivity {
                 frame_vowelRight.removeAllViews();
                 frame_vowelBottom.removeAllViews();
                 flag2 = true;
+                currentVowel = view.getContentDescription().charAt(0);
               }
-              currentVowel = view.getContentDescription().charAt(0);
             }
 
             if (flag1 && flag2) {
@@ -483,6 +499,11 @@ public class SyllableGameActivity3 extends AppCompatActivity {
 
             } else {
               img_counting.setImageDrawable(getResources().getDrawable(R.drawable.count10));
+
+              Dialog custom = new Dialog(SyllableGameActivity3.this);
+              custom.setContentView(R.layout.custom_dialog);
+              ImageView applaud = (ImageView) custom.findViewById(R.id.imageForApplaud);
+              Glide.with(getApplicationContext()).load(R.drawable.rabbit).into(applaud);
 
               mLessonIntent = new Intent(SyllableGameActivity3.this, LessonActivity.class);
               mLessonIntent.putExtra("select", select);

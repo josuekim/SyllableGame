@@ -13,7 +13,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import com.h2kresearch.syllablegame.TableImageView.SelectViewListener;
-import com.h2kresearch.syllablegame.com.h2kresearch.syllablegame.utils.CommonUtils;
+import com.h2kresearch.syllablegame.utils.CommonUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 
