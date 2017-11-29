@@ -40,6 +40,7 @@ public class LoginServer extends AsyncTask {
       conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
       conn.setRequestMethod("POST");
       conn.setDoInput(true);
+      conn.setConnectTimeout(3000);
       conn.connect();
 
       // 안드로이드 -> 서버 파라메터값 전달

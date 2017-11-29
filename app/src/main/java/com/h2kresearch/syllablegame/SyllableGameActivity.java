@@ -1,5 +1,6 @@
 package com.h2kresearch.syllablegame;
 
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
@@ -29,7 +30,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.h2kresearch.syllablegame.com.h2kresearch.syllablegame.utils.CommonUtils;
+import com.bumptech.glide.Glide;
+import com.h2kresearch.syllablegame.utils.CommonUtils;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -308,6 +310,18 @@ public class SyllableGameActivity extends AppCompatActivity {
     }
   }
 
+  View.OnLongClickListener mLongClickListener = new View.OnLongClickListener(){
+
+    @Override
+    public boolean onLongClick(View v) {
+
+      ClipData clipData = ClipData.newPlainText("", "");
+      v.startDrag(clipData, new ImageDrag(v, (int) v.getX(), (int) v.getY()), v, 0);
+      v.setVisibility(View.INVISIBLE);
+
+      return true;
+    }
+  };
   View.OnTouchListener mTouchListener = new View.OnTouchListener() {
 
     @Override
@@ -435,7 +449,7 @@ public class SyllableGameActivity extends AppCompatActivity {
             frame_vowelBottom.removeAllViews();
             frame_vowelRight.removeAllViews();
 
-            if (completeCnt != 9) {
+            if (completeCnt != 1) {
               completeCnt++;
               int resourceId = getResources()
                   .getIdentifier("count" + completeCnt, "drawable", getPackageName());
@@ -443,6 +457,13 @@ public class SyllableGameActivity extends AppCompatActivity {
 
             } else {
               img_counting.setImageDrawable(getResources().getDrawable(R.drawable.count10));
+
+              Dialog custom = new Dialog(SyllableGameActivity.this);
+              custom.setContentView(R.layout.custom_dialog);
+              ImageView applaud = (ImageView) custom.findViewById(R.id.imageForApplaud);
+              applaud.setImageResource(R.drawable.rabbit);
+              Glide.with(custom.getContext()).load(R.drawable.rabbit).into(applaud);
+              custom.show();
 
               mLessonIntent = new Intent(SyllableGameActivity.this, LessonActivity.class);
               mLessonIntent.putExtra("select", select);
@@ -453,7 +474,7 @@ public class SyllableGameActivity extends AppCompatActivity {
                 public void run() {
                   startActivity(mLessonIntent);
                 }
-              }, 500);
+              }, 1500);
             }
 
           }
