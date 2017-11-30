@@ -23,15 +23,14 @@
       android:screenOrientation="landscape" />
     <activity
       android:name=".MainActivity"
-      android:screenOrientation="landscape"></activity>
+      android:screenOrientation="landscape" />
     <activity
       android:name=".ResizeActivity"
       android:screenOrientation="landscape" />
     <activity
       android:name=".LoginActivity"
       android:screenOrientation="landscape"
-      android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
-    </activity>
+      android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
     <activity
       android:name=".SignActivity"
       android:screenOrientation="landscape"
@@ -42,7 +41,8 @@
     <activity
       android:name=".ResultActivity"
       android:screenOrientation="landscape" />
-    <activity android:name=".IntroActivity"
+    <activity
+      android:name=".IntroActivity"
       android:screenOrientation="landscape">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -50,7 +50,13 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-    <service android:name=".utils.MusicService"></service>
+
+    <service android:name=".utils.MusicService" />
+
+    <activity
+      android:name=".TutorialActivity"
+      android:screenOrientation="landscape" />
+    <activity android:name=".ResultDailyActivity"></activity>
   </application>
 
 </manifest>

@@ -146,4 +146,40 @@ public class DatabaseAccess {
     return database.insert("hangul_user_info", null, cv);
   }
 
+  public int getDailyID(String email, String date) {
+
+    // Return Value
+    int dailyID = -1;
+
+    // Access DB where email, date
+    Cursor cursor = database.rawQuery("SELECT * FROM hangul_daily WHERE email ="+email+"and learning_date ="+date, null);
+    if(cursor.getCount() == 1)
+    {
+      dailyID = cursor.getInt(0);
+    }
+    cursor.close();
+
+    return dailyID;
+  }
+
+  public int getDailyAchieve(int id) {
+
+    // Return Value
+    int dailyAchieve = -1;
+
+    // Access DB where email, date
+    Cursor cursor = database.rawQuery("SELECT * FROM hangul_daily WHERE _id ="+id, null);
+    if(cursor.getCount() == 1)
+    {
+      dailyAchieve = cursor.getInt(3);
+    }
+    cursor.close();
+
+    return dailyAchieve;
+  }
+
+  public ArrayList getDailyAchieveSound(int id) {
+    return null;
+  }
+
 }
