@@ -2,6 +2,7 @@ package com.h2kresearch.syllablegame;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
+import com.h2kresearch.syllablegame.utils.MusicService;
 
 public class ResultActivity extends AppCompatActivity
   implements OnClickListener{
@@ -44,6 +46,10 @@ public class ResultActivity extends AppCompatActivity
     builder.setPositiveButton("예",
         new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialog, int which) {
+            Intent intent = new Intent(
+                getApplicationContext(),//현재제어권자
+                MusicService.class); // 이동할 컴포넌트
+            stopService(intent); // 서비스 시작
             ActivityCompat.finishAffinity(ResultActivity.this);
           }
         });
