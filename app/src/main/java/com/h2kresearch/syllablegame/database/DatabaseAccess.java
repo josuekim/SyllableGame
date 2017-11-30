@@ -7,7 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import com.h2kresearch.syllablegame.helper.DbOpenHelper;
+import com.h2kresearch.syllablegame.model.ConfigurationModel;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +23,7 @@ public class DatabaseAccess {
   private SQLiteOpenHelper openHelper;
   private SQLiteDatabase database;
   private static DatabaseAccess instance;
+  private ConfigurationModel mConf;
 
   private DatabaseAccess(Context context){
     this.openHelper = new DbOpenHelper(context);
@@ -144,6 +148,27 @@ public class DatabaseAccess {
 
     // return index
     return database.insert("hangul_user_info", null, cv);
+  }
+
+  public void insertAccessLog(String id){
+    Calendar calendar = Calendar.getInstance();
+
+    SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+    String formattedDate = df.format(calendar.getTime());
+    mConf = ConfigurationModel.getInstance();
+    mConf.setToday(formattedDate);
+
+    Cursor cursor = database.query("hangul_access",new String[]{"email","access_time"},"email=? and access_time=?", new String[]{id, formattedDate}, null, null, null);
+    if(cursor.getCount()<1){
+      ContentValues cv = new ContentValues();
+      cv.put("email",id);
+      cv.put("access_time", formattedDate);
+      long flag = database.insert("hangul_access",null,cv);
+      Log.d("database","database tracking : " + flag);
+      cv.remove("access_time");
+      cv.put("learning_date", formattedDate);
+      database.insert("hangul_daily",null,cv);
+    }
   }
 
   public int getDailyID(String email, String date) {

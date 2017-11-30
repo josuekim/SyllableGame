@@ -69,7 +69,8 @@
                   android:layout_marginStart="147dp"
                   android:layout_alignStart="@+id/consonantBlock"
                   android:layout_alignTop="@+id/consonantBlock"
-                  android:background="@drawable/blank_2">
+                  android:background="@drawable/blank_2"
+                  >
 
                 </FrameLayout>
             </RelativeLayout>
