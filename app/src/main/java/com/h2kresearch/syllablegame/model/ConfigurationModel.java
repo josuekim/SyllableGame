@@ -9,6 +9,7 @@ public class ConfigurationModel {
   private static ConfigurationModel instance;
 
   private String mEmail;
+  private String mToday;
 
   private ConfigurationModel() {}
 
@@ -25,4 +26,9 @@ public class ConfigurationModel {
   public String getEmail() {
     return mEmail;
   }
+
+  public void setToday(String today){
+    this.mToday = today;
+  }
+  public String getToday(){ return mToday; }
 }

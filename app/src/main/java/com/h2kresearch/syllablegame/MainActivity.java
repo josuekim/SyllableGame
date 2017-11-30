@@ -45,6 +45,9 @@ public class MainActivity extends AppCompatActivity
   Intent mIntent;
   Intent mLoginIntent;
 
+  ConfigurationModel mConf;
+  DatabaseAccess mDb;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -72,6 +75,11 @@ public class MainActivity extends AppCompatActivity
     mTextView = (TextView) findViewById(R.id.textView);
     mLeftButton = (TextView) findViewById(R.id.textViewL);
     mRightButton = (TextView) findViewById(R.id.textViewR);
+
+    mConf = ConfigurationModel.getInstance();
+    mDb = DatabaseAccess.getInstance(getApplicationContext());
+    mDb.open();
+    mDb.insertAccessLog(mConf.getEmail());
 
     mRightButton.setOnClickListener(new OnClickListener() {
       @Override
@@ -119,10 +127,7 @@ public class MainActivity extends AppCompatActivity
           //onBackPressed();
 
           // DB Update
-          ConfigurationModel conf = ConfigurationModel.getInstance();
-          DatabaseAccess db = DatabaseAccess.getInstance(getApplicationContext());
-          db.open();
-          db.logout(conf.getEmail());
+          mDb.logout(mConf.getEmail());
 
           // Logout
           startActivity(mLoginIntent);
