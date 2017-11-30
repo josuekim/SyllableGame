@@ -29,17 +29,16 @@
           android:id="@+id/textViewL"
           android:textStyle="bold"
           android:layout_width="0dp"
-          android:layout_height="match_parent"
+          android:layout_height="wrap_content"
           android:layout_weight="1"
           android:paddingTop="10dp"
-          android:paddingBottom="10dp"
-          android:paddingLeft="20dp"
-          android:paddingRight="20dp"
+          android:paddingLeft="10dp"
+          android:paddingRight="10dp"
           android:gravity="left|center_vertical"
           android:text="로그아웃"
           android:textAlignment="gravity"
           android:textColor="#EF4581"
-          android:textSize="22dp" />
+          android:textSize="14sp" />
         <TextView
           android:id="@+id/textView"
           android:textStyle="bold"
@@ -47,29 +46,27 @@
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:paddingTop="10dp"
-          android:paddingBottom="10dp"
-          android:paddingLeft="20dp"
-          android:paddingRight="20dp"
+          android:paddingLeft="10dp"
+          android:paddingRight="10dp"
           android:gravity="center_vertical|center_horizontal"
           android:text="음절표"
           android:textAlignment="gravity"
           android:textColor="#01848F"
-          android:textSize="28dp" />
+          android:textSize="18dp" />
         <TextView
           android:id="@+id/textViewR"
           android:textStyle="bold"
           android:layout_width="0dp"
-          android:layout_height="match_parent"
+          android:layout_height="wrap_content"
           android:layout_weight="1"
           android:paddingTop="10dp"
-          android:paddingBottom="10dp"
-          android:paddingLeft="20dp"
-          android:paddingRight="20dp"
+          android:paddingLeft="10dp"
+          android:paddingRight="10dp"
           android:gravity="right|center_vertical"
           android:text="선택"
           android:textAlignment="gravity"
           android:textColor="#EF4581"
-          android:textSize="22dp" />
+          android:textSize="14sp" />
       </LinearLayout>
       <TableLayout
         android:id="@+id/TableLayout"

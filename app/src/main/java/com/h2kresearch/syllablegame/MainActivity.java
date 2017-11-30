@@ -20,6 +20,7 @@ import com.h2kresearch.syllablegame.TableImageView.SelectViewListener;
 import com.h2kresearch.syllablegame.database.DatabaseAccess;
 import com.h2kresearch.syllablegame.model.ConfigurationModel;
 import com.h2kresearch.syllablegame.utils.CommonUtils;
+import com.h2kresearch.syllablegame.utils.MusicService;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity
             mIntent.putExtra("select", str);
             startActivity(mIntent);
           } else {
-            Toast.makeText(getApplicationContext(), "음절을 선택해 주세요.", Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), "음절을 선택해 주세요.", Toast.LENGTH_LONG).show();
           }
         } else {
           // 선택
@@ -334,22 +335,37 @@ public class MainActivity extends AppCompatActivity
   public void onBackPressed() {
     //super.onBackPressed();
 
-    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    builder.setTitle("알림");
-    builder.setMessage("앱을 종료하시겠습니까?");
-    builder.setPositiveButton("예",
-        new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialog, int which) {
-            ActivityCompat.finishAffinity(MainActivity.this);
-          }
-        });
-    builder.setNegativeButton("아니오",
-        new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialog, int which) {
+    if(mSelectMode) {
+      // 취소
+      cancelAllView();
+
+      mTextView.setText("똑똑한 음절표");
+      mLinearLayout.setBackgroundColor(Color.parseColor("#E0F2F1"));
+      mSelectMode = false;
+      mRightButton.setText("선택");
+      mLeftButton.setText("로그아웃");
+    } else {
+      AlertDialog.Builder builder = new AlertDialog.Builder(this);
+      builder.setTitle("알림");
+      builder.setMessage("앱을 종료하시겠습니까?");
+      builder.setPositiveButton("예",
+          new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+              Intent intent = new Intent(
+                  getApplicationContext(),//현재제어권자
+                  MusicService.class); // 이동할 컴포넌트
+              stopService(intent); // 서비스 시작
+              ActivityCompat.finishAffinity(MainActivity.this);
+            }
+          });
+      builder.setNegativeButton("아니오",
+          new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
 //            Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.",Toast.LENGTH_LONG).show();
-          }
-        });
-    builder.show();
+            }
+          });
+      builder.show();
+    }
 
   }
 }
