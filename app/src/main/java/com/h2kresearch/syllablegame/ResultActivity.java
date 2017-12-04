@@ -12,7 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 import com.h2kresearch.syllablegame.utils.MusicService;
 
-public class ResultActivity extends AppCompatActivity
+public class ResultActivity extends ParentActivity
   implements OnClickListener{
 
   // Layout

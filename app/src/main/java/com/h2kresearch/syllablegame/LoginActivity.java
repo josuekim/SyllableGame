@@ -16,7 +16,7 @@ import com.h2kresearch.syllablegame.helper.DbOpenHelper;
 import com.h2kresearch.syllablegame.model.ConfigurationModel;
 import com.h2kresearch.syllablegame.utils.CommonUtils;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends ParentActivity {
 
   // EditText
   EditText mID;

@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.h2kresearch.syllablegame.database.DatabaseAccess;
 import com.h2kresearch.syllablegame.utils.CommonUtils;
 
-public class SignActivity extends AppCompatActivity {
+public class SignActivity extends ParentActivity {
 
   // EditText
   EditText mID;

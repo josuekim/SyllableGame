@@ -12,6 +12,7 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/Theme.AppCompat.NoActionBar.FullScreen">
+    <service android:name=".utils.MusicService" />
     <activity
       android:name=".SyllableGameActivity"
       android:screenOrientation="landscape" />
@@ -50,13 +51,11 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-
-    <service android:name=".utils.MusicService" />
-
     <activity
       android:name=".TutorialActivity"
       android:screenOrientation="landscape" />
-    <activity android:name=".ResultDailyActivity"></activity>
+    <activity android:name=".ResultDailyActivity" />
+    <activity android:name=".ParentActivity" />
   </application>
 
 </manifest>

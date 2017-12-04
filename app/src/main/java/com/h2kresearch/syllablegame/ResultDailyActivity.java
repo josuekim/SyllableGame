@@ -8,8 +8,9 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import java.util.ArrayList;
+import java.util.Map;
 
-public class ResultDailyActivity extends AppCompatActivity {
+public class ResultDailyActivity extends ParentActivity {
 
   // Database
   DatabaseAccess mDB;
@@ -19,7 +20,7 @@ public class ResultDailyActivity extends AppCompatActivity {
 
   int mDailyID;
   int mAchieve;
-  ArrayList mAchieveSound; // {Sound, Achieve}
+  ArrayList<Map> mAchieveSound; // {Sound, Achieve}
   ArrayList mWrongSound; // {Sound, {Wrong Sound, Count}}
 
   @Override
@@ -46,7 +47,7 @@ public class ResultDailyActivity extends AppCompatActivity {
     mAchieveSound = mDB.getDailyAchieveSound(mDailyID);
 
     // Wrong Answer according to sound
-//    mWrongSound = get
+    mWrongSound = mDB.getWrongSound(mDailyID);
 
     // Daily Exam
 
