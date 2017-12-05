@@ -181,8 +181,9 @@ public class DatabaseAccess {
 
     // Access DB where email, date
     Cursor cursor = database
-        .rawQuery("SELECT * FROM hangul_daily WHERE email =" + email + "and learning_date =" + date,
+        .rawQuery("SELECT * FROM hangul_daily WHERE email ='" + email + "' and learning_date ='" + date +"'",
             null);
+    cursor.moveToFirst();
     if (cursor.getCount() == 1) {
       dailyID = cursor.getInt(0);
     }
@@ -197,7 +198,8 @@ public class DatabaseAccess {
     int dailyAchieve = -1;
 
     // Access DB where email, date
-    Cursor cursor = database.rawQuery("SELECT * FROM hangul_daily WHERE _id =" + id, null);
+    Cursor cursor = database.rawQuery("SELECT * FROM hangul_daily WHERE _id ='" + id + "'", null);
+    cursor.moveToFirst();
     if (cursor.getCount() == 1) {
       dailyAchieve = cursor.getInt(3);
     }
@@ -213,7 +215,8 @@ public class DatabaseAccess {
 
     // Access DB where email, date
     Cursor cursor = database
-        .rawQuery("SELECT * FROM hangul_study_daily WHERE daily_id =" + id, null);
+        .rawQuery("SELECT * FROM hangul_study_daily WHERE daily_id ='" + id + "'", null);
+    cursor.moveToFirst();
     if (cursor.getCount() > 0) {
       while (!cursor.isAfterLast()) {
 
@@ -225,8 +228,10 @@ public class DatabaseAccess {
 
         // Add to List
         list.add(param);
+
+        // Move to Next
+        cursor.moveToNext();
       }
-      cursor.moveToNext();
     }
     cursor.close();
 
@@ -236,34 +241,92 @@ public class DatabaseAccess {
   public ArrayList<Map> getWrongSound(int id) {
 
     // Return Value
-    ArrayList<Map> list = new ArrayList<Map>();
+    ArrayList<Map> list = new ArrayList<>();
 
-    // Access DB where email, date
-    Cursor cursor = database
-        .rawQuery("SELECT * FROM hangul_wrong_answer WHERE study_id =" + id, null);
-    if (cursor.getCount() > 0) {
+    // Access DB where Daily ID
+    Cursor cursor = database.rawQuery("SELECT * FROM hangul_study_daily WHERE daily_id ='" + id + "'", null);
+    cursor.moveToFirst();
+    if(cursor.getCount() > 0) {
       while (!cursor.isAfterLast()) {
 
-        // Param
+        // Study Character
         Map<String,Object> param = new HashMap<String,Object>();
         param.put("syllable_code", cursor.getInt(2));
 
-        ArrayList<Map> wrongList = new ArrayList<Map>();
-        Map<String,Integer> wrongParam = new HashMap<String,Integer>();
-        wrongParam.put("wrong_code", cursor.getInt(4));
-        wrongParam.put("wrong_cnt", cursor.getInt(4));
-        wrongList.add(wrongParam);
-
-        param.put("wrong_list", wrongList);
+        // Wrong Sound List
+        ArrayList<Map> listParam = getWrongList(cursor.getInt(0));
+        param.put("wrong_list", listParam);
 
         // Add to List
         list.add(param);
+
+        // Move to Next
+        cursor.moveToNext();
       }
-      cursor.moveToNext();
     }
     cursor.close();
 
     return list;
   }
 
+  public ArrayList<Map> getWrongList(int id) {
+
+    // Return Value
+    ArrayList<Map> list = new ArrayList<Map>();
+
+    // Access DB where Study ID
+    Cursor cursor = database
+        .rawQuery("SELECT * FROM hangul_wrong_answer WHERE study_id ='" + id + "'", null);
+    cursor.moveToFirst();
+    if (cursor.getCount() > 0) {
+      while (!cursor.isAfterLast()) {
+
+        // Wrong Sound List
+        Map<String,Integer> param = new HashMap<String,Integer>();
+        param.put("wrong_code", cursor.getInt(2));
+        param.put("wrong_cnt", cursor.getInt(3));
+
+        // Add to List
+        list.add(param);
+
+        // Move to Next
+        cursor.moveToNext();
+      }
+    }
+    cursor.close();
+
+    return list;
+  }
+
+  public ArrayList<Map> getDailyExamSound(int id) {
+
+    // Return Value
+    ArrayList<Map> list = new ArrayList<Map>();
+
+    // Access DB where Daily ID
+    Cursor cursor = database
+        .rawQuery("SELECT * FROM hangul_exam_daily WHERE daily_id ='" + id + "'", null);
+    cursor.moveToFirst();
+    if (cursor.getCount() > 0) {
+      while (!cursor.isAfterLast()) {
+
+        // Exam List
+        Map<String,Object> param = new HashMap<String,Object>();
+        param.put("exam_consonant", cursor.getInt(2));
+        param.put("exam_vowel", cursor.getInt(3));
+        param.put("exam_repeat", cursor.getInt(4));
+        param.put("exam_consonant_ok", cursor.getInt(5));
+        param.put("exam_vowel_ok", cursor.getInt(6));
+
+        // Add to List
+        list.add(param);
+
+        // Move to Next
+        cursor.moveToNext();
+      }
+    }
+    cursor.close();
+
+    return list;
+  }
 }
