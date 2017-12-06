@@ -1,7 +1,6 @@
 package com.h2kresearch.syllablegame;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,9 +11,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.h2kresearch.syllablegame.database.DatabaseAccess;
-import com.h2kresearch.syllablegame.helper.DbOpenHelper;
 import com.h2kresearch.syllablegame.model.ConfigurationModel;
 import com.h2kresearch.syllablegame.utils.CommonUtils;
+import com.h2kresearch.syllablegame.utils.LoginServer;
+import com.h2kresearch.syllablegame.utils.UploadServer;
 
 public class LoginActivity extends ParentActivity {
 
@@ -41,7 +41,7 @@ public class LoginActivity extends ParentActivity {
     setContentView(R.layout.activity_login);
 
     // Next Intent
-    mMainIntent = new Intent(LoginActivity.this, MainActivity.class);
+    mMainIntent = new Intent(LoginActivity.this, ResultActivity.class);
     mMainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
     // Auto Login Check
@@ -124,7 +124,8 @@ public class LoginActivity extends ParentActivity {
       @Override
       public void onClick(View view) {
         // 로그인
-        String url = "http://110.76.77.86:3000/androidLogin";
+        String url = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidLogin";
+        String uploadUrl = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidLogin";
         String id = mID.getText().toString();
         String pw = mPW.getText().toString();
 
@@ -140,6 +141,10 @@ public class LoginActivity extends ParentActivity {
 
           // TBA
           loginResult = false;
+
+          // Access Upload Server
+//          UploadServer uploadServer = new UploadServer(uploadUrl);
+//          uploadServer.execute();
         }
 
         // Re-Login Local DB

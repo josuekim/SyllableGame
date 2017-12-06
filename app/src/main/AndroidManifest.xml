@@ -6,15 +6,16 @@
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
   <application
-    android:hardwareAccelerated="true"
-    android:largeHeap="true"
     android:allowBackup="true"
+    android:hardwareAccelerated="true"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"
+    android:largeHeap="true"
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/Theme.AppCompat.NoActionBar.FullScreen">
     <service android:name=".utils.MusicService" />
+
     <activity
       android:name=".SyllableGameActivity"
       android:screenOrientation="landscape" />
@@ -56,8 +57,16 @@
     <activity
       android:name=".TutorialActivity"
       android:screenOrientation="landscape" />
-    <activity android:name=".ResultDailyActivity" />
+    <activity
+      android:name=".ResultDailyActivity"
+      android:screenOrientation="landscape" />
+    <activity
+      android:name=".ResultTotalActivity"
+      android:screenOrientation="landscape" />
+    <activity android:name=".ResultPartActivity"
+      android:screenOrientation="landscape"/>
     <activity android:name=".ParentActivity" />
+    <activity android:name=".ResultGraphActivity"></activity>
   </application>
 
 </manifest>

@@ -4,11 +4,12 @@ import android.os.Bundle;
 import com.h2kresearch.syllablegame.database.DatabaseAccess;
 import com.h2kresearch.syllablegame.model.ConfigurationModel;
 
-public class ResultDailyActivity extends ResultGraphActivity {
+public class ResultTotalActivity extends ResultGraphActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+//    setContentView(R.layout.activity_result_total);
 //    setContentView(R.layout.activity_result_daily);
 
     // Open DB
@@ -19,29 +20,27 @@ public class ResultDailyActivity extends ResultGraphActivity {
     ConfigurationModel conf = ConfigurationModel.getInstance();
     mEmail = conf.getEmail();
 //    mDate = conf.getToday();
-    mDate = "2017/11/29";
+//    mDate = "2017/11/29";
 
-    // Daily ID
-    mDailyID = mDB.getDailyID(mEmail, mDate);
+    // Total Achieve
+    mAchieve = mDB.getTotalAchieve(mEmail);
 
-    // Daily (Total) Achieve
-    mAchieve = mDB.getDailyAchieve(mDailyID);
-
-    // Daily Achieve according to sound
-    mAchieveSound = mDB.getDailyAchieveSound(mDailyID);
+    // Total Achieve according to sound
+    mAchieveSound = mDB.getTotalAchieveSound(mEmail);
 
     // Wrong Answer according to sound
-    mWrongSound = mDB.getDailyWrongSound(mDailyID);
+    mWrongSound = mDB.getTotalWrongSound(mEmail);
 
     // Daily Exam
-    mExam = mDB.getDailyExam(mDailyID);
+    mExam = mDB.getTotalExam(mEmail);
 
-    // DrawGraph
+    // Draw Graph
     DrawGraph();
 
     // Layout
-    mTextView.setText("오늘의 결과");
-    mTextViewAchieveText.setText("오늘의 종합 성취도 : ");
+    mTextView.setText("종합 성취도");
+    mTextViewAchieveText.setText("종합 성취도 : ");
     mTextViewAchieve.setText(mAchieve+"%");
+
   }
 }

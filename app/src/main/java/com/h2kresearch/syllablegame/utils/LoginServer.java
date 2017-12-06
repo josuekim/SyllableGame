@@ -1,4 +1,4 @@
-package com.h2kresearch.syllablegame;
+package com.h2kresearch.syllablegame.utils;
 
 import android.os.AsyncTask;
 import android.util.Log;

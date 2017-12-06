@@ -1,7 +1,6 @@
 package com.h2kresearch.syllablegame;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,10 +8,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.h2kresearch.syllablegame.database.DatabaseAccess;
 import com.h2kresearch.syllablegame.utils.CommonUtils;
+import com.h2kresearch.syllablegame.utils.LoginServer;
 
 public class SignActivity extends ParentActivity {
 
@@ -134,7 +133,7 @@ public class SignActivity extends ParentActivity {
       public void onClick(View view) {
 
         // 회원가입 & 로그인
-        String url = "http://110.76.77.86:3000/androidSignup";
+        String url = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidSignup";
         String id = mID.getText().toString();
         String pw = mPW.getText().toString();
 

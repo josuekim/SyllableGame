@@ -115,7 +115,7 @@
           android:layout_height="0dp"
           android:layout_weight="3"
           android:background="@drawable/roundcorner_click"
-          android:text="오늘의 학습 결과"
+          android:text="오늘의 결과"
           android:textAllCaps="false"
           android:textColor="@color/button_text"
           android:textSize="24dp" />
@@ -130,7 +130,7 @@
           android:layout_height="0dp"
           android:layout_weight="3"
           android:background="@drawable/roundcorner_click"
-          android:text="단원별 성취도 확인"
+          android:text="단원별 성취도"
           android:textAllCaps="false"
           android:textColor="@color/button_text"
           android:textSize="24dp" />
@@ -145,7 +145,7 @@
           android:layout_height="0dp"
           android:layout_weight="3"
           android:background="@drawable/roundcorner_click"
-          android:text="음소별 성취도 확인"
+          android:text="종합 성취도"
           android:textAllCaps="false"
           android:textColor="@color/button_text"
           android:textSize="24dp" />
