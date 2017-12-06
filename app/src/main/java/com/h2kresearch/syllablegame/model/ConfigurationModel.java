@@ -10,6 +10,9 @@ public class ConfigurationModel {
 
   private String mEmail;
   private String mToday;
+  private long mExamId;
+  private int mConStudyId;
+  private int mVowStudyId;
 
   private ConfigurationModel() {}
 
@@ -31,4 +34,13 @@ public class ConfigurationModel {
     this.mToday = today;
   }
   public String getToday(){ return mToday; }
+
+  public void setExamId(long id) {this.mExamId = id;}
+  public long getExamId(){return mExamId;}
+
+  public void setConStudyId(int id) {this.mConStudyId = id;}
+  public int getConStudyId() {return mConStudyId;}
+
+  public void setVowStudyId(int id) {this.mVowStudyId = id;}
+  public int getVowStudyId() {return mVowStudyId;}
 }

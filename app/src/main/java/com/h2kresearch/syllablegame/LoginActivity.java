@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.h2kresearch.syllablegame.database.DatabaseAccess;
-import com.h2kresearch.syllablegame.helper.DbOpenHelper;
 import com.h2kresearch.syllablegame.model.ConfigurationModel;
 import com.h2kresearch.syllablegame.utils.CommonUtils;
 
@@ -35,6 +34,8 @@ public class LoginActivity extends AppCompatActivity {
   // Database
   DatabaseAccess mDB;
 
+  ConfigurationModel mConf;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -44,6 +45,8 @@ public class LoginActivity extends AppCompatActivity {
     mMainIntent = new Intent(LoginActivity.this, MainActivity.class);
     mMainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
+    mConf = ConfigurationModel.getInstance();
+
     // Auto Login Check
     mDB = DatabaseAccess.getInstance(this);
     mDB.open();
@@ -51,8 +54,7 @@ public class LoginActivity extends AppCompatActivity {
     if(email != null && !email.equals("")) {
 
       // Assign Global User
-      ConfigurationModel conf = ConfigurationModel.getInstance();
-      conf.setEmail(email);
+      mConf.setEmail(email);
 
       // Login Skip
       startActivity(mMainIntent);
@@ -146,6 +148,7 @@ public class LoginActivity extends AppCompatActivity {
         if(!loginResult){
           // Access Local DB
           loginResult = mDB.login(id, pw);
+          mConf.setEmail(id);
         }
 
         // Login Success
