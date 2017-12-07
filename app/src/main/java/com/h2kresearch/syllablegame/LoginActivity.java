@@ -15,6 +15,7 @@ import com.h2kresearch.syllablegame.model.ConfigurationModel;
 import com.h2kresearch.syllablegame.utils.CommonUtils;
 import com.h2kresearch.syllablegame.utils.LoginServer;
 import com.h2kresearch.syllablegame.utils.UploadServer;
+import java.util.concurrent.TimeUnit;
 
 public class LoginActivity extends ParentActivity {
 
@@ -43,7 +44,7 @@ public class LoginActivity extends ParentActivity {
     setContentView(R.layout.activity_login);
 
     // Next Intent
-    mMainIntent = new Intent(LoginActivity.this, ResultActivity.class);
+    mMainIntent = new Intent(LoginActivity.this, MainActivity.class);
     mMainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
     mConf = ConfigurationModel.getInstance();
@@ -52,7 +53,7 @@ public class LoginActivity extends ParentActivity {
     mDB = DatabaseAccess.getInstance(this);
     mDB.open();
     String email = mDB.findAutoLoginUser();
-    if(email != null && !email.equals("")) {
+    if (email != null && !email.equals("")) {
 
       // Assign Global User
       mConf.setEmail(email);
@@ -126,42 +127,46 @@ public class LoginActivity extends ParentActivity {
     mLoginButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
-        // 로그인
-        String url = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidLogin";
-        String uploadUrl = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidLogin";
+
         String id = mID.getText().toString();
         String pw = mPW.getText().toString();
 
-        // Login DB
-        boolean loginResult = false;
+        // Login Result
+        String loginResult = "";
+        boolean loginLocalResult = false;
 
         // Network
         String network = CommonUtils.getWhatKindOfNetwork(getApplicationContext());
-        if(!network.equals(CommonUtils.NONE_STATE)){
-          // Access Server
-          LoginServer loginServer = new LoginServer(url, id, pw);
-          loginServer.execute();
+        if (!network.equals(CommonUtils.NONE_STATE)) {
 
-          // TBA
-          loginResult = false;
+          // Login
+          String loginURL = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidLogin";
+          LoginServer loginServer = new LoginServer(loginURL, id, pw);
+          try {
+            loginResult = (String) loginServer.execute().get(3, TimeUnit.SECONDS);
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
 
-          // Access Upload Server
-//          UploadServer uploadServer = new UploadServer(uploadUrl);
-//          uploadServer.execute();
+          // File Upload
+          String uploadURL = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidDBUpload";
+          UploadServer uploadServer = new UploadServer(uploadURL, id, pw);
+          uploadServer.execute();
         }
 
         // Re-Login Local DB
-        if(!loginResult){
-          // Access Local DB
-          loginResult = mDB.login(id, pw);
-          mConf.setEmail(id);
-        }
+        loginLocalResult = mDB.login(id, pw);
+        mConf.setEmail(id);
 
         // Login Success
-        if(loginResult) {
+        if (loginResult.equals("0") || loginLocalResult == true) {
           startActivity(mMainIntent);
-        } else {
-          Toast.makeText(getApplicationContext(), "아이디와 비밀번호를 확인해 주세요.", Toast.LENGTH_LONG).show();
+        } else if (loginResult.equals("1")){
+          Toast.makeText(getApplicationContext(), "등록되지 않은 계정입니다.", Toast.LENGTH_LONG).show();
+        } else if (loginResult.equals("2")){
+          Toast.makeText(getApplicationContext(), "비밀번호를 확인해 주세요.", Toast.LENGTH_LONG).show();
+        } else if (loginResult.equals("3")){
+          Toast.makeText(getApplicationContext(), "Database Search Failed", Toast.LENGTH_LONG).show();
         }
       }
     });

@@ -1,6 +1,7 @@
 package com.h2kresearch.syllablegame.utils;
 
 import android.os.AsyncTask;
+import android.util.Log;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -8,10 +9,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by ishsrain on 2017. 12. 6..
@@ -22,45 +26,64 @@ public class UploadServer extends AsyncTask {
   // URL
   String mURL;
 
-  public UploadServer(String URL) {
+  //ID
+  String mID;
+  String mPW;
+
+  public UploadServer(String URL, String id, String pw) {
     mURL = URL;
+    mID = id;
+    mPW = pw;
   }
 
   @Override
   protected Object doInBackground(Object[] objects) {
+
     try {
       // Variables
-      String attachmentName = "data";
       String crlf = "\r\n";
       String twoHyphens = "--";
       String boundary = "*****";
 
       //Setup the request
-      HttpURLConnection httpUrlConnection = null;
+      HttpURLConnection conn = null;
 
       URL url = new URL(mURL);
-      httpUrlConnection = (HttpURLConnection) url.openConnection();
-      httpUrlConnection.setUseCaches(false);
-      httpUrlConnection.setDoOutput(true);
-      httpUrlConnection.setDoInput(true);
+      conn = (HttpURLConnection) url.openConnection();
+      conn.setUseCaches(false);
+      conn.setDoOutput(true);
+      conn.setDoInput(true);
 
-      httpUrlConnection.setRequestMethod("POST");
-      httpUrlConnection.setRequestProperty("Connection", "Keep-Alive");
-      httpUrlConnection.setRequestProperty("Cache-Control", "no-cache");
-      httpUrlConnection.setRequestProperty("Content-Type",
+      conn.setRequestMethod("POST");
+      conn.setRequestProperty("Connection", "Keep-Alive");
+      conn.setRequestProperty("Cache-Control", "no-cache");
+      conn.setRequestProperty("Content-Type",
           "multipart/form-data;boundary=" + boundary);
 
-      DataOutputStream wr = new DataOutputStream(httpUrlConnection.getOutputStream());
+      DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
+
+      // --------- String
+      wr.writeBytes(crlf + twoHyphens + boundary + crlf);
+      wr.writeBytes("Content-Disposition: form-data; name=\"u_email\""+ crlf);
+      wr.writeBytes(crlf);
+      wr.writeBytes(mID);
+      // --------- String
 
       // Result File
-      String filePath = "";
-      String filetag = "_";
-      String filename = "result.txt";
-      String filepath = filePath + "/" + filename;
-      String uploadFilename = filetag + filename;
+      String attachmentName = "data";
+      String filename = "statistics.db";
+      String filepath = "/data/data/" + "com.h2kresearch.syllablegame" + "/databases/" + filename;
 
-      // Start content wrapper
-      wr.writeBytes(twoHyphens + boundary + crlf);
+      // Time
+      long now = System.currentTimeMillis();
+      Date date = new Date(now);
+      SimpleDateFormat sdfNow = new SimpleDateFormat("yyyyMMddHHmmss");
+      String time = sdfNow.format(date);
+
+      String uploadFilename = mID + time + ".db";
+
+      // ---------- File
+      wr.writeBytes( crlf + twoHyphens + boundary + crlf);
       wr.writeBytes("Content-Disposition: form-data; name=\"" + attachmentName
           + "\";filename=\"" + uploadFilename + "\"" + crlf);
       wr.writeBytes(crlf);
@@ -69,58 +92,36 @@ public class UploadServer extends AsyncTask {
       if (filepath != null) {
         FileInputStream fileInputStream = new FileInputStream(filepath);
         int res = 1;
-        byte[] buffer = new byte[10000];
+        byte[] buffer = new byte[100000];
         while (0 < (res = fileInputStream.read(buffer))) {
           wr.write(buffer, 0, res);
         }
       }
-      wr.writeBytes(crlf);
+      // ---------- File
 
-      // Test 1
-      for (int i = 0; i < 3; i++) {
-
-        filename = "q1_" + (i + 1) + ".mp4";
-        filepath = filePath + "/" + filename;
-        uploadFilename = filetag + filename;
-
-        wr.writeBytes(twoHyphens + boundary + crlf);
-        wr.writeBytes("Content-Disposition: form-data; name=\"" + attachmentName
-            + "\";filename=\"" + uploadFilename + "\"" + crlf);
-        wr.writeBytes(crlf);
-
-        // Read from FileInputStream and write to OutputStream
-        if (filepath != null) {
-          FileInputStream fileInputStream = new FileInputStream(filepath);
-          int res = 1;
-          byte[] buffer = new byte[10000];
-          while (0 < (res = fileInputStream.read(buffer))) {
-            wr.write(buffer, 0, res);
-          }
-        }
-        wr.writeBytes(crlf);
-      }
-
-      // Finish content wrapper
-      wr.writeBytes(twoHyphens + boundary + twoHyphens + crlf);
+      // ---------- Finish
+      wr.writeBytes(crlf + twoHyphens + boundary + twoHyphens + crlf);
       wr.flush();
       wr.close();
+      // ---------- Finish
 
       // Response
-      InputStream responseStream = new BufferedInputStream(
-          httpUrlConnection.getInputStream());
-      BufferedReader responseStreamReader = new BufferedReader(
-          new InputStreamReader(responseStream));
-      String line = "";
-      StringBuilder stringBuilder = new StringBuilder();
-      while ((line = responseStreamReader.readLine()) != null) {
-        stringBuilder.append(line).append("\n");
+      InputStream is = null;
+      BufferedReader in = null;
+      String data = "";
+
+      is = conn.getInputStream();
+      in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+      String line = null;
+      StringBuffer buff = new StringBuffer();
+      while ((line = in.readLine()) != null) {
+        buff.append(line + "\n");
       }
-      responseStreamReader.close();
-      String response = stringBuilder.toString();
-      int returnCode = httpUrlConnection.getResponseCode();
+      data = buff.toString().trim();
+      Log.e("Upload Result", data);
 
       // Disconnection
-      httpUrlConnection.disconnect();
+      conn.disconnect();
     } catch (MalformedURLException | ProtocolException exception) {
       exception.printStackTrace();
     } catch (IOException io) {
