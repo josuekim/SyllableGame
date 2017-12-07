@@ -29,61 +29,76 @@
     tools:layout_constraintLeft_creator="1">
 
     <include
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
       layout="@layout/toolbar"
-      android:layout_marginBottom="5dp"/>
+      android:layout_width="match_parent"
+      android:layout_height="35dp"
+      />
 
 
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="0dp"
-      android:layout_weight="8"
-      android:weightSum="10"
-      android:orientation="horizontal">
+      android:layout_weight="10"
+      android:baselineAligned="true"
+      android:orientation="horizontal"
+      android:weightSum="10">
 
 
-      <Space
+      <ScrollView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:layout_weight="2"
+        android:background="@color/dragAreaColor">
+        <LinearLayout
+          android:id="@+id/consonantList"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_gravity="center_vertical"
+          android:orientation="vertical">
+
+        </LinearLayout>
+      </ScrollView>
+
 
       <RelativeLayout
-        android:layout_weight="8"
+        android:id="@+id/puzzleLayout"
         android:layout_width="0dp"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_weight="6">
 
         <FrameLayout
           android:id="@+id/vowelBottom"
-          android:layout_width="200dp"
-          android:layout_height="198dp"
-          android:background="@drawable/blank_3"
+          android:layout_width="100dip"
+          android:layout_height="100dip"
+          android:layout_alignStart="@+id/consonantBlock"
           android:layout_below="@+id/vowelRight"
-          android:layout_alignStart="@+id/consonantBlock">
+          android:background="@drawable/blank_3"
+          >
 
         </FrameLayout>
 
         <FrameLayout
           android:id="@+id/consonantBlock"
-          android:layout_width="200dp"
-          android:layout_height="250dp"
-          android:layout_marginTop="60dp"
-          android:layout_marginStart="205dp"
+          android:layout_width="100dip"
+          android:layout_height="125dip"
+          android:layout_marginTop="62dp"
+          android:layout_marginStart="82dp"
           android:layout_alignParentStart="true"
           android:layout_alignParentTop="true"
-          android:background="@drawable/blank_1">
+          android:background="@drawable/blank_1"
+          >
 
         </FrameLayout>
 
         <FrameLayout
           android:id="@+id/vowelRight"
-          android:layout_width="250dp"
-          android:layout_height="199dp"
-          android:layout_marginBottom="-1dp"
-          android:layout_marginStart="147dp"
+          android:layout_width="125dip"
+          android:layout_height="99dip"
+          android:layout_marginStart="73.5dp"
           android:layout_alignStart="@+id/consonantBlock"
           android:layout_alignTop="@+id/consonantBlock"
-          android:background="@drawable/blank_2">
+          android:background="@drawable/blank_2"
+          >
 
         </FrameLayout>
         <ImageView
@@ -95,49 +110,20 @@
           app:srcCompat="@drawable/listen"/>
       </RelativeLayout>
 
-      <Space
+      <ScrollView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"/>
-    </LinearLayout>
-
-    <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_marginTop="50dp"
-      android:layout_weight="2"
-      android:orientation="horizontal">
-
-      <HorizontalScrollView
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"
-        android:background="@drawable/button_border">
-
-        <LinearLayout
-          android:id="@+id/consonantList"
-          android:layout_width="wrap_content"
-          android:layout_height="match_parent"
-          android:orientation="horizontal">
-
-        </LinearLayout>
-      </HorizontalScrollView>
-
-      <HorizontalScrollView
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:background="@drawable/button_border1">
-
+        android:layout_weight="2"
+        android:background="@color/dragAreaColor">
         <LinearLayout
           android:id="@+id/vowelList"
-          android:layout_width="wrap_content"
+          android:layout_width="match_parent"
           android:layout_height="match_parent"
-          android:orientation="horizontal">
-
-
+          android:layout_gravity="center_vertical"
+          android:orientation="vertical">
         </LinearLayout>
-      </HorizontalScrollView>
+      </ScrollView>
+
     </LinearLayout>
 
   </LinearLayout>
