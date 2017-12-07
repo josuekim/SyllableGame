@@ -305,8 +305,8 @@ public class DatabaseAccess {
   }
 
   public void updateExamCorrect(long exam_id){
-    int con_ok = 0;
-    int vow_ok = 0;
+    int con_ok = 1;
+    int vow_ok = 1;
     ContentValues cv = new ContentValues();
     Cursor cursor = database.query("hangul_exam_daily", new String[]{"daily_id","exam_consonant","exam_vowel"}, "_id=?", new String[]{String.valueOf(exam_id)},null,null,null);
 
@@ -315,11 +315,14 @@ public class DatabaseAccess {
       int daily_id = cursor.getInt(0);
       int con = cursor.getInt(1);
       int vow = cursor.getInt(2);
+      int con_correct = 1;
+      int vow_correct = 1;
       cursor.close();
 
       cursor = database.query("hangul_exam_response", new String[]{"_id"}, "exam_id=? and exam_response !=? and exam_response < 15", new String[]{String.valueOf(exam_id),String.valueOf(con)},null,null,null);
-      if(cursor.getCount() < 1){
-        con_ok = 1;
+      if(cursor.getCount() >= 1){
+        con_ok = cursor.getCount() + 1;
+        con_correct = 0;
         cursor.close();
       }
       cursor = database.query("hangul_study_daily", new String[]{"_id","exam_cnt","correct_cnt"}, "daily_id=? and syllable_code=?", new String[]{String.valueOf(daily_id),String.valueOf(con)},null,null,null);
@@ -327,13 +330,14 @@ public class DatabaseAccess {
         cursor.moveToFirst();
         ContentValues cv1 = new ContentValues();
         cv1.put("exam_cnt", cursor.getInt(1)+1);
-        cv1.put("correct_cnt", cursor.getInt(2)+con_ok);
+        cv1.put("correct_cnt", cursor.getInt(2)+con_correct);
         database.update("hangul_study_daily", cv1, "_id="+cursor.getInt(0), null);
         cursor.close();
       }
       cursor = database.query("hangul_exam_response", new String[]{"_id"}, "exam_id=? and exam_response !=? and exam_response > 14", new String[]{String.valueOf(exam_id),String.valueOf(vow)},null,null,null);
-      if(cursor.getCount() < 1){
-        vow_ok = 1;
+      if(cursor.getCount() >= 1){
+        vow_ok = cursor.getCount() + 1;
+        vow_correct = 0;
         cursor.close();
       }
       cursor = database.query("hangul_study_daily", new String[]{"_id","exam_cnt","correct_cnt"}, "daily_id=? and syllable_code=?", new String[]{String.valueOf(daily_id),String.valueOf(vow)},null,null,null);
@@ -341,7 +345,7 @@ public class DatabaseAccess {
         cursor.moveToFirst();
         ContentValues cv1 = new ContentValues();
         cv1.put("exam_cnt", cursor.getInt(1)+1);
-        cv1.put("correct_cnt", cursor.getInt(2)+vow_ok);
+        cv1.put("correct_cnt", cursor.getInt(2)+vow_correct);
         database.update("hangul_study_daily", cv1, "_id="+cursor.getInt(0), null);
         cursor.close();
       }
@@ -380,6 +384,10 @@ public class DatabaseAccess {
       cv.put("daily_achieve", result);
       database.update("hangul_daily",cv,"_id="+daily_id, null);
     }
+  }
+
+  public void updateTotalStat(String email){
+
   }
 
   public int getDailyID(String email, String date) {
