@@ -43,7 +43,7 @@ public class LoginActivity extends ParentActivity {
     setContentView(R.layout.activity_login);
 
     // Next Intent
-    mMainIntent = new Intent(LoginActivity.this, ResultActivity.class);
+    mMainIntent = new Intent(LoginActivity.this, MainActivity.class);
     mMainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
     mConf = ConfigurationModel.getInstance();

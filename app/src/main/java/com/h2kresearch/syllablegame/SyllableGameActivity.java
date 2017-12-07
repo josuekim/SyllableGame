@@ -39,7 +39,7 @@ import java.util.Locale;
 
 import static android.speech.tts.TextToSpeech.ERROR;
 
-public class SyllableGameActivity extends AppCompatActivity {
+public class SyllableGameActivity extends ParentActivity {
 
   private TextToSpeech tts;
 

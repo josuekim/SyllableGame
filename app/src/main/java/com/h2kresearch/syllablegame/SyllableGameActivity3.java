@@ -41,7 +41,7 @@ import java.util.Map;
 import java.util.Random;
 
 @SuppressWarnings("unchecked")
-public class SyllableGameActivity3 extends AppCompatActivity {
+public class SyllableGameActivity3 extends ParentActivity {
 
   private static final int SEND_THREAD_START_MESSAGE = 0;
   private static final int FLIP_FLOP_IMAGE = 1;
@@ -483,7 +483,6 @@ public class SyllableGameActivity3 extends AppCompatActivity {
               tts.setSpeechRate(0.8f);
               tts.speak(String.valueOf(completeWord), TextToSpeech.QUEUE_FLUSH, null);
 
-              //Toast.makeText(SyllableGameActivity3.this, "우와 멋진데~", Toast.LENGTH_SHORT).show();
               mDB.updateExamCorrect(mConf.getExamId());
 
             }
@@ -634,9 +633,11 @@ public class SyllableGameActivity3 extends AppCompatActivity {
                 }
               }
               frame_fullsize = new FrameLayout(getApplicationContext());
+              RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
+              frame_fullsize.setLayoutParams(params);
 
-              int a = puzzleLayout.getHeight() * 20 / 100;
-              frame_fullsize.setPadding(a, a, a, a);
+              int padding = puzzleLayout.getHeight() * 20 / 100;
+              frame_fullsize.setPadding(padding, padding, padding, padding);
 
               ImageView fullWordView = new ImageView(getApplicationContext());
               fullWordView.setImageDrawable(getResources().getDrawable(getResources().getIdentifier("syl"+imageId+"_black","drawable", getPackageName())));
