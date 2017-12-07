@@ -35,6 +35,8 @@ public class LoginActivity extends ParentActivity {
   // Database
   DatabaseAccess mDB;
 
+  ConfigurationModel mConf;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -44,6 +46,8 @@ public class LoginActivity extends ParentActivity {
     mMainIntent = new Intent(LoginActivity.this, ResultActivity.class);
     mMainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
+    mConf = ConfigurationModel.getInstance();
+
     // Auto Login Check
     mDB = DatabaseAccess.getInstance(this);
     mDB.open();
@@ -51,8 +55,7 @@ public class LoginActivity extends ParentActivity {
     if(email != null && !email.equals("")) {
 
       // Assign Global User
-      ConfigurationModel conf = ConfigurationModel.getInstance();
-      conf.setEmail(email);
+      mConf.setEmail(email);
 
       // Login Skip
       startActivity(mMainIntent);
@@ -151,6 +154,7 @@ public class LoginActivity extends ParentActivity {
         if(!loginResult){
           // Access Local DB
           loginResult = mDB.login(id, pw);
+          mConf.setEmail(id);
         }
 
         // Login Success

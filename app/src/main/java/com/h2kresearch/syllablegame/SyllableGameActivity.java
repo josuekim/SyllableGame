@@ -32,6 +32,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.h2kresearch.syllablegame.utils.CommonUtils;
+import com.h2kresearch.syllablegame.utils.CommonUtils.ConsonantType;
+import com.h2kresearch.syllablegame.utils.CommonUtils.VowelType;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -66,45 +68,6 @@ public class SyllableGameActivity extends AppCompatActivity {
   boolean flagMoved = false;
 
   int completeCnt = 0;
-
-  enum ConsonantType {
-    CONSONANT1("ㄱ"), CONSONANT2("ㄴ"), CONSONANT3("ㄷ"), CONSONANT4("ㄹ"), CONSONANT5("ㅁ"), CONSONANT6(
-        "ㅂ"),
-    CONSONANT7("ㅅ"), CONSONANT8("ㅇ"), CONSONANT9("ㅈ"), CONSONANT10("ㅊ"), CONSONANT11(
-        "ㅋ"), CONSONANT12("ㅌ"),
-    CONSONANT13("ㅍ"), CONSONANT14("ㅎ");
-
-    String con;
-
-    ConsonantType(String con) {
-      this.con = con;
-    }
-
-    public String getName() {
-      return con;
-    }
-  }
-
-  enum VowelType {
-    VOWEL1("ㅏ", "R"), VOWEL2("ㅑ", "R"), VOWEL3("ㅓ", "R"), VOWEL4("ㅕ", "R"), VOWEL5("ㅗ", "B"),
-    VOWEL6("ㅛ", "B"), VOWEL7("ㅜ", "B"), VOWEL8("ㅠ", "B"), VOWEL9("ㅡ", "B"), VOWEL10("ㅣ", "R");
-
-    String vow;
-    String side;
-
-    VowelType(String vow, String side) {
-      this.vow = vow;
-      this.side = side;
-    }
-
-    public String getVow() {
-      return vow;
-    }
-
-    public String getSide() {
-      return side;
-    }
-  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {

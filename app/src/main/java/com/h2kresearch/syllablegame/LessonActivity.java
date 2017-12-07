@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import com.h2kresearch.syllablegame.database.DatabaseAccess;
 
 public class LessonActivity extends ParentActivity {
 
@@ -40,6 +41,9 @@ public class LessonActivity extends ParentActivity {
     mGameIntent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     mResultIntent = new Intent(LessonActivity.this, ResultActivity.class);
     mResultIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+    DatabaseAccess db = DatabaseAccess.getInstance(this);
+    db.updateDailyAverage();
 
     // Pre Intent
     Intent preIntent = getIntent();

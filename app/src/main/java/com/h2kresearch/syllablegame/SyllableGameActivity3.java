@@ -26,11 +26,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
+import com.h2kresearch.syllablegame.database.DatabaseAccess;
+import com.h2kresearch.syllablegame.model.ConfigurationModel;
 import com.h2kresearch.syllablegame.utils.CommonUtils;
+import com.h2kresearch.syllablegame.utils.CommonUtils.ConsonantType;
+import com.h2kresearch.syllablegame.utils.CommonUtils.VowelType;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 
+@SuppressWarnings("unchecked")
 public class SyllableGameActivity3 extends AppCompatActivity {
 
   private TextToSpeech tts;
@@ -65,56 +72,24 @@ public class SyllableGameActivity3 extends AppCompatActivity {
 
   int completeCnt = 0;
 
-  enum ConsonantType {
-    CONSONANT1("ㄱ"),CONSONANT2("ㄴ"),CONSONANT3("ㄷ"),CONSONANT4("ㄹ"),CONSONANT5("ㅁ"),CONSONANT6("ㅂ"),
-    CONSONANT7("ㅅ"),CONSONANT8("ㅇ"),CONSONANT9("ㅈ"),CONSONANT10("ㅊ"),CONSONANT11("ㅋ"),CONSONANT12("ㅌ"),
-    CONSONANT13("ㅍ"),CONSONANT14("ㅎ");
+  DatabaseAccess mDB;
 
-    String con;
+  ConfigurationModel mConf;
 
-    ConsonantType(String con){
-      this.con = con;
-    }
-
-    public String getName(){
-      return con;
-    }
-  }
-
-  enum VowelType {
-    VOWEL1("ㅏ","R"),VOWEL2("ㅑ","R"),VOWEL3("ㅓ","R"),VOWEL4("ㅕ","R"),VOWEL5("ㅗ","B"),
-    VOWEL6("ㅛ","B"),VOWEL7("ㅜ","B"),VOWEL8("ㅠ","B"),VOWEL9("ㅡ","B"),VOWEL10("ㅣ","R");
-
-    String vow;
-    String side;
-    VowelType(String vow, String side){
-      this.vow = vow;
-      this.side = side;
-    }
-
-    public String getVow(){
-      return vow;
-    }
-
-    public String getSide(){
-      return side;
-    }
-  }
-
-  public void makeExamples(Object[] dec_c, Object[] dec_v){
+  public void makeExamples(Object[] dec_cList, Object[] dec_vList){
     ArrayList<Integer> cons = new ArrayList<>();
     ArrayList<Integer> vows = new ArrayList<>();
 
-    for(ConsonantType ct : ConsonantType.values()){
-      for(int i = 0; i < dec_c.length; i++){
-        if(ct.getName().equals(dec_c[i].toString())) {
+    for(ConsonantType ct : ConsonantType.values()) {
+      for(Object dec_c : dec_cList){
+        if(ct.getName().equals(dec_c.toString())) {
           cons.add((ct.ordinal() + 1));
         }
       }
     }
     for(VowelType vt : VowelType.values()){
-      for(int i = 0; i < dec_v.length; i++){
-        if(vt.getVow().equals(dec_v[i].toString())) {
+      for(Object dec_v : dec_vList){
+        if(vt.getVow().equals(dec_v.toString())) {
           vows.add((vt.ordinal() + 1));
         }
       }
@@ -124,7 +99,8 @@ public class SyllableGameActivity3 extends AppCompatActivity {
     correctAnswer[0] = getResources().getIdentifier("consonant" + cons.get(conInt), "drawable", getPackageName());
 
     for(int i = 0; i < img_consonant.length; i++){
-      if(correctAnswer[0] == (int)img_consonant[i].getTag()){
+      Map tagMap = (Map)img_consonant[i].getTag();
+      if(correctAnswer[0] == (int)tagMap.get("resourceId")){
         consonantsId = img_consonant[i].getId();
         currentConsonant = img_consonant[i].getContentDescription().charAt(0);
       }
@@ -134,7 +110,8 @@ public class SyllableGameActivity3 extends AppCompatActivity {
     if((vowInt >= 1 && vowInt <= 4) || vowInt ==10){
       correctAnswer[1] = getResources().getIdentifier("vowel" + (vowInt), "drawable", getPackageName());
       for(int i = 0; i < img_vowelRight.length; i++){
-        if(correctAnswer[1] == (int)img_vowelRight[i].getTag()){
+        Map tagMap = (Map)img_vowelRight[i].getTag();
+        if(correctAnswer[1] == (int)tagMap.get("resourceId")){
           vowelRightId = img_vowelRight[i].getId();
           vowelBottomId = -1;
           currentVowel = img_vowelRight[i].getContentDescription().charAt(0);
@@ -143,13 +120,17 @@ public class SyllableGameActivity3 extends AppCompatActivity {
     }else{
       correctAnswer[2] = getResources().getIdentifier("vowel" + (vowInt), "drawable", getPackageName());
       for(int i = 0; i < img_vowelBottom.length; i++){
-        if(correctAnswer[2] == (int)img_vowelBottom[i].getTag()){
+        Map tagMap = (Map)img_vowelRight[i].getTag();
+        if(correctAnswer[2] == (int)tagMap.get("resourceId")){
           vowelBottomId = img_vowelBottom[i].getId();
           vowelRightId = -1;
           currentVowel = img_vowelBottom[i].getContentDescription().charAt(0);
         }
       }
     }
+
+    long examId = mDB.insertDailyExam(cons.get(conInt),(vowInt+14));
+    mConf.setExamId(examId);
 
     char completeWord = CommonUtils
         .characterCombination(currentConsonant, currentVowel, ' ');
@@ -190,21 +171,13 @@ public class SyllableGameActivity3 extends AppCompatActivity {
     frame_vowelBottom = (FrameLayout) findViewById(R.id.vowelBottom);
     frame_vowelBottom.setOnDragListener(mDragListener);
 
+    mDB = mDB.getInstance(this);
+    mConf = mConf.getInstance();
 
     TextView backBtn = (TextView) findViewById(R.id.backButton);
     backBtn.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-//        mLessonIntent = new Intent(SyllableGameActivity3.this, LessonActivity.class);
-//        mLessonIntent.putExtra("select", select);
-//
-//        Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//          @Override
-//          public void run() {
-//            startActivity(mLessonIntent);
-//          }
-//        }, 100);
         onBackPressed();
       }
     });
@@ -219,6 +192,8 @@ public class SyllableGameActivity3 extends AppCompatActivity {
         tts.setPitch(1f);
         tts.setSpeechRate(0.8f);
         tts.speak(String.valueOf(completeWord), TextToSpeech.QUEUE_FLUSH, null);
+
+        mDB.updateExamRepeat(mConf.getExamId());
       }
     });
 
@@ -245,7 +220,10 @@ public class SyllableGameActivity3 extends AppCompatActivity {
           consonantList.addView(img_consonant[i]);
           img_consonant[i].setOnTouchListener(mTouchListener);
           img_consonant[i].setId(i + 100);
-          img_consonant[i].setTag(resourceId);
+          Map tagMap = new HashMap();
+          tagMap.put("resourceId",resourceId);
+          tagMap.put("wordId",(ct.ordinal() + 1));
+          img_consonant[i].setTag(tagMap);
           img_consonant[i].setContentDescription(dec_consonants[i].toString());
         }
       }
@@ -254,8 +232,8 @@ public class SyllableGameActivity3 extends AppCompatActivity {
     int countRight = 0;
     int countBottom = 0;
     for(VowelType vt : VowelType.values()){
-      for(int i = 0; i <dec_vowels.length; i++){
-        if(vt.getVow().equals(dec_vowels[i].toString())){
+      for(Object dec_vowel : dec_vowels){
+        if(vt.getVow().equals(dec_vowel.toString())){
           if(vt.getSide().equals("R")){
             countRight++;
           }else if(vt.getSide().equals("B")){
@@ -286,7 +264,10 @@ public class SyllableGameActivity3 extends AppCompatActivity {
             vowelList.addView(img_vowelRight[countRight]);
             img_vowelRight[countRight].setOnTouchListener(mTouchListener);
             img_vowelRight[countRight].setId(i+200);
-            img_vowelRight[countRight].setTag(resourceId);
+            Map tagMap = new HashMap();
+            tagMap.put("resourceId",resourceId);
+            tagMap.put("wordId",(vt.ordinal() + 15));
+            img_vowelRight[countRight].setTag(tagMap);
             img_vowelRight[countRight].setContentDescription(dec_vowels[i].toString());
             countRight++;
           }else if(vt.getSide().equals("B")){
@@ -303,7 +284,10 @@ public class SyllableGameActivity3 extends AppCompatActivity {
             vowelList.addView(img_vowelBottom[countBottom]);
             img_vowelBottom[countBottom].setOnTouchListener(mTouchListener);
             img_vowelBottom[countBottom].setId(i+300);
-            img_vowelBottom[countBottom].setTag(resourceId);
+            Map tagMap = new HashMap();
+            tagMap.put("resourceId",resourceId);
+            tagMap.put("wordId",(vt.ordinal() + 15));
+            img_vowelBottom[countBottom].setTag(tagMap);
             img_vowelBottom[countBottom].setContentDescription(dec_vowels[i].toString());
             countBottom++;
           }
@@ -343,7 +327,7 @@ public class SyllableGameActivity3 extends AppCompatActivity {
     int mWidth;
     int mHeight;
 
-    public ImageDrag(View v, int x, int y) {
+    private ImageDrag(View v, int x, int y) {
       super(v);
       mView = v;
       mX = x;
@@ -412,12 +396,18 @@ public class SyllableGameActivity3 extends AppCompatActivity {
             FrameLayout newParent = (FrameLayout) v;
             boolean flag1 = false;
             boolean flag2 = false;
+            Map tagMap = (Map)view.getTag();
+
+            mDB.insertExamResponse(mConf.getExamId(),(int)tagMap.get("wordId"));
+
             if (v.getId() == R.id.consonantBlock) {
               flag1 = true;
               if (consonantsId == view.getId()) {
                 frame_consonant.removeAllViews();
                 flag2 = true;
                 currentConsonant = view.getContentDescription().charAt(0);
+              }else{
+                mDB.insertWrongAnswer(mConf.getConStudyId(),(int)tagMap.get("wordId"));
               }
 
             } else if (v.getId() == R.id.vowelRight) {
@@ -427,6 +417,8 @@ public class SyllableGameActivity3 extends AppCompatActivity {
                 frame_vowelBottom.removeAllViews();
                 flag2 = true;
                 currentVowel = view.getContentDescription().charAt(0);
+              }else{
+                mDB.insertWrongAnswer(mConf.getVowStudyId(),(int)tagMap.get("wordId"));
               }
 
             } else if (v.getId() == R.id.vowelBottom) {
@@ -436,6 +428,8 @@ public class SyllableGameActivity3 extends AppCompatActivity {
                 frame_vowelBottom.removeAllViews();
                 flag2 = true;
                 currentVowel = view.getContentDescription().charAt(0);
+              }else{
+                mDB.insertWrongAnswer(mConf.getVowStudyId(),(int)tagMap.get("wordId"));
               }
             }
 
@@ -459,6 +453,7 @@ public class SyllableGameActivity3 extends AppCompatActivity {
               tts.speak(String.valueOf(completeWord), TextToSpeech.QUEUE_FLUSH, null);
 
               Toast.makeText(SyllableGameActivity3.this, "우와 멋진데~", Toast.LENGTH_SHORT).show();
+              mDB.updateExamCorrect(mConf.getExamId());
 
             }
 

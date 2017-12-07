@@ -13,6 +13,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import com.h2kresearch.syllablegame.TableImageView.SelectViewListener;
+import com.h2kresearch.syllablegame.database.DatabaseAccess;
 import com.h2kresearch.syllablegame.utils.CommonUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +37,8 @@ public class ResizeActivity extends ParentActivity implements SelectViewListener
   // Select Character
   String[] mChar;
 
+  DatabaseAccess mDb;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -44,6 +47,8 @@ public class ResizeActivity extends ParentActivity implements SelectViewListener
     // Pre Intent
     Intent preIntent = getIntent();
     mChar = preIntent.getStringArrayExtra("select");
+    mDb = mDb.getInstance(this);
+    mDb.insertDailyStudy(mChar);
 
     // Next Intent
     mIntent = new Intent(ResizeActivity.this, LessonActivity.class);

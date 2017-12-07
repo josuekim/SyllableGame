@@ -22,6 +22,45 @@ public class CommonUtils {
   final static char[] JongSung = {' ', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ',
       'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'};
 
+  public enum ConsonantType {
+    CONSONANT1("ㄱ"), CONSONANT2("ㄴ"), CONSONANT3("ㄷ"), CONSONANT4("ㄹ"), CONSONANT5("ㅁ"), CONSONANT6(
+        "ㅂ"),
+    CONSONANT7("ㅅ"), CONSONANT8("ㅇ"), CONSONANT9("ㅈ"), CONSONANT10("ㅊ"), CONSONANT11(
+        "ㅋ"), CONSONANT12("ㅌ"),
+    CONSONANT13("ㅍ"), CONSONANT14("ㅎ");
+
+    String con;
+
+    ConsonantType(String con) {
+      this.con = con;
+    }
+
+    public String getName() {
+      return con;
+    }
+  }
+
+  public enum VowelType {
+    VOWEL1("ㅏ", "R"), VOWEL2("ㅑ", "R"), VOWEL3("ㅓ", "R"), VOWEL4("ㅕ", "R"), VOWEL5("ㅗ", "B"),
+    VOWEL6("ㅛ", "B"), VOWEL7("ㅜ", "B"), VOWEL8("ㅠ", "B"), VOWEL9("ㅡ", "B"), VOWEL10("ㅣ", "R");
+
+    String vow;
+    String side;
+
+    VowelType(String vow, String side) {
+      this.vow = vow;
+      this.side = side;
+    }
+
+    public String getVow() {
+      return vow;
+    }
+
+    public String getSide() {
+      return side;
+    }
+  }
+
   /***
    * 초성, 중성, 종성 결합하는 function
    * @param ch1 초성
