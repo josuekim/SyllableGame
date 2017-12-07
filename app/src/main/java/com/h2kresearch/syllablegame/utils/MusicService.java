@@ -3,46 +3,99 @@ package com.h2kresearch.syllablegame.utils;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import com.h2kresearch.syllablegame.R;
-
-/**
- * Created by ishsrain on 2017. 11. 30..
- */
 
 public class MusicService extends Service {
 
   public MediaPlayer mMP;
+  int mPosition = 0;
+  boolean mPause = false;
+
+  public class MusicServiceBinder extends Binder {
+    public MusicService getService() {
+      return MusicService.this; //현재 서비스를 반환.
+    }
+  }
+
+  private final IBinder mBinder = new MusicServiceBinder();
 
   @Nullable
   @Override
   public IBinder onBind(Intent intent) {
-    return null;
+    return mBinder;
   }
 
   @Override
   public void onCreate() {
     super.onCreate();
-    // 서비스에서 가장 먼저 호출됨(최초에 한번만)
-    Log.d("test", "서비스의 onCreate");
+
+    // Media Player
     mMP = MediaPlayer.create(this, R.raw.bg);
-    mMP.setLooping(false); // 반복재생
+    mMP.setLooping(false); // 반복 재생
   }
+
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
-    // 서비스가 호출될 때마다 실행
-    Log.d("test", "서비스의 onStartCommand");
-    mMP.start(); // 노래 시작
-    return super.onStartCommand(intent, flags, startId);
+    super.onStartCommand(intent, flags, startId);
+    start();
+
+    return START_NOT_STICKY;
+  }
+
+  public void start() {
+
+    mPause = false;
+
+    if(!mMP.isPlaying()) {
+      // Play
+      mMP.seekTo(mPosition);
+      mMP.start();
+    }
+  }
+
+  public void pause() {
+    if (mMP.isPlaying()) {
+      mPause = true;
+
+      Handler handler = new Handler();
+      handler.postDelayed(new Runnable() {
+        @Override
+        public void run() {
+          if (mPause) {
+              // Pause
+              mPosition = mMP.getCurrentPosition();
+              mMP.pause();
+          }
+        }
+      }, 1000);
+
+    }
   }
 
   @Override
   public void onDestroy() {
     super.onDestroy();
-    // 서비스가 종료될 때 실행
-    mMP.stop(); // 음악 종료
-    Log.d("test", "서비스의 onDestroy");
+
+    // Stop
+    mPause = false;
+    mMP.stop();
+    mMP.release();
+    mMP = null;
+  }
+
+  //콜백 인터페이스 선언
+  public interface ICallback {
+    public void recvData(); //액티비티에서 선언한 콜백 함수.
+  }
+
+  private ICallback mCallback;
+
+  //액티비티에서 콜백 함수를 등록하기 위함.
+  public void registerCallback(ICallback cb) {
+    mCallback = cb;
   }
 }

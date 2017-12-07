@@ -112,19 +112,19 @@ public class TableImageView extends AppCompatImageView {
   // Resize Image
   void setImage(int resource) {
 
-//    setImageResource(resource);
+    setImageResource(resource);
 
-    Bitmap bmp = BitmapFactory.decodeResource(getResources(), resource);
-    Bitmap resizeBitmap = Bitmap.createScaledBitmap(bmp, bmp.getWidth()/mRatio, bmp.getHeight()/mRatio, true);
-//    bmp.recycle();
-//    BitmapDrawable bitmapDrawable = (BitmapDrawable) getDrawable();
-//    if(bitmapDrawable != null) {
-//      Bitmap currentBitmap = ((BitmapDrawable) getDrawable()).getBitmap();
-//      if (currentBitmap != null) {
-//        currentBitmap.recycle();
-//      }
-//    }
-    setImageBitmap(resizeBitmap);
+//    Bitmap bmp = BitmapFactory.decodeResource(getResources(), resource);
+//    Bitmap resizeBitmap = Bitmap.createScaledBitmap(bmp, bmp.getWidth()/mRatio, bmp.getHeight()/mRatio, true);
+////    bmp.recycle();
+////    BitmapDrawable bitmapDrawable = (BitmapDrawable) getDrawable();
+////    if(bitmapDrawable != null) {
+////      Bitmap currentBitmap = ((BitmapDrawable) getDrawable()).getBitmap();
+////      if (currentBitmap != null) {
+////        currentBitmap.recycle();
+////      }
+////    }
+//    setImageBitmap(resizeBitmap);
   }
 
   // Interface

@@ -7,11 +7,15 @@
 
   <application
     android:allowBackup="true"
+    android:hardwareAccelerated="true"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"
+    android:largeHeap="true"
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/Theme.AppCompat.NoActionBar.FullScreen">
+    <service android:name=".utils.MusicService" />
+
     <activity
       android:name=".SyllableGameActivity"
       android:screenOrientation="landscape" />
@@ -23,15 +27,14 @@
       android:screenOrientation="landscape" />
     <activity
       android:name=".MainActivity"
-      android:screenOrientation="landscape"></activity>
+      android:screenOrientation="landscape" />
     <activity
       android:name=".ResizeActivity"
       android:screenOrientation="landscape" />
     <activity
       android:name=".LoginActivity"
       android:screenOrientation="landscape"
-      android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
-    </activity>
+      android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
     <activity
       android:name=".SignActivity"
       android:screenOrientation="landscape"
@@ -42,7 +45,8 @@
     <activity
       android:name=".ResultActivity"
       android:screenOrientation="landscape" />
-    <activity android:name=".IntroActivity"
+    <activity
+      android:name=".IntroActivity"
       android:screenOrientation="landscape">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -50,7 +54,19 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-    <service android:name=".utils.MusicService"></service>
+    <activity
+      android:name=".TutorialActivity"
+      android:screenOrientation="landscape" />
+    <activity
+      android:name=".ResultDailyActivity"
+      android:screenOrientation="landscape" />
+    <activity
+      android:name=".ResultTotalActivity"
+      android:screenOrientation="landscape" />
+    <activity android:name=".ResultPartActivity"
+      android:screenOrientation="landscape"/>
+    <activity android:name=".ParentActivity" />
+    <activity android:name=".ResultGraphActivity"></activity>
   </application>
 
 </manifest>

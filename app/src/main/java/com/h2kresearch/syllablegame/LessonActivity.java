@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.h2kresearch.syllablegame.database.DatabaseAccess;
 
-public class LessonActivity extends AppCompatActivity {
+public class LessonActivity extends ParentActivity {
 
   // Intent
   Intent mGameIntent;

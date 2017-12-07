@@ -24,7 +24,7 @@ import com.h2kresearch.syllablegame.utils.MusicService;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends ParentActivity
     implements SelectViewListener {
 
   // Select List

@@ -18,7 +18,7 @@ import com.h2kresearch.syllablegame.utils.CommonUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ResizeActivity extends AppCompatActivity implements SelectViewListener {
+public class ResizeActivity extends ParentActivity implements SelectViewListener {
 
   // Select List
   ArrayList<TableImageView> mSelect = new ArrayList<TableImageView>();
