@@ -134,7 +134,7 @@ public class SyllableGameActivity3 extends ParentActivity {
     }else{
       correctAnswer[2] = getResources().getIdentifier("vowel" + (vowInt), "drawable", getPackageName());
       for(int i = 0; i < img_vowelBottom.length; i++){
-        Map tagMap = (Map)img_vowelRight[i].getTag();
+        Map tagMap = (Map)img_vowelBottom[i].getTag();
         if(correctAnswer[2] == (int)tagMap.get("resourceId")){
           vowelBottomId = img_vowelBottom[i].getId();
           vowelRightId = -1;
@@ -166,16 +166,20 @@ public class SyllableGameActivity3 extends ParentActivity {
       for (int i = 0; i < dec_consonants.length; i++) {
         if (ct.getName().equals(dec_consonants[i].toString())) {
           img_consonant[i] = new ImageView(this);
-          LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((int) xPixels,
-              LayoutParams.WRAP_CONTENT);
-          layoutParams.gravity = Gravity.TOP;
-          img_consonant[i].setLayoutParams(layoutParams);
-          img_consonant[i].setAdjustViewBounds(true);
-          img_consonant[i].setPadding(50, 10, 5, 0);
-          resourceId = getResources()
-              .getIdentifier("consonant" + (ct.ordinal() + 1), "drawable", getPackageName());
           img_consonant[i].setImageResource(resourceId);
           consonantList.addView(img_consonant[i]);
+
+//          LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((int) xPixels,
+//              LayoutParams.WRAP_CONTENT);
+          LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 0);
+          layoutParams.weight = 1;
+          layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
+          img_consonant[i].setLayoutParams(layoutParams);
+          img_consonant[i].setAdjustViewBounds(true);
+//          img_consonant[i].setPadding(50, 10, 5, 0);
+          resourceId = getResources()
+              .getIdentifier("consonant" + (ct.ordinal() + 1), "drawable", getPackageName());
+
           img_consonant[i].setOnTouchListener(mTouchListener);
           img_consonant[i].setId((ct.ordinal() + 1) + 100);
           Map tagMap = new HashMap();

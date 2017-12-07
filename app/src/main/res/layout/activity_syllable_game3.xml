@@ -53,62 +53,71 @@
           android:id="@+id/consonantList"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          android:layout_gravity="center_vertical"
+          android:background="#000000"
           android:orientation="vertical">
 
         </LinearLayout>
       </ScrollView>
-
-
-      <RelativeLayout
-        android:id="@+id/puzzleLayout"
+      <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="6">
-
+        android:layout_weight="6"
+        android:padding="20dp"
+        android:orientation="vertical">
         <FrameLayout
-          android:id="@+id/vowelBottom"
-          android:layout_width="100dip"
-          android:layout_height="100dip"
-          android:layout_alignStart="@+id/consonantBlock"
-          android:layout_below="@+id/vowelRight"
-          android:background="@drawable/blank_3"
-          >
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:layout_marginTop="45dp">
 
-        </FrameLayout>
+          <RelativeLayout
+            android:id="@+id/puzzleLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal">
 
-        <FrameLayout
-          android:id="@+id/consonantBlock"
-          android:layout_width="100dip"
-          android:layout_height="125dip"
-          android:layout_marginTop="62dp"
-          android:layout_marginStart="82dp"
-          android:layout_alignParentStart="true"
-          android:layout_alignParentTop="true"
-          android:background="@drawable/blank_1"
-          >
+            <FrameLayout
+              android:id="@+id/vowelBottom"
+              android:layout_width="100dip"
+              android:layout_height="100dip"
+              android:layout_alignStart="@+id/consonantBlock"
+              android:layout_below="@+id/vowelRight"
+              android:background="@drawable/blank_3">
 
-        </FrameLayout>
+            </FrameLayout>
 
-        <FrameLayout
-          android:id="@+id/vowelRight"
-          android:layout_width="125dip"
-          android:layout_height="99dip"
-          android:layout_marginStart="73.5dp"
-          android:layout_alignStart="@+id/consonantBlock"
-          android:layout_alignTop="@+id/consonantBlock"
-          android:background="@drawable/blank_2"
-          >
+            <FrameLayout
+              android:id="@+id/consonantBlock"
+              android:layout_width="100dip"
+              android:layout_height="125dip"
+              android:layout_alignParentStart="true"
+              android:layout_alignParentTop="true"
+              android:background="@drawable/blank_1">
 
+            </FrameLayout>
+
+            <FrameLayout
+              android:id="@+id/vowelRight"
+              android:layout_width="125dip"
+              android:layout_height="99dip"
+              android:layout_marginStart="73.5dp"
+              android:layout_alignStart="@+id/consonantBlock"
+              android:layout_alignTop="@+id/consonantBlock"
+              android:background="@drawable/blank_2">
+
+            </FrameLayout>
+          </RelativeLayout>
         </FrameLayout>
         <ImageView
           android:id="@+id/repeatButton"
           android:layout_width="45dp"
           android:layout_height="45dp"
-          android:layout_alignParentBottom="true"
-          android:layout_alignParentEnd="true"
-          app:srcCompat="@drawable/listen"/>
-      </RelativeLayout>
+          android:layout_alignParentBottom="false"
+          android:layout_alignParentEnd="false"
+          android:layout_gravity="right"
+          app:srcCompat="@drawable/listen" />
+      </LinearLayout>
+
 
       <ScrollView
         android:layout_width="0dp"
@@ -119,9 +128,8 @@
           android:id="@+id/vowelList"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          android:layout_gravity="center_vertical"
-          android:orientation="vertical">
-        </LinearLayout>
+          android:layout_gravity="center_vertical|center_horizontal"
+          android:orientation="vertical"></LinearLayout>
       </ScrollView>
 
     </LinearLayout>
