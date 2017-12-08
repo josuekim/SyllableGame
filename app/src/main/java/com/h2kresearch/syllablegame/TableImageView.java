@@ -11,6 +11,9 @@ import android.view.View;
 
 public class TableImageView extends AppCompatImageView {
 
+  // Sound Source
+  int mSound = 0;
+
   // Normal Image
   int mImage = 0;
 
@@ -96,6 +99,14 @@ public class TableImageView extends AppCompatImageView {
 
   int getSelectImageID(){
     return mSelectImage;
+  }
+
+  void setSoundID(int resource){
+    mSound = resource;
+  }
+
+  int getSoundID(){
+    return mSound;
   }
 
   // String

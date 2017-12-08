@@ -11,7 +11,7 @@ import com.h2kresearch.syllablegame.utils.MusicService;
 
 public class ParentActivity extends AppCompatActivity {
 
-  private MusicService mService;
+  MusicService mService;
   Intent mIntent;
 
   @Override
@@ -19,7 +19,7 @@ public class ParentActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_parent);
 
-    Intent mIntent = new Intent(
+    mIntent = new Intent(
         getApplicationContext(), // 현재 제어권자
         MusicService.class); // 이동할 컴포넌트
 

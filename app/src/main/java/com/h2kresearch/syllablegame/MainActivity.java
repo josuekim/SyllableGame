@@ -3,6 +3,7 @@ package com.h2kresearch.syllablegame;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.support.v4.app.ActivityCompat;
@@ -163,10 +164,13 @@ public class MainActivity extends ParentActivity
           // Find ImageID
           String image1Name = "han" + (j * col * 2 + i * 2);
           String image2Name = "han" + (j * col * 2 + (i * 2) + 1);
+          String soundName = "sound" + (j * col + i);
           int image1ID = getResources().getIdentifier(image1Name, "drawable", getPackageName());
           int image2ID = getResources().getIdentifier(image2Name, "drawable", getPackageName());
+          int soundID = getResources().getIdentifier(soundName, "raw", getPackageName());
           imageView.setNormalImageID(image1ID);
           imageView.setSelectImageID(image2ID);
+          imageView.setSoundID(soundID);
 
           String str = CommonUtils.characterCombination(chRow[j], chCol[i], ' ') + "";
           imageView.setChar(chRow[j], chCol[i], ' ');
@@ -192,10 +196,13 @@ public class MainActivity extends ParentActivity
           // Find ImageID
           String image1Name = "han" + (j * col * 2 + i * 2);
           String image2Name = "han" + (j * col * 2 + (i * 2) + 1);
+          String soundName = "sound" + (j * col + i);
           int image1ID = getResources().getIdentifier(image1Name, "drawable", getPackageName());
           int image2ID = getResources().getIdentifier(image2Name, "drawable", getPackageName());
+          int soundID = getResources().getIdentifier(soundName, "raw", getPackageName());
           imageView.setNormalImageID(image1ID);
           imageView.setSelectImageID(image2ID);
+          imageView.setSoundID(soundID);
 
           String str = CommonUtils.characterCombination(chRow[j], chCol[i], ' ') + "";
           imageView.setChar(chRow[j], chCol[i], ' ');
@@ -222,10 +229,13 @@ public class MainActivity extends ParentActivity
           // Find ImageID
           String image1Name = "han" + (j * col * 2 + i * 2);
           String image2Name = "han" + (j * col * 2 + (i * 2) + 1);
+          String soundName = "sound" + (j * col + i);
           int image1ID = getResources().getIdentifier(image1Name, "drawable", getPackageName());
           int image2ID = getResources().getIdentifier(image2Name, "drawable", getPackageName());
+          int soundID = getResources().getIdentifier(soundName, "raw", getPackageName());
           imageView.setNormalImageID(image1ID);
           imageView.setSelectImageID(image2ID);
+          imageView.setSoundID(soundID);
 
           String str = CommonUtils.characterCombination(chRow[j], chCol[i], ' ') + "";
           imageView.setChar(chRow[j], chCol[i], ' ');
@@ -288,7 +298,8 @@ public class MainActivity extends ParentActivity
             exist = true;
 
             // Sound at the second time
-            mTTS.speak(view.mStr, TextToSpeech.QUEUE_FLUSH, null);
+//            mTTS.speak(view.mStr, TextToSpeech.QUEUE_FLUSH, null);
+            MusicService.MediaPlay(getApplicationContext(), view.getSoundID());
           }
         }
       }
@@ -371,6 +382,14 @@ public class MainActivity extends ParentActivity
           });
       builder.show();
     }
+  }
 
+  @Override
+  protected void onResume() {
+    super.onResume();
+
+    if(mService != null) {
+      mService.pause();
+    }
   }
 }

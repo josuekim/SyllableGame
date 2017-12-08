@@ -34,6 +34,7 @@ import com.h2kresearch.syllablegame.model.ConfigurationModel;
 import com.h2kresearch.syllablegame.utils.CommonUtils;
 import com.h2kresearch.syllablegame.utils.CommonUtils.ConsonantType;
 import com.h2kresearch.syllablegame.utils.CommonUtils.VowelType;
+import com.h2kresearch.syllablegame.utils.MusicService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
@@ -78,6 +79,7 @@ public class SyllableGameActivity3 extends ParentActivity {
   int vowelRightId;
   int vowelBottomId;
   int[] correctAnswer = {-1,-1,-1};
+  int[] correctSound = {-1,-1,-1};
 
   char currentConsonant;
   char currentVowel;
@@ -109,8 +111,9 @@ public class SyllableGameActivity3 extends ParentActivity {
       }
     }
     Random rand = new Random(System.currentTimeMillis());
-    int conInt = rand.nextInt(cons.size());
-    correctAnswer[0] = getResources().getIdentifier("consonant" + cons.get(conInt), "drawable", getPackageName());
+    int conInt = cons.get(rand.nextInt(cons.size()));
+    correctAnswer[0] = getResources().getIdentifier("consonant" + conInt, "drawable", getPackageName());
+    correctSound[0] = getResources().getIdentifier("sound" + (conInt*11), "raw", getPackageName());
 
     for(int i = 0; i < img_consonant.length; i++){
       Map tagMap = (Map)img_consonant[i].getTag();
@@ -123,6 +126,7 @@ public class SyllableGameActivity3 extends ParentActivity {
     int vowInt = vows.get(rand.nextInt(vows.size()));
     if((vowInt >= 1 && vowInt <= 4) || vowInt ==10){
       correctAnswer[1] = getResources().getIdentifier("vowel" + (vowInt), "drawable", getPackageName());
+      correctSound[1] = getResources().getIdentifier("sound" + (vowInt), "raw", getPackageName());
       for(int i = 0; i < img_vowelRight.length; i++){
         Map tagMap = (Map)img_vowelRight[i].getTag();
         if(correctAnswer[1] == (int)tagMap.get("resourceId")){
@@ -133,6 +137,7 @@ public class SyllableGameActivity3 extends ParentActivity {
       }
     }else{
       correctAnswer[2] = getResources().getIdentifier("vowel" + (vowInt), "drawable", getPackageName());
+      correctSound[1] = getResources().getIdentifier("sound" + (vowInt), "raw", getPackageName());
       for(int i = 0; i < img_vowelBottom.length; i++){
         Map tagMap = (Map)img_vowelBottom[i].getTag();
         if(correctAnswer[2] == (int)tagMap.get("resourceId")){
@@ -143,15 +148,18 @@ public class SyllableGameActivity3 extends ParentActivity {
       }
     }
 
-    long examId = mDB.insertDailyExam(cons.get(conInt),(vowInt+14));
+    long examId = mDB.insertDailyExam(conInt,(vowInt+14));
     mConf.setExamId(examId);
 
-    char completeWord = CommonUtils
-        .characterCombination(currentConsonant, currentVowel, ' ');
+    correctSound[2] = getResources().getIdentifier("sound" + (conInt * 11 + vowInt), "raw", getPackageName());
+    MusicService.MediaPlay(getApplicationContext(), correctSound[2]);
 
-    tts.setPitch(1f);
-    tts.setSpeechRate(0.8f);
-    tts.speak(String.valueOf(completeWord), TextToSpeech.QUEUE_FLUSH, null);
+//    char completeWord = CommonUtils
+//        .characterCombination(currentConsonant, currentVowel, ' ');
+//
+//    tts.setPitch(1f);
+//    tts.setSpeechRate(0.8f);
+//    tts.speak(String.valueOf(completeWord), TextToSpeech.QUEUE_FLUSH, null);
 
   }
 
@@ -166,6 +174,8 @@ public class SyllableGameActivity3 extends ParentActivity {
       for (int i = 0; i < dec_consonants.length; i++) {
         if (ct.getName().equals(dec_consonants[i].toString())) {
           img_consonant[i] = new ImageView(this);
+          resourceId = getResources()
+              .getIdentifier("consonant" + (ct.ordinal() + 1), "drawable", getPackageName());
           img_consonant[i].setImageResource(resourceId);
           consonantList.addView(img_consonant[i]);
 
@@ -177,8 +187,6 @@ public class SyllableGameActivity3 extends ParentActivity {
           img_consonant[i].setLayoutParams(layoutParams);
           img_consonant[i].setAdjustViewBounds(true);
 //          img_consonant[i].setPadding(50, 10, 5, 0);
-          resourceId = getResources()
-              .getIdentifier("consonant" + (ct.ordinal() + 1), "drawable", getPackageName());
 
           img_consonant[i].setOnTouchListener(mTouchListener);
           img_consonant[i].setId((ct.ordinal() + 1) + 100);
@@ -187,6 +195,8 @@ public class SyllableGameActivity3 extends ParentActivity {
           tagMap.put("wordId",(ct.ordinal() + 1));
           img_consonant[i].setTag(tagMap);
           img_consonant[i].setContentDescription(dec_consonants[i].toString());
+
+          break;
         }
       }
     }
@@ -305,12 +315,14 @@ public class SyllableGameActivity3 extends ParentActivity {
     listenBtn.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        char completeWord = CommonUtils
-            .characterCombination(currentConsonant, currentVowel, ' ');
+//        char completeWord = CommonUtils
+//            .characterCombination(currentConsonant, currentVowel, ' ');
+//
+//        tts.setPitch(1f);
+//        tts.setSpeechRate(0.8f);
+//        tts.speak(String.valueOf(completeWord), TextToSpeech.QUEUE_FLUSH, null);
 
-        tts.setPitch(1f);
-        tts.setSpeechRate(0.8f);
-        tts.speak(String.valueOf(completeWord), TextToSpeech.QUEUE_FLUSH, null);
+        MusicService.MediaPlay(getApplicationContext(), correctSound[2]);
 
         mDB.updateExamRepeat(mConf.getExamId());
       }
@@ -480,12 +492,14 @@ public class SyllableGameActivity3 extends ParentActivity {
 
             if (frame_consonant.getChildCount() == 1 && (frame_vowelRight.getChildCount() == 1
                 || frame_vowelBottom.getChildCount() == 1)) {
-              char completeWord = CommonUtils
-                  .characterCombination(currentConsonant, currentVowel, ' ');
+//              char completeWord = CommonUtils
+//                  .characterCombination(currentConsonant, currentVowel, ' ');
+//
+//              tts.setPitch(1f);
+//              tts.setSpeechRate(0.8f);
+//              tts.speak(String.valueOf(completeWord), TextToSpeech.QUEUE_FLUSH, null);
 
-              tts.setPitch(1f);
-              tts.setSpeechRate(0.8f);
-              tts.speak(String.valueOf(completeWord), TextToSpeech.QUEUE_FLUSH, null);
+              MusicService.MediaPlay(getApplicationContext(), correctSound[2]);
 
               mDB.updateExamCorrect(mConf.getExamId());
 
@@ -650,12 +664,14 @@ public class SyllableGameActivity3 extends ParentActivity {
               frame_fullsize.setId(imagePinkId);
               frame_fullsize.setOnClickListener(mClickListener);
 
-              char completeWord = CommonUtils
-                  .characterCombination(currentConsonant, currentVowel, ' ');
+//              char completeWord = CommonUtils
+//                  .characterCombination(currentConsonant, currentVowel, ' ');
+//
+//              tts.setPitch(1f);
+//              tts.setSpeechRate(0.8f);
+//              tts.speak(String.valueOf(completeWord), TextToSpeech.QUEUE_FLUSH, null);
 
-              tts.setPitch(1f);
-              tts.setSpeechRate(0.8f);
-              tts.speak(String.valueOf(completeWord), TextToSpeech.QUEUE_FLUSH, null);
+              MusicService.MediaPlay(getApplicationContext(), correctSound[2]);
 
               puzzleLayout.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
               puzzleLayout.addView(frame_fullsize);
@@ -740,21 +756,26 @@ public class SyllableGameActivity3 extends ParentActivity {
             resourceId = getResources()
                 .getIdentifier("consonant" + imageNum +"_pink", "drawable", getPackageName());
             speakWord = currentConsonant;
+
+            MusicService.MediaPlay(getApplicationContext(), correctSound[0]);
           } else if(chkConVow == 2){
             resourceId = getResources()
                 .getIdentifier("vowel" + imageNum +"_pink", "drawable", getPackageName());
             speakWord = currentVowel;
+
+            MusicService.MediaPlay(getApplicationContext(), correctSound[1]);
           } else {
             resourceId = getResources().getIdentifier("han" + newParent.getId(),"drawable", getPackageName());
             speakWord = CommonUtils.characterCombination(currentConsonant, currentVowel, ' ');
 
+            MusicService.MediaPlay(getApplicationContext(), correctSound[2]);
           }
           iv.setImageDrawable(getResources().getDrawable(resourceId));
           newParent.addView(iv);
 
-          tts.setPitch(1f);
-          tts.setSpeechRate(0.8f);
-          tts.speak(String.valueOf(speakWord), TextToSpeech.QUEUE_FLUSH, null);
+//          tts.setPitch(1f);
+//          tts.setSpeechRate(0.8f);
+//          tts.speak(String.valueOf(speakWord), TextToSpeech.QUEUE_FLUSH, null);
 
           msg = this.obtainMessage();
           msg.what = FLIP_FLOP_IMAGE;
