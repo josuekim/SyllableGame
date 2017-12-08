@@ -84,7 +84,7 @@ public class SyllableGameActivity3 extends ParentActivity {
 
   boolean flagMoved = false;
 
-  int completeCnt = 0;
+  int completeCnt;
 
   DatabaseAccess mDB;
 
@@ -134,7 +134,7 @@ public class SyllableGameActivity3 extends ParentActivity {
     }else{
       correctAnswer[2] = getResources().getIdentifier("vowel" + (vowInt), "drawable", getPackageName());
       for(int i = 0; i < img_vowelBottom.length; i++){
-        Map tagMap = (Map)img_vowelRight[i].getTag();
+        Map tagMap = (Map)img_vowelBottom[i].getTag();
         if(correctAnswer[2] == (int)tagMap.get("resourceId")){
           vowelBottomId = img_vowelBottom[i].getId();
           vowelRightId = -1;
@@ -183,6 +183,7 @@ public class SyllableGameActivity3 extends ParentActivity {
           tagMap.put("wordId",(ct.ordinal() + 1));
           img_consonant[i].setTag(tagMap);
           img_consonant[i].setContentDescription(dec_consonants[i].toString());
+          break;
         }
       }
     }
@@ -257,6 +258,8 @@ public class SyllableGameActivity3 extends ParentActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_syllable_game3);
+
+    completeCnt = 0;
 
     Intent preIntent = getIntent();
     select = preIntent.getStringArrayExtra("select");

@@ -44,20 +44,34 @@
       android:weightSum="10">
 
 
-      <ScrollView
+      <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"
-        android:background="@color/dragAreaColor">
-        <LinearLayout
-          android:id="@+id/consonantList"
+        android:weightSum="10"
+        android:orientation="vertical">
+        <ScrollView
           android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:layout_gravity="center_vertical"
-          android:orientation="vertical">
+          android:layout_height="0dp"
+          android:layout_weight="9"
+          android:background="@color/dragAreaColor">
+          <LinearLayout
+            android:id="@+id/consonantList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
 
-        </LinearLayout>
-      </ScrollView>
+          </LinearLayout>
+        </ScrollView>
+        <ImageView
+
+          android:id="@+id/scrollDown"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="1"
+          app:srcCompat="@drawable/arrow_down"/>
+      </LinearLayout>
 
 
       <RelativeLayout

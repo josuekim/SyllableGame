@@ -177,217 +177,222 @@ public class DatabaseAccess {
     }
   }
 
-  public void insertDailyStudy(String[] select){
+  public void insertDailyStudy(String[] select) {
     ArrayList<String[]> wordList = CommonUtils.deCombinationList(select);
     Object[] dec_consonants = CommonUtils.removeDuplicateArray(wordList.get(0));
     Object[] dec_vowels = CommonUtils.removeDuplicateArray(wordList.get(1));
-    int daily_id = -1;
 
-    Cursor cursor = database.query("hangul_daily", new String[]{"_id"}, "email=? and learning_date=?", new String[]{mConf.getEmail(), mConf.getToday()},null,null,null);
-    if(cursor.getCount() == 1){
-      cursor.moveToFirst();
-      daily_id = cursor.getInt(0);
-      cursor.close();
-    }
+    Cursor cursor = null;
 
-    if(daily_id != -1){
-      for (ConsonantType ct : ConsonantType.values()) {
-        for (int i = 0; i < dec_consonants.length; i++) {
-          if (ct.getName().equals(dec_consonants[i].toString())) {
-            Log.d("#####test#####", dec_consonants[i].toString());
-            cursor = database.query("hangul_study_daily", new String[]{"_id"}, "daily_id=? and syllable_code=?", new String[]{String.valueOf(daily_id),String.valueOf(ct.ordinal()+1)}, null,null,null);
-            if(cursor.getCount() < 1){
-              database.execSQL("insert into hangul_study_daily(daily_id, syllable_code) values("+daily_id+",'"+(ct.ordinal()+1)+"')");
-            }
-            cursor.close();
+    for (ConsonantType ct : ConsonantType.values()) {
+      for (int i = 0; i < dec_consonants.length; i++) {
+        if (ct.getName().equals(dec_consonants[i].toString())) {
+          Log.d("#####test#####", dec_consonants[i].toString());
+          cursor = database.query("hangul_study_daily", new String[]{"_id"},
+              "email=? and learning_date=? and syllable_code=?",
+              new String[]{mConf.getEmail(), mConf.getToday(), String.valueOf(ct.ordinal() + 1)},
+              null, null, null);
+          if (cursor.getCount() < 1) {
+            ContentValues cv = new ContentValues();
+            cv.put("email", mConf.getEmail());
+            cv.put("learning_date", mConf.getToday());
+            cv.put("syllable_code", (ct.ordinal() + 1));
+            database.insert("hangul_study_daily", null, cv);
           }
-        }
-      }
-
-      for (VowelType vt : VowelType.values()) {
-        for (int i = 0; i < dec_vowels.length; i++) {
-          if (vt.getVow().equals(dec_vowels[i].toString())) {
-            Log.d("#####test#####", dec_vowels[i].toString());
-            cursor = database.query("hangul_study_daily", new String[]{"_id"}, "daily_id=? and syllable_code=?", new String[]{String.valueOf(daily_id),String.valueOf(vt.ordinal()+15)}, null,null,null);
-            if(cursor.getCount() < 1){
-              database.execSQL("insert into hangul_study_daily(daily_id, syllable_code) values("+daily_id+",'"+(vt.ordinal()+15)+"')");
-            }
-            cursor.close();
-          }
+          cursor.close();
         }
       }
     }
 
+    for (VowelType vt : VowelType.values()) {
+      for (int i = 0; i < dec_vowels.length; i++) {
+        if (vt.getVow().equals(dec_vowels[i].toString())) {
+          Log.d("#####test#####", dec_vowels[i].toString());
+          cursor = database.query("hangul_study_daily", new String[]{"_id"},
+              "email=? and learning_date=? and syllable_code=?",
+              new String[]{mConf.getEmail(), mConf.getToday(), String.valueOf(vt.ordinal() + 15)},
+              null, null, null);
+          if (cursor.getCount() < 1) {
+            ContentValues cv = new ContentValues();
+            cv.put("email", mConf.getEmail());
+            cv.put("learning_date", mConf.getToday());
+            cv.put("syllable_code", (vt.ordinal() + 15));
+            database.insert("hangul_study_daily", null, cv);
+          }
+          cursor.close();
+        }
+      }
+    }
   }
 
-  public long insertDailyExam(int con, int vow){
-    int daily_id = -1;
+  public long insertDailyExam(int con, int vow) {
+    Cursor cursor = null;
 
-    Cursor cursor = database.query("hangul_daily", new String[]{"_id"}, "email=? and learning_date=?", new String[]{mConf.getEmail(), mConf.getToday()},null,null,null);
-    if(cursor.getCount() == 1){
+    ContentValues cv = new ContentValues();
+    cv.put("email", mConf.getEmail());
+    cv.put("learning_date", mConf.getToday());
+    cv.put("exam_consonant", con);
+    cv.put("exam_vowel", vow);
+    long exam_id = database.insert("hangul_exam_daily", null, cv);
+    Log.d("exam_id", "Exam ID is " + exam_id);
+
+    cursor = database.query("hangul_study_daily", new String[]{"_id"},
+        "email=? and learning_date=? and syllable_code=?",
+        new String[]{mConf.getEmail(), mConf.getToday(), String.valueOf(con)}, null, null, null);
+    if (cursor.getCount() == 1) {
       cursor.moveToFirst();
-      daily_id = cursor.getInt(0);
+      mConf.setConStudyId(cursor.getInt(0));
+      cursor.close();
+    }
+    cursor = database.query("hangul_study_daily", new String[]{"_id"},
+        "email=? and learning_date=? and syllable_code=?",
+        new String[]{mConf.getEmail(), mConf.getToday(), String.valueOf(vow)}, null, null, null);
+    if (cursor.getCount() == 1) {
+      cursor.moveToFirst();
+      mConf.setVowStudyId(cursor.getInt(0));
       cursor.close();
     }
 
-    if(daily_id != -1){
-      ContentValues cv = new ContentValues();
-      cv.put("daily_id", daily_id);
-      cv.put("exam_consonant",con);
-      cv.put("exam_vowel", vow);
-      long exam_id = database.insert("hangul_exam_daily", null, cv);
-      Log.d("exam_id", "Exam ID is " + exam_id);
+    return exam_id;
 
-      cursor = database.query("hangul_study_daily", new String[]{"_id"}, "daily_id=? and syllable_code=?", new String[]{String.valueOf(daily_id),String.valueOf(con)},null,null,null);
-      if(cursor.getCount() == 1){
-        cursor.moveToFirst();
-        mConf.setConStudyId(cursor.getInt(0));
-        cursor.close();
-      }
-      cursor = database.query("hangul_study_daily", new String[]{"_id"}, "daily_id=? and syllable_code=?", new String[]{String.valueOf(daily_id),String.valueOf(vow)},null,null,null);
-      if(cursor.getCount() == 1){
-        cursor.moveToFirst();
-        mConf.setVowStudyId(cursor.getInt(0));
-        cursor.close();
-      }
-
-      return exam_id;
-    }
-
-    return -1;
   }
 
-  public void insertExamResponse(long exam_id, int word){
+  public void insertExamResponse(long exam_id, int word) {
     ContentValues cv = new ContentValues();
     cv.put("exam_id", exam_id);
     cv.put("exam_response", word);
-    database.insert("hangul_exam_response", null,cv);
+    database.insert("hangul_exam_response", null, cv);
   }
 
-  public long insertWrongAnswer(int study_id, int word){
-    int daily_id = -1;
+  public long insertWrongAnswer(int syllable_code, int word) {
+    Cursor cursor = null;
 
-    Cursor cursor = database.query("hangul_daily", new String[]{"_id"}, "email=? and learning_date=?", new String[]{mConf.getEmail(), mConf.getToday()},null,null,null);
-    if(cursor.getCount() == 1){
+    ContentValues cv = new ContentValues();
+    cursor = database.query("hangul_wrong_answer", new String[]{"_id", "wrong_code_cnt"},
+        "email=? and learning_date=? and syllable_code =? and wrong_code=?",
+        new String[]{mConf.getEmail(), mConf.getToday(), String.valueOf(syllable_code),
+            String.valueOf(word)}, null, null, null);
+    if (cursor.getCount() == 1) {
       cursor.moveToFirst();
-      daily_id = cursor.getInt(0);
+      cv.put("wrong_code_cnt", (cursor.getInt(1) + 1));
+      database.update("hangul_wrong_answer", cv, "_id=" + cursor.getInt(0), null);
       cursor.close();
-    }
-
-    if(daily_id != -1){
-      ContentValues cv = new ContentValues();
-      cursor = database.query("hangul_wrong_answer", new String[]{"_id","wrong_code_cnt"}, "study_id=? and wrong_code=?", new String[]{String.valueOf(study_id), String.valueOf(word)},null,null,null);
-      if(cursor.getCount() == 1){
-        cursor.moveToFirst();
-        cv.put("wrong_code_cnt",(cursor.getInt(1)+1));
-        database.update("hangul_wrong_answer",cv,"_id="+cursor.getInt(0), null);
-        cursor.close();
-      }else{
-        cv.put("study_id",study_id);
-        cv.put("wrong_code",word);
-        cv.put("wrong_code_cnt",1);
-        long result = database.insert("hangul_wrong_answer", null,cv);
-        return result;
-      }
+    } else {
+      cv.put("email", mConf.getEmail());
+      cv.put("learning_date", mConf.getToday());
+      cv.put("syllable_code", syllable_code);
+      cv.put("wrong_code", word);
+      cv.put("wrong_code_cnt", 1);
+      long result = database.insert("hangul_wrong_answer", null, cv);
+      return result;
     }
 
     return -1;
   }
 
-  public void updateExamRepeat(long exam_id){
-    Cursor cursor = database.query("hangul_exam_daily", new String[]{"exam_repeat"}, "_id=?",new String[]{String.valueOf(exam_id)},null,null,null);
-    if(cursor.getCount()==1){
+  public void updateExamRepeat(long exam_id) {
+    Cursor cursor = database.query("hangul_exam_daily", new String[]{"exam_repeat"}, "_id=?",
+        new String[]{String.valueOf(exam_id)}, null, null, null);
+    if (cursor.getCount() == 1) {
       cursor.moveToFirst();
       ContentValues cv = new ContentValues();
-      cv.put("exam_repeat", (cursor.getInt(0)+1));
-      database.update("hangul_exam_daily",cv,"_id="+exam_id, null);
+      cv.put("exam_repeat", (cursor.getInt(0) + 1));
+      database.update("hangul_exam_daily", cv, "_id=" + exam_id, null);
     }
   }
 
-  public void updateExamCorrect(long exam_id){
+  public void updateExamCorrect(long exam_id) {
     int con_ok = 1;
     int vow_ok = 1;
     ContentValues cv = new ContentValues();
-    Cursor cursor = database.query("hangul_exam_daily", new String[]{"daily_id","exam_consonant","exam_vowel"}, "_id=?", new String[]{String.valueOf(exam_id)},null,null,null);
+    Cursor cursor = database
+        .query("hangul_exam_daily", new String[]{"exam_consonant", "exam_vowel"},
+            "_id=?", new String[]{String.valueOf(exam_id)}, null, null, null);
 
-    if(cursor.getCount()==1){
+    if (cursor.getCount() == 1) {
       cursor.moveToFirst();
-      int daily_id = cursor.getInt(0);
-      int con = cursor.getInt(1);
-      int vow = cursor.getInt(2);
+      int con = cursor.getInt(0);
+      int vow = cursor.getInt(1);
       int con_correct = 1;
       int vow_correct = 1;
       cursor.close();
 
-      cursor = database.query("hangul_exam_response", new String[]{"_id"}, "exam_id=? and exam_response !=? and exam_response < 15", new String[]{String.valueOf(exam_id),String.valueOf(con)},null,null,null);
-      if(cursor.getCount() >= 1){
+      cursor = database.query("hangul_exam_response", new String[]{"_id"},
+          "exam_id=? and exam_response !=? and exam_response < 15",
+          new String[]{String.valueOf(exam_id), String.valueOf(con)}, null, null, null);
+      if (cursor.getCount() >= 1) {
         con_ok = cursor.getCount() + 1;
         con_correct = 0;
         cursor.close();
       }
-      cursor = database.query("hangul_study_daily", new String[]{"_id","exam_cnt","correct_cnt"}, "daily_id=? and syllable_code=?", new String[]{String.valueOf(daily_id),String.valueOf(con)},null,null,null);
-      if(cursor.getCount()==1){
+      cursor = database.query("hangul_study_daily", new String[]{"_id", "exam_cnt", "correct_cnt"},
+          "email=? and learning_date=? and syllable_code=?",
+          new String[]{mConf.getEmail(), mConf.getToday(), String.valueOf(con)}, null, null, null);
+      if (cursor.getCount() == 1) {
         cursor.moveToFirst();
         ContentValues cv1 = new ContentValues();
-        cv1.put("exam_cnt", cursor.getInt(1)+1);
-        cv1.put("correct_cnt", cursor.getInt(2)+con_correct);
-        database.update("hangul_study_daily", cv1, "_id="+cursor.getInt(0), null);
+        cv1.put("exam_cnt", cursor.getInt(1) + 1);
+        cv1.put("correct_cnt", cursor.getInt(2) + con_correct);
+        database.update("hangul_study_daily", cv1, "_id=" + cursor.getInt(0), null);
         cursor.close();
       }
-      cursor = database.query("hangul_exam_response", new String[]{"_id"}, "exam_id=? and exam_response !=? and exam_response > 14", new String[]{String.valueOf(exam_id),String.valueOf(vow)},null,null,null);
-      if(cursor.getCount() >= 1){
+      cursor = database.query("hangul_exam_response", new String[]{"_id"},
+          "exam_id=? and exam_response !=? and exam_response > 14",
+          new String[]{String.valueOf(exam_id), String.valueOf(vow)}, null, null, null);
+      if (cursor.getCount() >= 1) {
         vow_ok = cursor.getCount() + 1;
         vow_correct = 0;
         cursor.close();
       }
-      cursor = database.query("hangul_study_daily", new String[]{"_id","exam_cnt","correct_cnt"}, "daily_id=? and syllable_code=?", new String[]{String.valueOf(daily_id),String.valueOf(vow)},null,null,null);
-      if(cursor.getCount()==1){
+      cursor = database.query("hangul_study_daily", new String[]{"_id", "exam_cnt", "correct_cnt"},
+          "email=? and learning_date=? and syllable_code=?",
+          new String[]{mConf.getEmail(), mConf.getToday(), String.valueOf(vow)}, null, null, null);
+      if (cursor.getCount() == 1) {
         cursor.moveToFirst();
         ContentValues cv1 = new ContentValues();
-        cv1.put("exam_cnt", cursor.getInt(1)+1);
-        cv1.put("correct_cnt", cursor.getInt(2)+vow_correct);
-        database.update("hangul_study_daily", cv1, "_id="+cursor.getInt(0), null);
+        cv1.put("exam_cnt", cursor.getInt(1) + 1);
+        cv1.put("correct_cnt", cursor.getInt(2) + vow_correct);
+        database.update("hangul_study_daily", cv1, "_id=" + cursor.getInt(0), null);
         cursor.close();
       }
 
-      cv.put("exam_consonant_ok",con_ok);
-      cv.put("exam_vowel_ok",vow_ok);
-      database.update("hangul_exam_daily",cv,"_id="+exam_id, null);
+      cv.put("exam_consonant_ok", con_ok);
+      cv.put("exam_vowel_ok", vow_ok);
+      database.update("hangul_exam_daily", cv, "_id=" + exam_id, null);
     }
 
   }
 
-  public void updateDailyAverage(){
-    int daily_id = -1;
+  public void updateDailyAverage() {
+    Cursor cursor = null;
 
-    Cursor cursor = database.query("hangul_daily", new String[]{"_id"}, "email=? and learning_date=?", new String[]{mConf.getEmail(), mConf.getToday()},null,null,null);
-    if(cursor.getCount() == 1){
-      cursor.moveToFirst();
-      daily_id = cursor.getInt(0);
-      cursor.close();
+    int total_exam_cnt = 0;
+    int total_correct_cnt = 0;
+    int result = 0;
+    cursor = database
+        .query("hangul_study_daily", new String[]{"exam_cnt", "correct_cnt"}, "email=? and learning_date=?",
+            new String[]{mConf.getEmail(), mConf.getToday()}, null, null, null);
+    cursor.moveToFirst();
+    while (!cursor.isAfterLast()) {
+      total_exam_cnt += cursor.getInt(0);
+      total_correct_cnt += cursor.getInt(1);
+      cursor.moveToNext();
     }
-    if(daily_id != -1){
-      int total_exam_cnt = 0;
-      int total_correct_cnt = 0;
-      int result = 0;
-      cursor = database.query("hangul_study_daily", new String[]{"exam_cnt","correct_cnt"}, "daily_id=?", new String[]{String.valueOf(daily_id)},null,null,null);
-      cursor.moveToFirst();
-      while ( !cursor.isAfterLast() ) {
-        total_exam_cnt += cursor.getInt(0);
-        total_correct_cnt += cursor.getInt(1);
-        cursor.moveToNext();
-      }
-      result = Math.round((total_correct_cnt*1.f) * 100.f / (total_exam_cnt*1.f));
-      cursor.close();
+    result = Math.round((total_correct_cnt * 1.f) * 100.f / (total_exam_cnt * 1.f));
+    cursor.close();
 
-      ContentValues cv = new ContentValues();
-      cv.put("daily_achieve", result);
-      database.update("hangul_daily",cv,"_id="+daily_id, null);
-    }
+    ContentValues cv = new ContentValues();
+    cv.put("daily_achieve", result);
+    database.update("hangul_daily", cv, "email=? and learning_date=?", new String[]{mConf.getEmail(),mConf.getToday()});
+
   }
 
-  public void updateTotalStat(String email){
+  public void updateTotalStat() {
+    Cursor cursor = database.query("hangul_study_daily", new String[]{"_id","email","syllable_code","exam_cnt","correct_cnt"},"email = ?",new String[]{mConf.getEmail()},null,null,null);
+    cursor.moveToFirst();
+    while (!cursor.isAfterLast()){
 
+    }
   }
 
   public int getDailyID(String email, String date) {
@@ -397,7 +402,9 @@ public class DatabaseAccess {
 
     // Access DB where email, date
     Cursor cursor = database
-        .rawQuery("SELECT * FROM hangul_daily WHERE email ='" + email + "' and learning_date ='" + date +"'",
+        .rawQuery(
+            "SELECT * FROM hangul_daily WHERE email ='" + email + "' and learning_date ='" + date
+                + "'",
             null);
     cursor.moveToFirst();
     if (cursor.getCount() == 1) {
@@ -437,7 +444,7 @@ public class DatabaseAccess {
       while (!cursor.isAfterLast()) {
 
         // Param
-        Map<String,Integer> param = new HashMap<String,Integer>();
+        Map<String, Integer> param = new HashMap<String, Integer>();
         param.put("syllable_code", cursor.getInt(2));
         param.put("exam_cnt", cursor.getInt(3));
         param.put("correct_cnt", cursor.getInt(4));
@@ -460,13 +467,14 @@ public class DatabaseAccess {
     ArrayList<Map> list = new ArrayList<>();
 
     // Access DB where Daily ID
-    Cursor cursor = database.rawQuery("SELECT * FROM hangul_study_daily WHERE daily_id ='" + id + "'", null);
+    Cursor cursor = database
+        .rawQuery("SELECT * FROM hangul_study_daily WHERE daily_id ='" + id + "'", null);
     cursor.moveToFirst();
-    if(cursor.getCount() > 0) {
+    if (cursor.getCount() > 0) {
       while (!cursor.isAfterLast()) {
 
         // Study Character
-        Map<String,Object> param = new HashMap<String,Object>();
+        Map<String, Object> param = new HashMap<String, Object>();
         param.put("syllable_code", cursor.getInt(2));
 
         // Wrong Sound List
@@ -498,7 +506,7 @@ public class DatabaseAccess {
       while (!cursor.isAfterLast()) {
 
         // Wrong Sound List
-        Map<String,Integer> param = new HashMap<String,Integer>();
+        Map<String, Integer> param = new HashMap<String, Integer>();
         param.put("wrong_code", cursor.getInt(2));
         param.put("wrong_cnt", cursor.getInt(3));
 
@@ -527,7 +535,7 @@ public class DatabaseAccess {
       while (!cursor.isAfterLast()) {
 
         // Exam List
-        Map<String,Integer> param = new HashMap<String,Integer>();
+        Map<String, Integer> param = new HashMap<String, Integer>();
         param.put("exam_consonant", cursor.getInt(2));
         param.put("exam_vowel", cursor.getInt(3));
         param.put("exam_repeat", cursor.getInt(4));
@@ -552,7 +560,8 @@ public class DatabaseAccess {
     int totalAchieve = -1;
 
     // Access DB where email
-    Cursor cursor = database.rawQuery("SELECT * FROM hangul_access WHERE email ='" + email + "'", null);
+    Cursor cursor = database
+        .rawQuery("SELECT * FROM hangul_access WHERE email ='" + email + "'", null);
 //    Cursor cursor = database.rawQuery("SELECT * FROM hangul_user_info WHERE _email ='" + email + "'", null);
     cursor.moveToFirst();
     if (cursor.getCount() > 1) {
@@ -576,7 +585,7 @@ public class DatabaseAccess {
       while (!cursor.isAfterLast()) {
 
         // Param
-        Map<String,Integer> param = new HashMap<String,Integer>();
+        Map<String, Integer> param = new HashMap<String, Integer>();
         param.put("syllable_code", cursor.getInt(2));
         param.put("exam_cnt", cursor.getInt(3));
         param.put("correct_cnt", cursor.getInt(4));
@@ -599,13 +608,14 @@ public class DatabaseAccess {
     ArrayList<Map> list = new ArrayList<>();
 
     // Access DB where email
-    Cursor cursor = database.rawQuery("SELECT * FROM hangul_stat WHERE email ='" + email + "'", null);
+    Cursor cursor = database
+        .rawQuery("SELECT * FROM hangul_stat WHERE email ='" + email + "'", null);
     cursor.moveToFirst();
-    if(cursor.getCount() > 0) {
+    if (cursor.getCount() > 0) {
       while (!cursor.isAfterLast()) {
 
         // Study Character
-        Map<String,Object> param = new HashMap<String,Object>();
+        Map<String, Object> param = new HashMap<String, Object>();
         param.put("syllable_code", cursor.getInt(2));
 
         // Wrong Sound List
@@ -637,7 +647,7 @@ public class DatabaseAccess {
       while (!cursor.isAfterLast()) {
 
         // Wrong Sound List
-        Map<String,Integer> param = new HashMap<String,Integer>();
+        Map<String, Integer> param = new HashMap<String, Integer>();
         param.put("wrong_code", cursor.getInt(2));
         param.put("wrong_cnt", cursor.getInt(3));
 
@@ -667,7 +677,8 @@ public class DatabaseAccess {
 
         int dailyID = cursor.getInt(0);
 
-        Cursor cursor2 = database.rawQuery("SELECT * FROM hangul_exam_daily WHERE daily_id ='" + dailyID + "'", null);
+        Cursor cursor2 = database
+            .rawQuery("SELECT * FROM hangul_exam_daily WHERE daily_id ='" + dailyID + "'", null);
         cursor2.moveToFirst();
         if (cursor2.getCount() > 0) {
           while (!cursor2.isAfterLast()) {
@@ -687,7 +698,6 @@ public class DatabaseAccess {
           }
         }
         cursor2.close();
-
 
         // Move to Next
         cursor.moveToNext();
@@ -726,15 +736,15 @@ public class DatabaseAccess {
 
             // Find Code
             boolean findCode = false;
-            for(int i = 0; i<list.size(); i++) {
+            for (int i = 0; i < list.size(); i++) {
 
               Map param = list.get(i);
               // If Exist
-              if(syllableCode == (int)param.get("syllable_code")) {
+              if (syllableCode == (int) param.get("syllable_code")) {
                 findCode = true;
 
                 // Add to Achieve List
-                ArrayList achieveList = (ArrayList)param.get("achieve_list");
+                ArrayList achieveList = (ArrayList) param.get("achieve_list");
 
                 Map<String, Object> param2 = new HashMap<String, Object>();
 
@@ -749,13 +759,14 @@ public class DatabaseAccess {
             }
 
             // If Not Exist
-            if(!findCode) {
+            if (!findCode) {
               // Param
               Map<String, Object> param = new HashMap<String, Object>();
               param.put("syllable_code", cursor2.getInt(2));
 
               Cursor cursor3 = database
-                  .rawQuery("SELECT * FROM hangul_stat WHERE syllable_code ='" + syllableCode + "'", null);
+                  .rawQuery("SELECT * FROM hangul_stat WHERE syllable_code ='" + syllableCode + "'",
+                      null);
               cursor3.moveToFirst();
 
               param.put("exam_cnt", cursor3.getInt(3));
@@ -780,7 +791,6 @@ public class DatabaseAccess {
           }
         }
         cursor2.close();
-
 
         // Move to Next
         cursor.moveToNext();
