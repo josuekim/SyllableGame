@@ -157,7 +157,7 @@ public class SyllableGameActivity3 extends AppCompatActivity {
 
     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 0);
     layoutParams.weight = 1;
-    layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
+    layoutParams.setMargins(0,10,0,10);
 
     float xPixels = TypedValue
         .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 83, getResources().getDisplayMetrics());
@@ -174,11 +174,8 @@ public class SyllableGameActivity3 extends AppCompatActivity {
           img_consonant[i].setImageResource(resourceId);
           consonantList.addView(img_consonant[i]);
 
-//          LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((int) xPixels,
-//              LayoutParams.WRAP_CONTENT);
           img_consonant[i].setLayoutParams(layoutParams);
           img_consonant[i].setAdjustViewBounds(true);
-//          img_consonant[i].setPadding(50, 10, 5, 0);
 
           img_consonant[i].setOnTouchListener(mTouchListener);
           img_consonant[i].setId((ct.ordinal() + 1) + 100);
@@ -810,7 +807,7 @@ public class SyllableGameActivity3 extends AppCompatActivity {
     int maxWidth = linearLayout.getWidth();
     int maxHeight = linearLayout.getHeight();
 
-    float limit = 0.4f;
+    float limit = 0.35f;
     float ratioWH = 0.8f;
     float ratioIH = 0.588f;
     float ratioMH = 0.2f;
@@ -832,7 +829,7 @@ public class SyllableGameActivity3 extends AppCompatActivity {
 
     // Assign
     frame_consonant.getLayoutParams().width = width;
-    frame_consonant.getLayoutParams().height = height;
+    frame_consonant.getLayoutParams().height = height+4;
     ((RelativeLayout.LayoutParams)frame_consonant.getLayoutParams()).leftMargin = margin;
     ((RelativeLayout.LayoutParams)frame_consonant.getLayoutParams()).topMargin = margin;
 
