@@ -40,17 +40,19 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"
+        android:padding="20dp"
         android:background="@color/dragAreaColor">
         <LinearLayout
           android:id="@+id/consonantList"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          android:background="#000000"
+          android:layout_gravity="center_vertical|center_horizontal"
           android:orientation="vertical">
 
         </LinearLayout>
       </ScrollView>
       <LinearLayout
+        android:id="@+id/LinearLayout"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="6"
@@ -59,8 +61,7 @@
         <FrameLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_weight="1"
-          android:layout_marginTop="45dp">
+          android:layout_weight="1">
 
           <RelativeLayout
             android:id="@+id/puzzleLayout"
@@ -72,6 +73,7 @@
               android:id="@+id/vowelBottom"
               android:layout_width="100dip"
               android:layout_height="100dip"
+              android:layout_marginBottom="25dp"
               android:layout_alignStart="@+id/consonantBlock"
               android:layout_below="@+id/vowelRight"
               android:background="@drawable/blank_3">
@@ -82,6 +84,8 @@
               android:id="@+id/consonantBlock"
               android:layout_width="100dip"
               android:layout_height="125dip"
+              android:layout_marginTop="25dp"
+              android:layout_marginLeft="25dp"
               android:layout_alignParentStart="true"
               android:layout_alignParentTop="true"
               android:background="@drawable/blank_1">
@@ -93,6 +97,7 @@
               android:layout_width="125dip"
               android:layout_height="99dip"
               android:layout_marginStart="73.5dp"
+              android:layout_marginEnd="25dp"
               android:layout_alignStart="@+id/consonantBlock"
               android:layout_alignTop="@+id/consonantBlock"
               android:background="@drawable/blank_2">
@@ -115,6 +120,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"
+        android:padding="20dp"
         android:background="@color/dragAreaColor">
         <LinearLayout
           android:id="@+id/vowelList"

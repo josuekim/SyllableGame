@@ -2,31 +2,24 @@ package com.h2kresearch.syllablegame;
 
 import android.app.Dialog;
 import android.content.ClipData;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
-import android.view.Display;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,13 +28,8 @@ import com.h2kresearch.syllablegame.utils.CommonUtils;
 import com.h2kresearch.syllablegame.utils.CommonUtils.ConsonantType;
 import com.h2kresearch.syllablegame.utils.CommonUtils.VowelType;
 import java.util.ArrayList;
-import java.util.Locale;
 
-import static android.speech.tts.TextToSpeech.ERROR;
-
-public class SyllableGameActivity extends ParentActivity {
-
-  private TextToSpeech tts;
+public class SyllableGameActivity extends AppCompatActivity {
 
   FrameLayout frame_consonant;
   FrameLayout frame_vowelRight;
@@ -215,27 +203,6 @@ public class SyllableGameActivity extends ParentActivity {
     }
 
     img_counting = (ImageView) findViewById(R.id.complete_counting);
-
-    tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-      @Override
-      public void onInit(int status) {
-        if (status != ERROR) {
-          tts.setLanguage(Locale.KOREAN);
-        }
-      }
-    });
-
-  }
-
-  @Override
-  protected void onDestroy() {
-    super.onDestroy();
-
-    if (tts != null) {
-      tts.stop();
-      tts.shutdown();
-      tts = null;
-    }
   }
 
   class ImageDrag extends View.DragShadowBuilder {
@@ -372,12 +339,12 @@ public class SyllableGameActivity extends ParentActivity {
 
             if (frame_consonant.getChildCount() == 1 && (frame_vowelRight.getChildCount() == 1
                 || frame_vowelBottom.getChildCount() == 1)) {
-              char completeWord = CommonUtils
-                  .characterCombination(currentConsonant, currentVowel, ' ');
-
-              tts.setPitch(1f);
-              tts.setSpeechRate(0.8f);
-              tts.speak(String.valueOf(completeWord), TextToSpeech.QUEUE_FLUSH, null);
+//              char completeWord = CommonUtils
+//                  .characterCombination(currentConsonant, currentVowel, ' ');
+//
+//              tts.setPitch(1f);
+//              tts.setSpeechRate(0.8f);
+//              tts.speak(String.valueOf(completeWord), TextToSpeech.QUEUE_FLUSH, null);
 
               Toast.makeText(SyllableGameActivity.this, "우와 멋진데~", Toast.LENGTH_SHORT).show();
 

@@ -2,7 +2,6 @@ package com.h2kresearch.syllablegame;
 
 import android.content.Intent;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -10,7 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.h2kresearch.syllablegame.database.DatabaseAccess;
 
-public class LessonActivity extends ParentActivity {
+public class LessonActivity extends BGMActivity {
 
   // Intent
   Intent mGameIntent;

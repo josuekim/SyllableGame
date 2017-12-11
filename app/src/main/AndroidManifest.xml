@@ -63,10 +63,11 @@
     <activity
       android:name=".ResultTotalActivity"
       android:screenOrientation="landscape" />
-    <activity android:name=".ResultPartActivity"
-      android:screenOrientation="landscape"/>
-    <activity android:name=".ParentActivity" />
-    <activity android:name=".ResultGraphActivity"></activity>
+    <activity
+      android:name=".ResultPartActivity"
+      android:screenOrientation="landscape" />
+    <activity android:name=".BGMActivity" />
+    <activity android:name=".ResultGraphActivity" />
   </application>
 
 </manifest>

@@ -15,8 +15,10 @@ public class MusicService extends Service {
   public MediaPlayer mMP;
   int mPosition = 0;
   boolean mPause = false;
+  float mVolume = 1.0f;
 
   public class MusicServiceBinder extends Binder {
+
     public MusicService getService() {
       return MusicService.this; //현재 서비스를 반환.
     }
@@ -27,6 +29,7 @@ public class MusicService extends Service {
   @Nullable
   @Override
   public IBinder onBind(Intent intent) {
+    start();
     return mBinder;
   }
 
@@ -37,12 +40,12 @@ public class MusicService extends Service {
     // Media Player
     mMP = MediaPlayer.create(this, R.raw.bg);
     mMP.setLooping(true); // 반복 재생
+    mMP.setVolume(mVolume, mVolume);
   }
 
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
     super.onStartCommand(intent, flags, startId);
-    start();
 
     return START_NOT_STICKY;
   }
@@ -51,25 +54,65 @@ public class MusicService extends Service {
 
     mPause = false;
 
-    if(!mMP.isPlaying()) {
+    if (!mMP.isPlaying()) {
       // Play
       mMP.seekTo(mPosition);
       mMP.start();
+
+      Thread fadeIn = new Thread(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            while (!mPause) {
+              mMP.setVolume(mVolume, mVolume);
+              if (mVolume >= 1.0f) {
+                break;
+              } else {
+                mVolume = mVolume + 0.1f;
+              }
+              Thread.sleep(100);
+            }
+          } catch (Exception e) {
+          }
+        }
+      });
+      fadeIn.start();
     }
   }
 
   public void pause() {
+
+    mPause = true;
+
     if (mMP.isPlaying()) {
-      mPause = true;
 
       Handler handler = new Handler();
       handler.postDelayed(new Runnable() {
         @Override
         public void run() {
+
           if (mPause) {
-              // Pause
-              mPosition = mMP.getCurrentPosition();
-              mMP.pause();
+            Thread fadeout = new Thread(new Runnable() {
+              @Override
+              public void run() {
+                try {
+                  while (mPause) {
+                    mMP.setVolume(mVolume, mVolume);
+                    if (mVolume <= 0.0f) {
+                      break;
+                    } else {
+                      mVolume = mVolume - 0.1f;
+                    }
+                    Thread.sleep(100);
+                  }
+                } catch (Exception e) {
+                }
+                // Pause
+                mPosition = mMP.getCurrentPosition();
+                mMP.pause();
+              }
+            });
+            fadeout.start();
           }
         }
       }, 1000);
@@ -90,6 +133,7 @@ public class MusicService extends Service {
 
   //콜백 인터페이스 선언
   public interface ICallback {
+
     public void recvData(); //액티비티에서 선언한 콜백 함수.
   }
 
@@ -103,12 +147,13 @@ public class MusicService extends Service {
   public static void MediaPlay(Context context, int resourceID) {
     MediaPlayer mp = MediaPlayer.create(context, resourceID);
     mp.setLooping(false);
+    mp.setVolume(1.0f, 1.0f);
     mp.start();
     mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
       public void onCompletion(MediaPlayer mp) {
-        try{
+        try {
           mp.release();
-        }catch(Exception e){
+        } catch (Exception e) {
           e.printStackTrace();
         }
       }
