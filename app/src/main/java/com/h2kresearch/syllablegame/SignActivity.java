@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.h2kresearch.syllablegame.database.DatabaseAccess;
+import com.h2kresearch.syllablegame.model.ConfigurationModel;
 import com.h2kresearch.syllablegame.utils.CommonUtils;
 import com.h2kresearch.syllablegame.utils.LoginServer;
 
@@ -155,6 +156,8 @@ public class SignActivity extends ParentActivity {
               Toast.makeText(getApplicationContext(), "Local DB Check!", Toast.LENGTH_LONG).show();
             }
 
+            ConfigurationModel conf = ConfigurationModel.getInstance();
+            conf.setEmail(id);
             // Next Intent
             startActivity(mMainIntent);
           } else {

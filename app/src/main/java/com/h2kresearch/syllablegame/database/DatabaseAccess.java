@@ -236,22 +236,8 @@ public class DatabaseAccess {
     long exam_id = database.insert("hangul_exam_daily", null, cv);
     Log.d("exam_id", "Exam ID is " + exam_id);
 
-    cursor = database.query("hangul_study_daily", new String[]{"_id"},
-        "email=? and learning_date=? and syllable_code=?",
-        new String[]{mConf.getEmail(), mConf.getToday(), String.valueOf(con)}, null, null, null);
-    if (cursor.getCount() == 1) {
-      cursor.moveToFirst();
-      mConf.setConStudyId(cursor.getInt(0));
-      cursor.close();
-    }
-    cursor = database.query("hangul_study_daily", new String[]{"_id"},
-        "email=? and learning_date=? and syllable_code=?",
-        new String[]{mConf.getEmail(), mConf.getToday(), String.valueOf(vow)}, null, null, null);
-    if (cursor.getCount() == 1) {
-      cursor.moveToFirst();
-      mConf.setVowStudyId(cursor.getInt(0));
-      cursor.close();
-    }
+    mConf.setConStudyId(con);
+    mConf.setVowStudyId(vow);
 
     return exam_id;
 
@@ -370,7 +356,8 @@ public class DatabaseAccess {
     int total_correct_cnt = 0;
     int result = 0;
     cursor = database
-        .query("hangul_study_daily", new String[]{"exam_cnt", "correct_cnt"}, "email=? and learning_date=?",
+        .query("hangul_study_daily", new String[]{"exam_cnt", "correct_cnt"},
+            "email=? and learning_date=?",
             new String[]{mConf.getEmail(), mConf.getToday()}, null, null, null);
     cursor.moveToFirst();
     while (!cursor.isAfterLast()) {
@@ -392,7 +379,8 @@ public class DatabaseAccess {
       if (cursor.getInt(0) == 0) {
         Cursor cursor1 = database.query("hangul_study_daily",
             new String[]{"email", "syllable_code", "sum(exam_cnt)", "sum(correct_cnt)"},
-            "email = ?", new String[]{mConf.getEmail()}, "email, syllable_code", null,
+            "email = ? and learning_date < ?", new String[]{mConf.getEmail(), mConf.getToday()},
+            "email, syllable_code", null,
             "syllable_code");
         cursor1.moveToFirst();
         while (!cursor1.isAfterLast()) {
@@ -410,8 +398,8 @@ public class DatabaseAccess {
       } else {
         Cursor cursor1 = database.query("hangul_study_daily",
             new String[]{"email", "syllable_code", "sum(exam_cnt)", "sum(correct_cnt)"},
-            "email = ? and _id > ?",
-            new String[]{mConf.getEmail(), String.valueOf(cursor.getInt(0))},
+            "email = ? and learning_date < ? and _id > ?",
+            new String[]{mConf.getEmail(), mConf.getToday(), String.valueOf(cursor.getInt(0))},
             "email, syllable_code", null, "syllable_code");
         cursor1.moveToFirst();
         while (!cursor1.isAfterLast()) {
@@ -434,23 +422,29 @@ public class DatabaseAccess {
         cursor1.close();
       }
 
-      cursor = database.query("hangul_study_daily", new String[]{"max(_id)"}, "email=?", new String[]{mConf.getEmail()}, null,null,null);
-      cursor.moveToFirst();
-      ContentValues cv = new ContentValues();
-      cv.put("study_id", cursor.getInt(0));
-      database.update("hangul_update_stat", cv, "email=?", new String[]{mConf.getEmail()});
+      cursor = database
+          .query("hangul_study_daily", new String[]{"max(_id)"}, "email=? and learning_date < ?",
+              new String[]{mConf.getEmail(), mConf.getToday()}, null, null, null);
+      if (cursor.getCount() > 0) {
+        cursor.moveToFirst();
+        ContentValues cv = new ContentValues();
+        cv.put("study_id", cursor.getInt(0));
+        database.update("hangul_update_stat", cv, "email=?", new String[]{mConf.getEmail()});
+      }
+      cursor.close();
     }
   }
 
-  public void updateTotalWrong(){
+  public void updateTotalWrong() {
     Cursor cursor = database.query("hangul_update_stat", new String[]{"wrong_id"}, "email=?",
         new String[]{mConf.getEmail()}, null, null, null);
-    if(cursor.getCount() == 1){
+    if (cursor.getCount() == 1) {
       cursor.moveToFirst();
-      if(cursor.getInt(0) == 0){
+      if (cursor.getInt(0) == 0) {
         Cursor cursor1 = database.query("hangul_wrong_answer",
             new String[]{"email", "syllable_code", "wrong_code", "sum(wrong_code_cnt)"},
-            "email = ?", new String[]{mConf.getEmail()}, "email, syllable_code, wrong_code", null,
+            "email = ? and learning_date < ?", new String[]{mConf.getEmail(), mConf.getToday()},
+            "email, syllable_code, wrong_code", null,
             "syllable_code");
         cursor1.moveToFirst();
         while (!cursor1.isAfterLast()) {
@@ -459,22 +453,23 @@ public class DatabaseAccess {
           cv.put("syllable_code", cursor1.getInt(1));
           cv.put("wrong_code", cursor1.getInt(2));
           cv.put("wrong_code_cnt", cursor1.getInt(3));
-          database.insert("hangul_wrong_stat",null, cv);
+          database.insert("hangul_wrong_stat", null, cv);
           cursor1.moveToNext();
         }
         cursor.close();
         cursor1.close();
-      } else{
+      } else {
         Cursor cursor1 = database.query("hangul_wrong_answer",
             new String[]{"email", "syllable_code", "wrong_code", "sum(wrong_code_cnt)"},
-            "email = ? and _id > ?",
-            new String[]{mConf.getEmail(), String.valueOf(cursor.getInt(0))},
+            "email = ? and learning_date < ? and _id > ?",
+            new String[]{mConf.getEmail(), mConf.getToday(), String.valueOf(cursor.getInt(0))},
             "email, syllable_code, wrong_code", null, "syllable_code");
         cursor1.moveToFirst();
         while (!cursor1.isAfterLast()) {
           Cursor cursor2 = database.query("hangul_wrong_stat", new String[]{"wrong_code_cnt"},
               "email=? and syllable_code=? and wrong_code=?",
-              new String[]{cursor1.getString(0), String.valueOf(cursor1.getInt(1)), String.valueOf(cursor1.getInt(2))}, null, null,
+              new String[]{cursor1.getString(0), String.valueOf(cursor1.getInt(1)),
+                  String.valueOf(cursor1.getInt(2))}, null, null,
               null);
           cursor2.moveToFirst();
           ContentValues cv = new ContentValues();
@@ -483,7 +478,8 @@ public class DatabaseAccess {
           cv.put("wrong_code", cursor1.getInt(2));
           cv.put("wrong_code_cnt", cursor1.getInt(3) + cursor2.getInt(0));
           database.update("hangul_wrong_stat", cv, "email=? and syllable_code=? and wrong_code=?",
-              new String[]{cursor1.getString(0), String.valueOf(cursor1.getInt(1)), String.valueOf(cursor1.getInt(2))});
+              new String[]{cursor1.getString(0), String.valueOf(cursor1.getInt(1)),
+                  String.valueOf(cursor1.getInt(2))});
           cursor1.moveToNext();
           cursor2.close();
         }
@@ -492,23 +488,30 @@ public class DatabaseAccess {
 
       }
 
-      cursor = database.query("hangul_wrong_answer", new String[]{"max(_id)"}, "email=?", new String[]{mConf.getEmail()}, null,null,null);
-      cursor.moveToFirst();
-      ContentValues cv = new ContentValues();
-      cv.put("wrong_id", cursor.getInt(0));
-      database.update("hangul_update_stat", cv, "email=?", new String[]{mConf.getEmail()});
+      cursor = database
+          .query("hangul_wrong_answer", new String[]{"max(_id)"}, "email=? and learning_date < ?",
+              new String[]{mConf.getEmail(), mConf.getToday()}, null, null, null);
+      if (cursor.getCount() > 0) {
+        cursor.moveToFirst();
+        ContentValues cv = new ContentValues();
+        cv.put("wrong_id", cursor.getInt(0));
+        database.update("hangul_update_stat", cv, "email=?", new String[]{mConf.getEmail()});
+      }
+      cursor.close();
     }
   }
 
-  public void createStatTable(){
-    Cursor cursor = database.query("hangul_update_stat", null, "email = ?", new String[]{mConf.getEmail()}, null,null,null);
-    if(cursor.getCount() != 1){
-      ContentValues cv  = new ContentValues();
+  public void createStatTable() {
+    Cursor cursor = database
+        .query("hangul_update_stat", null, "email = ?", new String[]{mConf.getEmail()}, null, null,
+            null);
+    if (cursor.getCount() != 1) {
+      ContentValues cv = new ContentValues();
       cv.put("email", mConf.getEmail());
-      database.insert("hangul_update_stat",null, cv);
-      for(int i = 1; i <= 24; i++){
-        cv.put("syllable_code",i);
-        database.insert("hangul_stat", null,cv);
+      database.insert("hangul_update_stat", null, cv);
+      for (int i = 1; i <= 24; i++) {
+        cv.put("syllable_code", i);
+        database.insert("hangul_stat", null, cv);
       }
     }
     cursor.close();

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import com.h2kresearch.syllablegame.database.DatabaseAccess;
 import com.h2kresearch.syllablegame.utils.MusicService;
 
 public class ResultActivity extends ParentActivity
@@ -53,6 +54,10 @@ public class ResultActivity extends ParentActivity
       }
     });
     mRightButton.setOnClickListener(this);
+
+    DatabaseAccess db = DatabaseAccess.getInstance(this);
+    db.updateTotalStat();
+    db.updateTotalWrong();
 
     // Button
     mButton1 = (Button)findViewById(R.id.button1);
