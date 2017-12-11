@@ -890,9 +890,10 @@ public class DatabaseAccess {
                   .rawQuery("SELECT * FROM hangul_stat WHERE syllable_code ='" + syllableCode + "'",
                       null);
               cursor3.moveToFirst();
-
-              param.put("exam_cnt", cursor3.getInt(3));
-              param.put("correct_cnt", cursor3.getInt(4));
+              if (cursor3.getCount() > 0) {
+                param.put("exam_cnt", cursor3.getInt(3));
+                param.put("correct_cnt", cursor3.getInt(4));
+              }
 
               // Achieve List
               ArrayList<Map> achieveList = new ArrayList<Map>();

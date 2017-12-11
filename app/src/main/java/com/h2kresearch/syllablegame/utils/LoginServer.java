@@ -29,6 +29,8 @@ public class LoginServer extends AsyncTask {
   @Override
   protected Object doInBackground(Object[] objects) {
 
+    String ret_val = "";
+
     // 인풋 파라메터값 생성
     String param = "u_id=" + mID + "&u_pw=" + mPW + "";
     try {
@@ -52,7 +54,6 @@ public class LoginServer extends AsyncTask {
       // 서버 -> 안드로이드 파라메터값 전달
       InputStream is = null;
       BufferedReader in = null;
-      String data = "";
 
       is = conn.getInputStream();
       in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
@@ -61,17 +62,17 @@ public class LoginServer extends AsyncTask {
       while ((line = in.readLine()) != null) {
         buff.append(line + "\n");
       }
-      data = buff.toString().trim();
-      Log.e("RECV DATA", data);
-      //E/RECV DATA: No registered account
+      ret_val = buff.toString().trim();
+      Log.e("Login Result", ret_val);
 
-
+      // Disconnection
+      conn.disconnect();
     } catch (MalformedURLException e) {
       e.printStackTrace();
     } catch (IOException e) {
       e.printStackTrace();
     }
 
-    return null;
+    return ret_val;
   }
 }

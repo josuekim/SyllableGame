@@ -1,6 +1,7 @@
 package com.h2kresearch.syllablegame.utils;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Binder;
@@ -35,7 +36,7 @@ public class MusicService extends Service {
 
     // Media Player
     mMP = MediaPlayer.create(this, R.raw.bg);
-    mMP.setLooping(false); // 반복 재생
+    mMP.setLooping(true); // 반복 재생
   }
 
   @Override
@@ -97,5 +98,20 @@ public class MusicService extends Service {
   //액티비티에서 콜백 함수를 등록하기 위함.
   public void registerCallback(ICallback cb) {
     mCallback = cb;
+  }
+
+  public static void MediaPlay(Context context, int resourceID) {
+    MediaPlayer mp = MediaPlayer.create(context, resourceID);
+    mp.setLooping(false);
+    mp.start();
+    mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+      public void onCompletion(MediaPlayer mp) {
+        try{
+          mp.release();
+        }catch(Exception e){
+          e.printStackTrace();
+        }
+      }
+    });
   }
 }

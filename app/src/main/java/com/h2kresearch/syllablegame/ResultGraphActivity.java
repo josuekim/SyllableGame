@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.Space;
 import android.widget.TextView;
 import com.github.mikephil.charting.charts.BarChart;
@@ -23,6 +24,8 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.h2kresearch.syllablegame.database.DatabaseAccess;
 import com.h2kresearch.syllablegame.model.SyllableImageView;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -179,10 +182,52 @@ public class ResultGraphActivity extends ParentActivity implements OnClickListen
       int numVowel = (int) param.get("exam_vowel_ok");
 
       if(sound1 == code || sound2 == code) {
-        TextView textView = new TextView(this);
-        String exam = "모음은 " + numVowel + "번만에, 자음은 " + numCons + "번만에 맞췄습니다.";
-        textView.setText(exam);
-        layout2.addView(textView);
+
+        // Linear Layout
+        LinearLayout examLayout = new LinearLayout(this);
+        examLayout.setOrientation(LinearLayout.HORIZONTAL);
+        layout2.addView(examLayout);
+        LinearLayout.LayoutParams examLayoutParams = (LinearLayout.LayoutParams) examLayout.getLayoutParams();
+        examLayoutParams.width = LayoutParams.MATCH_PARENT;
+        examLayoutParams.height = LayoutParams.WRAP_CONTENT;
+
+        // Exam View
+        ImageView examImageView = new ImageView(this);
+        int examResource = CalResourceComb(sound1, sound2);
+        examImageView.setImageResource(examResource);
+        examLayout.addView(examImageView);
+        LinearLayout.LayoutParams examImageViewParams = (LinearLayout.LayoutParams) examImageView.getLayoutParams();
+        examImageViewParams.width = 0;
+        examImageViewParams.height = LayoutParams.WRAP_CONTENT;
+        examImageViewParams.weight = 1;
+        examImageView.setAdjustViewBounds(true);
+
+        // Consonant
+        ImageView consImageView = new ImageView(this);
+        int consResource = CalResource(sound1);
+        consImageView.setImageResource(consResource);
+        examLayout.addView(consImageView);
+        LinearLayout.LayoutParams consImageViewParams = (LinearLayout.LayoutParams) consImageView.getLayoutParams();
+        consImageViewParams.width = 0;
+        consImageViewParams.height = LayoutParams.WRAP_CONTENT;
+        consImageViewParams.weight = 1;
+        consImageView.setAdjustViewBounds(true);
+
+        // Vowel
+        ImageView vowelImageView = new ImageView(this);
+        int vowelResource = CalResource(sound2);
+        vowelImageView.setImageResource(vowelResource);
+        examLayout.addView(vowelImageView);
+        LinearLayout.LayoutParams vowelImageViewParams = (LinearLayout.LayoutParams) vowelImageView.getLayoutParams();
+        vowelImageViewParams.width = 0;
+        vowelImageViewParams.height = LayoutParams.WRAP_CONTENT;
+        vowelImageViewParams.weight = 1;
+        vowelImageView.setAdjustViewBounds(true);
+
+//        TextView textView = new TextView(this);
+//        String exam = "모음은 " + numVowel + "번만에, 자음은 " + numCons + "번만에 맞췄습니다.";
+//        textView.setText(exam);
+//        layout2.addView(textView);
       }
     }
 
@@ -204,6 +249,7 @@ public class ResultGraphActivity extends ParentActivity implements OnClickListen
     params.weight = 0.5f;
 
     // mAchieveSound Sort (1. Value, 2. Type)
+    Collections.sort(mAchieveSound, SortByAchieve);
 
     // Graph
     List<BarEntry> entries = new ArrayList<BarEntry>();
@@ -289,4 +335,31 @@ public class ResultGraphActivity extends ParentActivity implements OnClickListen
 
     return getResources().getIdentifier(imageName, "drawable", getPackageName());
   }
+
+  int CalResourceComb(int cons, int vowel) {
+
+    // Get Resource
+    int x = vowel-14;
+    int y = cons;
+
+    String imageName = "han" + (y * 11 * 2 + x * 2);
+
+    return getResources().getIdentifier(imageName, "drawable", getPackageName());
+  }
+
+  private final static Comparator<Map> SortByAchieve = new Comparator<Map>() {
+    @Override
+    public int compare(Map map, Map t1) {
+
+      int correct = (int)map.get("correct_cnt");
+      int exam = (int)map.get("exam_cnt");
+      float achieve1 = (float)correct/(float)exam;
+
+      correct = (int)t1.get("correct_cnt");
+      exam = (int)t1.get("exam_cnt");
+      float achieve2 = (float)correct/(float)exam;
+
+      return Float.compare(achieve2, achieve1);
+    }
+  };
 }

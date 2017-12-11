@@ -13,6 +13,7 @@ import com.h2kresearch.syllablegame.database.DatabaseAccess;
 import com.h2kresearch.syllablegame.model.ConfigurationModel;
 import com.h2kresearch.syllablegame.utils.CommonUtils;
 import com.h2kresearch.syllablegame.utils.LoginServer;
+import java.util.concurrent.TimeUnit;
 
 public class SignActivity extends ParentActivity {
 
@@ -138,30 +139,45 @@ public class SignActivity extends ParentActivity {
         String id = mID.getText().toString();
         String pw = mPW.getText().toString();
 
+        // Sign Result
+        String signResult = "";
+
         // Check Network State
         String network = CommonUtils.getWhatKindOfNetwork(getApplicationContext());
         if (!network.equals(CommonUtils.NONE_STATE)) {
-          // Login Server
-          LoginServer loginServer = new LoginServer(url, id, pw);
-          loginServer.execute();
 
-          // Update Local DB
-          boolean loginResult = true; // TBA
-          if (loginResult) {
-            // Auto Login Check
+          // Login
+          String signURL = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidSignup";
+          LoginServer loginServer = new LoginServer(signURL, id, pw);
+          try {
+            signResult = (String) loginServer.execute().get(3, TimeUnit.SECONDS);
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+
+          if (signResult.equals("0")) {
+
+            // Local DB
             DatabaseAccess db = DatabaseAccess.getInstance(getApplicationContext());
             db.open();
 
-            if (db.signup(id, pw) < 0) {
+            if (db.signup(id, pw) >= 0) {
+              ConfigurationModel conf = ConfigurationModel.getInstance();
+              conf.setEmail(id);
+              // Next Intent
+              startActivity(mMainIntent);
+            } else {
               Toast.makeText(getApplicationContext(), "Local DB Check!", Toast.LENGTH_LONG).show();
             }
 
-            ConfigurationModel conf = ConfigurationModel.getInstance();
-            conf.setEmail(id);
-            // Next Intent
-            startActivity(mMainIntent);
-          } else {
-            Toast.makeText(getApplicationContext(), "회원 가입에 실패했습니다.", Toast.LENGTH_LONG).show();
+          } else if (signResult.equals("1")) {
+            Toast.makeText(getApplicationContext(), "이미 등록된 계정입니다.", Toast.LENGTH_LONG).show();
+          } else if (signResult.equals("2")) {
+            Toast.makeText(getApplicationContext(), "Database Addition Failed.", Toast.LENGTH_LONG)
+                .show();
+          } else if (signResult.equals("3")) {
+            Toast.makeText(getApplicationContext(), "Database Search Failed.", Toast.LENGTH_LONG)
+                .show();
           }
         } else {
           Toast.makeText(getApplicationContext(), "인터넷에 연결하세요.", Toast.LENGTH_LONG).show();
