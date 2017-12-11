@@ -17,13 +17,14 @@
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:background="#FFFFFF"
+      android:background="@color/backgroundColor"
       android:orientation="vertical">
       <LinearLayout
         android:id="@+id/LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#E0F2F1"
+        android:paddingBottom="5dp"
+        android:background="@color/titleBarColor"
         android:orientation="horizontal">
         <TextView
           android:id="@+id/textViewL"
@@ -37,21 +38,21 @@
           android:gravity="left|center_vertical"
           android:text="로그아웃"
           android:textAlignment="gravity"
-          android:textColor="#EF4581"
-          android:textSize="14sp" />
+          android:textColor="@color/highlightColor"
+          android:textSize="14dp" />
         <TextView
           android:id="@+id/textView"
           android:textStyle="bold"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:paddingTop="10dp"
-          android:paddingLeft="10dp"
-          android:paddingRight="10dp"
+          android:paddingTop="5dp"
+          android:paddingLeft="5dp"
+          android:paddingRight="5dp"
           android:gravity="center_vertical|center_horizontal"
           android:text="음절표"
           android:textAlignment="gravity"
-          android:textColor="#01848F"
+          android:textColor="@color/titleBarTextColor"
           android:textSize="18dp" />
         <TextView
           android:id="@+id/textViewR"
@@ -65,15 +66,14 @@
           android:gravity="right|center_vertical"
           android:text="선택"
           android:textAlignment="gravity"
-          android:textColor="#EF4581"
-          android:textSize="14sp" />
+          android:textColor="@color/highlightColor"
+          android:textSize="14dp" />
       </LinearLayout>
       <TableLayout
         android:id="@+id/TableLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:padding="20dp"
+        android:padding="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 

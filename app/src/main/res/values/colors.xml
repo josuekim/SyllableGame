@@ -8,7 +8,15 @@
     <color name="colorTeal3">#B2DFDB</color>
     <color name="colorPink1">#F8BBD0</color>
     <color name="titleBarColor">#424C58</color>
+    <color name="titleBarTextColor">#FFFFFF</color>
+    <color name="highlightColor">#7BBC50</color>
     <color name="dragAreaColor">#F3F4F5</color>
-    <color name="backgroundColor">#FAFAFA</color>
-    <color name="white">#FFFFFF</color>
+    <color name="backgroundColor">#FFFFFF</color>
+    <color name="textColor">#000000</color>
+    <color name="textHintColor">#CBCCCC</color>
+    <color name="textButtonColor">#FFFFFF</color>
+    <color name="textLoginMenuColor">#7C7C7C</color>
+    <color name="textLoginMenuBarColor">#BCBCBC</color>
+    <color name="buttonDisableColor">#CBCED1</color>
+    <color name="buttonActivateColor">#424C58</color>
 </resources>

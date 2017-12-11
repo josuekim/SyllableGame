@@ -464,39 +464,39 @@ public class SyllableGameActivity extends ParentActivity {
 //    getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 //    int dp = Math.round(height / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
 
-    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)frame_vowelRight.getLayoutParams();
-
-    // Linear Layout (Total Size)
-    LinearLayout linearLayout = (LinearLayout) findViewById(R.id.LinearLayout);
-    int maxWidth = linearLayout.getWidth();
-    int maxHeight = linearLayout.getHeight();
-
-    // Width/Height Ratio
-    int originalW = frame_consonant.getWidth();
-    int originalH = frame_consonant.getHeight();
-    int originalM = ((RelativeLayout.LayoutParams)frame_vowelRight.getLayoutParams()).getMarginStart();
-
-    // Ratio
-    float ratio = (float) originalW / (float) originalH;
-    ratio = 0.8f;
-
-    // Target Size
-    float limit = 0.5f;
-    int height = (int) (maxHeight * limit);
-    int width = (int) (height * ratio);
-    float scale = (float)width / (float)originalW;
-    int margin = (int) (originalM * scale);
-
-    // Assign
-    frame_consonant.getLayoutParams().width = width;
-    frame_consonant.getLayoutParams().height = height;
-
-    frame_vowelRight.getLayoutParams().width = height;
-    frame_vowelRight.getLayoutParams().height = width;
-    ((RelativeLayout.LayoutParams)frame_vowelRight.getLayoutParams()).leftMargin = margin;
-    ((RelativeLayout.LayoutParams)frame_vowelRight.getLayoutParams()).setMarginStart(margin);
-
-    frame_vowelBottom.getLayoutParams().width = width;
-    frame_vowelBottom.getLayoutParams().height = width;
+//    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)frame_vowelRight.getLayoutParams();
+//
+//    // Linear Layout (Total Size)
+//    LinearLayout linearLayout = (LinearLayout) findViewById(R.id.LinearLayout);
+//    int maxWidth = linearLayout.getWidth();
+//    int maxHeight = linearLayout.getHeight();
+//
+//    // Width/Height Ratio
+//    int originalW = frame_consonant.getWidth();
+//    int originalH = frame_consonant.getHeight();
+//    int originalM = ((RelativeLayout.LayoutParams)frame_vowelRight.getLayoutParams()).getMarginStart();
+//
+//    // Ratio
+//    float ratio = (float) originalW / (float) originalH;
+//    ratio = 0.8f;
+//
+//    // Target Size
+//    float limit = 0.5f;
+//    int height = (int) (maxHeight * limit);
+//    int width = (int) (height * ratio);
+//    float scale = (float)width / (float)originalW;
+//    int margin = (int) (originalM * scale);
+//
+//    // Assign
+//    frame_consonant.getLayoutParams().width = width;
+//    frame_consonant.getLayoutParams().height = height;
+//
+//    frame_vowelRight.getLayoutParams().width = height;
+//    frame_vowelRight.getLayoutParams().height = width;
+//    ((RelativeLayout.LayoutParams)frame_vowelRight.getLayoutParams()).leftMargin = margin;
+//    ((RelativeLayout.LayoutParams)frame_vowelRight.getLayoutParams()).setMarginStart(margin);
+//
+//    frame_vowelBottom.getLayoutParams().width = width;
+//    frame_vowelBottom.getLayoutParams().height = width;
   }
 }

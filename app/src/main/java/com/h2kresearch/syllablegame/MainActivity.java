@@ -104,7 +104,7 @@ public class MainActivity extends ParentActivity
         } else {
           // 선택
           mTextView.setText("음절 선택");
-          mLinearLayout.setBackgroundColor(Color.parseColor("#FCE4EC"));
+          //mLinearLayout.setBackgroundColor(Color.parseColor("#FCE4EC"));
           mSelectMode = true;
           mRightButton.setText("완료");
           mLeftButton.setText("취소");
@@ -120,7 +120,7 @@ public class MainActivity extends ParentActivity
           cancelAllView();
 
           mTextView.setText("똑똑한 음절표");
-          mLinearLayout.setBackgroundColor(Color.parseColor("#E0F2F1"));
+          //mLinearLayout.setBackgroundColor(Color.parseColor("#E0F2F1"));
           mSelectMode = false;
           mRightButton.setText("선택");
           mLeftButton.setText("로그아웃");
@@ -356,7 +356,7 @@ public class MainActivity extends ParentActivity
       cancelAllView();
 
       mTextView.setText("똑똑한 음절표");
-      mLinearLayout.setBackgroundColor(Color.parseColor("#E0F2F1"));
+      //mLinearLayout.setBackgroundColor(Color.parseColor("#E0F2F1"));
       mSelectMode = false;
       mRightButton.setText("선택");
       mLeftButton.setText("로그아웃");

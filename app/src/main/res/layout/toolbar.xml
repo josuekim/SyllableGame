@@ -3,34 +3,40 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/toolBar"
   android:layout_width="match_parent"
-  android:layout_height="40dp"
+  android:layout_height="wrap_content"
+  android:paddingBottom="5dp"
   android:background="@color/titleBarColor"
-  android:minHeight="?attr/actionBarSize">
+  android:minHeight="0dp">
 
     <TextView
       android:id="@+id/toolbar_title"
       style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+      android:textStyle="bold"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
+      android:paddingTop="5dp"
       android:text="음소 조합 놀이"
-      android:textColor="#FFFFFF"
-      android:textSize="15dp"/>
+      android:textColor="@color/titleBarTextColor"
+      android:textSize="18dp" />
 
     <ImageView
       android:id="@+id/complete_counting"
       android:layout_width="100dp"
       android:layout_height="15dp"
-      android:layout_marginRight="5dp"
+      android:layout_marginTop="10dp"
+      android:layout_marginRight="10dp"
       android:layout_gravity="right"
-      android:src="@drawable/count"/>
+      android:src="@drawable/count" />
     <TextView
       android:id="@+id/backButton"
-      android:layout_width="120dp"
+      android:textStyle="bold"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:paddingTop="10dp"
       android:text="&lt; 오늘의 학습"
-      android:textColor="#FFFFFF"
-      android:textSize="12dp"/>
+      android:textColor="@color/highlightColor"
+      android:textSize="14dp" />
 
 
 </android.support.v7.widget.Toolbar>

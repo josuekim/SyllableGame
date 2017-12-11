@@ -10,7 +10,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    android:background="#FFFFFF"
+    android:background="@color/backgroundColor"
     android:gravity="center_vertical|center_horizontal"
     android:orientation="horizontal"
     android:weightSum="3"
@@ -56,8 +56,8 @@
             android:hint="이메일 주소"
             android:imeOptions="flagNoExtractUi"
             android:inputType="textEmailAddress"
-            android:textColor="#000000"
-            android:textColorHint="#CBCCCC"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/textHintColor"
             android:textSize="20dp" />
           <EditText
             android:id="@+id/editText2"
@@ -68,8 +68,8 @@
             android:hint="비밀번호"
             android:imeOptions="flagNoExtractUi"
             android:inputType="textPassword"
-            android:textColor="#000000"
-            android:textColorHint="#CBCCCC"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/textHintColor"
             android:textSize="20dp" />
           <EditText
             android:id="@+id/editText3"
@@ -80,8 +80,8 @@
             android:hint="비밀번호 확인"
             android:imeOptions="flagNoExtractUi"
             android:inputType="textPassword"
-            android:textColor="#000000"
-            android:textColorHint="#CBCCCC"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/textHintColor"
             android:textSize="20dp" />
           <Button
             android:id="@+id/button"
