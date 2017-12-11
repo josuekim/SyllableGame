@@ -2,14 +2,10 @@ package com.h2kresearch.syllablegame;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.media.MediaPlayer;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.TextToSpeech.OnInitListener;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
@@ -23,9 +19,8 @@ import com.h2kresearch.syllablegame.model.ConfigurationModel;
 import com.h2kresearch.syllablegame.utils.CommonUtils;
 import com.h2kresearch.syllablegame.utils.MusicService;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class MainActivity extends ParentActivity
+public class MainActivity extends AppCompatActivity
     implements SelectViewListener {
 
   // Select List
@@ -39,9 +34,6 @@ public class MainActivity extends ParentActivity
 
   // Mode Change
   boolean mSelectMode = false;
-
-  // TTS
-  TextToSpeech mTTS;
 
   // Intent
   Intent mIntent;
@@ -60,15 +52,6 @@ public class MainActivity extends ParentActivity
     mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     mLoginIntent = new Intent(MainActivity.this, LoginActivity.class);
     mLoginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-    // TTS
-    mTTS = new TextToSpeech(this, new OnInitListener() {
-      @Override
-      public void onInit(int i) {
-        mTTS.setPitch(1.0f);
-        mTTS.setSpeechRate(0.8f);
-      }
-    });
 
     // LinearLayout (Background)
     mLinearLayout = (LinearLayout) findViewById(R.id.LinearLayout);
@@ -261,12 +244,6 @@ public class MainActivity extends ParentActivity
     }
   }
 
-  @Override
-  protected void onDestroy() {
-    super.onDestroy();
-    mTTS.shutdown();
-  }
-
   void cancelAllView() {
     if (!mSelect.isEmpty()) {
       for (int i = 0; i < mSelect.size(); i++) {
@@ -382,15 +359,6 @@ public class MainActivity extends ParentActivity
             }
           });
       builder.show();
-    }
-  }
-
-  @Override
-  protected void onResume() {
-    super.onResume();
-
-    if(mService != null) {
-      mService.pause();
     }
   }
 }

@@ -29,7 +29,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-public class ResultGraphActivity extends ParentActivity implements OnClickListener {
+public class ResultGraphActivity extends BGMActivity implements OnClickListener {
 
   // Layout
   TextView mTextView;

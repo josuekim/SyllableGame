@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.h2kresearch.syllablegame.database.DatabaseAccess;
 import com.h2kresearch.syllablegame.utils.MusicService;
 
-public class ResultActivity extends ParentActivity
+public class ResultActivity extends BGMActivity
   implements OnClickListener{
 
   // Intent

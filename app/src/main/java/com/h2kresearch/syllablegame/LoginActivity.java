@@ -17,7 +17,7 @@ import com.h2kresearch.syllablegame.utils.LoginServer;
 import com.h2kresearch.syllablegame.utils.UploadServer;
 import java.util.concurrent.TimeUnit;
 
-public class LoginActivity extends ParentActivity {
+public class LoginActivity extends BGMActivity {
 
   // EditText
   EditText mID;
@@ -54,12 +54,16 @@ public class LoginActivity extends ParentActivity {
     mDB.open();
     String email = mDB.findAutoLoginUser();
     if (email != null && !email.equals("")) {
-
       // Assign Global User
       mConf.setEmail(email);
 
       // Login Skip
       startActivity(mMainIntent);
+    } else {
+      // Tutorial
+      Intent intent = new Intent(getBaseContext(), TutorialActivity.class);
+      intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+      startActivity(intent);
     }
 
     mID = (EditText) findViewById(R.id.editText1);

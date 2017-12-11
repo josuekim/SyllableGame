@@ -1,15 +1,11 @@
 package com.h2kresearch.syllablegame;
 
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.TextToSpeech.OnInitListener;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -18,9 +14,8 @@ import com.h2kresearch.syllablegame.database.DatabaseAccess;
 import com.h2kresearch.syllablegame.utils.CommonUtils;
 import com.h2kresearch.syllablegame.utils.MusicService;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class ResizeActivity extends ParentActivity implements SelectViewListener {
+public class ResizeActivity extends AppCompatActivity implements SelectViewListener {
 
   // Select List
   ArrayList<TableImageView> mSelect = new ArrayList<TableImageView>();
@@ -29,9 +24,6 @@ public class ResizeActivity extends ParentActivity implements SelectViewListener
   LinearLayout mLinearLayout;
   TextView mLeftButton;
   TextView mRightButton;
-
-  // TTS
-  TextToSpeech mTTS;
 
   // Intent
   Intent mIntent;
@@ -56,15 +48,6 @@ public class ResizeActivity extends ParentActivity implements SelectViewListener
     mIntent = new Intent(ResizeActivity.this, LessonActivity.class);
     mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     mIntent.putExtra("select", mChar);
-
-    // TTS
-    mTTS = new TextToSpeech(this, new OnInitListener() {
-      @Override
-      public void onInit(int i) {
-        mTTS.setPitch(1.0f);
-        mTTS.setSpeechRate(0.8f);
-      }
-    });
 
     // LinearLayout (Background)
     mLinearLayout = (LinearLayout) findViewById(R.id.LinearLayout);
@@ -215,11 +198,5 @@ public class ResizeActivity extends ParentActivity implements SelectViewListener
     if (!exist) {
       mSelect.add(view);
     }
-  }
-
-  @Override
-  protected void onDestroy() {
-    super.onDestroy();
-    mTTS.shutdown();
   }
 }

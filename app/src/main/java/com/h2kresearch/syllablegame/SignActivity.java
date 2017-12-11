@@ -15,7 +15,7 @@ import com.h2kresearch.syllablegame.utils.CommonUtils;
 import com.h2kresearch.syllablegame.utils.LoginServer;
 import java.util.concurrent.TimeUnit;
 
-public class SignActivity extends ParentActivity {
+public class SignActivity extends BGMActivity {
 
   // EditText
   EditText mID;

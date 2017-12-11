@@ -9,22 +9,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import com.h2kresearch.syllablegame.utils.MusicService;
 
-public class ParentActivity extends AppCompatActivity {
+public class BGMActivity extends AppCompatActivity {
 
   MusicService mService;
-  Intent mIntent;
+  Intent mMusicIntent;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_parent);
+    //setContentView(R.fragment_page.activity_bgm);
 
-    mIntent = new Intent(
+    mMusicIntent = new Intent(
         getApplicationContext(), // 현재 제어권자
         MusicService.class); // 이동할 컴포넌트
 
-    bindService(mIntent, mConnection, Context.BIND_AUTO_CREATE);
-    startService(mIntent); // 서비스 시작
+//    startService(mMusicIntent); // 서비스 시작
+    bindService(mMusicIntent, mConnection, Context.BIND_AUTO_CREATE);
   }
 
   private ServiceConnection mConnection = new ServiceConnection() {
@@ -48,27 +48,24 @@ public class ParentActivity extends AppCompatActivity {
   };
 
   @Override
-  protected void onPause() {
-    super.onPause();
-
-    if(mService != null) {
-      mService.pause();
-    }
-  }
-
-  @Override
-  protected void onResume() {
-    super.onResume();
-
-    if(mService != null) {
-      mService.start();
-    }
-  }
-
-  @Override
   protected void onDestroy() {
     super.onDestroy();
 
     unbindService(mConnection);
+  }
+
+  @Override
+  public void onWindowFocusChanged(boolean hasFocus) {
+    super.onWindowFocusChanged(hasFocus);
+
+    if(hasFocus) {
+      if (mService != null) {
+        mService.start();
+      }
+    } else {
+      if (mService != null) {
+        mService.pause();
+      }
+    }
   }
 }

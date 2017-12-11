@@ -8,7 +8,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class LessonActivity extends ParentActivity {
+public class LessonActivity extends BGMActivity {
 
   // Intent
   Intent mGameIntent;

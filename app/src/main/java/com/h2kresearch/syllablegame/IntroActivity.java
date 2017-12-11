@@ -1,15 +1,10 @@
 package com.h2kresearch.syllablegame;
 
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Handler;
-import android.provider.MediaStore.Images.Media;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import com.h2kresearch.syllablegame.utils.MusicService;
-import java.io.IOException;
 
-public class IntroActivity extends ParentActivity {
+public class IntroActivity extends BGMActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +42,7 @@ public class IntroActivity extends ParentActivity {
 //        startActivity(Intent.createChooser(i, "How do you want to send message?"));
 
       }
-    }, 500);
+    }, 2000);
   }
 
   @Override
