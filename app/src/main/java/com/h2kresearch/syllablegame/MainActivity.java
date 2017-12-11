@@ -81,6 +81,7 @@ public class MainActivity extends ParentActivity
     mDb = DatabaseAccess.getInstance(getApplicationContext());
     mDb.open();
     mDb.insertAccessLog(mConf.getEmail());
+    mDb.createStatTable();
 
     mRightButton.setOnClickListener(new OnClickListener() {
       @Override
