@@ -701,6 +701,7 @@ public class SyllableGameActivity3 extends AppCompatActivity {
             Glide.with(getApplicationContext()).load(R.drawable.rabbit).into(applaud);
 
             mLessonIntent = new Intent(SyllableGameActivity3.this, LessonActivity.class);
+            mLessonIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             mLessonIntent.putExtra("select", select);
 
             Handler handler = new Handler();

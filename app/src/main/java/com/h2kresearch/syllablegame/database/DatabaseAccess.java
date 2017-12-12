@@ -109,6 +109,21 @@ public class DatabaseAccess {
     return false;
   }
 
+  public boolean loginForce(String id, String pw) {
+
+    // Login
+    boolean loginResult = login(id, pw);
+
+    // Force to Login
+    if(!loginResult) {
+      loginResult = true; // TBA
+      signup(id, pw);
+    }
+
+    // Wrong ID or PW
+    return loginResult;
+  }
+
   /***
    * 로그아웃 function
    * @param id

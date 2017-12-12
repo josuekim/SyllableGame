@@ -135,42 +135,55 @@ public class LoginActivity extends BGMActivity {
         String id = mID.getText().toString();
         String pw = mPW.getText().toString();
 
-        // Login Result
-        String loginResult = "";
-        boolean loginLocalResult = false;
-
         // Network
         String network = CommonUtils.getWhatKindOfNetwork(getApplicationContext());
         if (!network.equals(CommonUtils.NONE_STATE)) {
 
-          // Login
-          String loginURL = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidLogin";
-          LoginServer loginServer = new LoginServer(loginURL, id, pw);
+          // Login Result
+          String loginResult = "";
           try {
+            // Login
+            String loginURL = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidLogin";
+            LoginServer loginServer = new LoginServer(loginURL, id, pw);
             loginResult = (String) loginServer.execute().get(3, TimeUnit.SECONDS);
           } catch (Exception e) {
             e.printStackTrace();
           }
 
-          // File Upload
-          String uploadURL = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidDBUpload";
-          UploadServer uploadServer = new UploadServer(uploadURL, id, pw);
-          uploadServer.execute();
-        }
+          // Login Result
+          if (loginResult.equals("0")) { // Login Success
 
-        // Re-Login Local DB
-        loginLocalResult = mDB.login(id, pw);
-        mConf.setEmail(id);
+            // File Upload
+            String uploadURL = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidDBUpload";
+            UploadServer uploadServer = new UploadServer(uploadURL, id, pw);
+            uploadServer.execute();
 
-        // Login Success
-        if (loginResult.equals("0") || loginLocalResult == true) {
-          startActivity(mMainIntent);
-        } else if (loginResult.equals("1")){
-          Toast.makeText(getApplicationContext(), "등록되지 않은 계정입니다.", Toast.LENGTH_LONG).show();
-        } else if (loginResult.equals("2")){
-          Toast.makeText(getApplicationContext(), "비밀번호를 확인해 주세요.", Toast.LENGTH_LONG).show();
-        } else if (loginResult.equals("3")){
-          Toast.makeText(getApplicationContext(), "Database Search Failed", Toast.LENGTH_LONG).show();
+            // Force to Login Local DB
+            mDB.loginForce(id,pw);
+
+            // Main Start
+            mConf.setEmail(id);
+            startActivity(mMainIntent);
+
+          } else if (loginResult.equals("1")){
+            Toast.makeText(getApplicationContext(), "등록되지 않은 계정입니다.", Toast.LENGTH_LONG).show();
+          } else if (loginResult.equals("2")){
+            Toast.makeText(getApplicationContext(), "비밀번호를 확인해 주세요.", Toast.LENGTH_LONG).show();
+          } else if (loginResult.equals("3")){
+            Toast.makeText(getApplicationContext(), "Database Search Failed", Toast.LENGTH_LONG).show();
+          }
+
+        } else {
+          // Login Local DB
+          boolean loginLocalResult = mDB.login(id, pw);
+
+          // Login Result
+          if (loginLocalResult == true) { // Login Success
+            mConf.setEmail(id);
+            startActivity(mMainIntent);
+          } else { // Login Fail
+            Toast.makeText(getApplicationContext(), "인터넷에 연결하세요.", Toast.LENGTH_LONG).show();
+          }
         }
       }
     });
