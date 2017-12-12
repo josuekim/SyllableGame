@@ -10,11 +10,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -26,7 +26,6 @@ import com.h2kresearch.syllablegame.utils.CommonUtils.ConsonantType;
 import com.h2kresearch.syllablegame.utils.CommonUtils.VowelType;
 import com.h2kresearch.syllablegame.utils.MusicService;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Random;
 
 public class SyllableGameActivity2 extends AppCompatActivity {
@@ -146,9 +145,6 @@ public class SyllableGameActivity2 extends AppCompatActivity {
     layoutParams.weight = 1;
     layoutParams.setMargins(0,10,0,10);
 
-    float xPixels = TypedValue
-        .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 83, getResources().getDisplayMetrics());
-
     int resourceId = -1;
     img_consonant = new ImageView[dec_consonants.length];
 
@@ -161,12 +157,8 @@ public class SyllableGameActivity2 extends AppCompatActivity {
           img_consonant[i].setImageResource(resourceId);
           consonantList.addView(img_consonant[i]);
 
-          //          LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((int) xPixels,
-//              LayoutParams.WRAP_CONTENT);
-//          layoutParams.gravity = Gravity.TOP;
           img_consonant[i].setLayoutParams(layoutParams);
           img_consonant[i].setAdjustViewBounds(true);
-//          img_consonant[i].setPadding(50, 10, 5, 0);
 
           img_consonant[i].setOnTouchListener(mTouchListener);
           img_consonant[i].setId((ct.ordinal() + 1) + 100);
@@ -203,13 +195,8 @@ public class SyllableGameActivity2 extends AppCompatActivity {
             img_vowelRight[countRight].setImageResource(resourceId);
             vowelList.addView(img_vowelRight[countRight]);
 
-            //            xPixels = TypedValue
-//                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
-//            LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams((int) xPixels, LayoutParams.WRAP_CONTENT);
-//            layoutParams.gravity= Gravity.TOP;
             img_vowelRight[countRight].setLayoutParams(layoutParams);
             img_vowelRight[countRight].setAdjustViewBounds(true);
-//            img_vowelRight[countRight].setPadding(50,10,10,0);
 
             img_vowelRight[countRight].setOnTouchListener(mTouchListener);
             img_vowelRight[countRight].setId((vt.ordinal()+1)+200);
@@ -221,13 +208,8 @@ public class SyllableGameActivity2 extends AppCompatActivity {
             resourceId = getResources().getIdentifier("vowel" + (vt.ordinal()+1), "drawable", getPackageName());
             img_vowelBottom[countBottom].setImageResource(resourceId);
 
-//            xPixels = TypedValue
-//                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 99, getResources().getDisplayMetrics());
-//            LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams((int) xPixels, LayoutParams.WRAP_CONTENT);
-//            layoutParams.gravity= Gravity.TOP;
             img_vowelBottom[countBottom].setLayoutParams(layoutParams);
             img_vowelBottom[countBottom].setAdjustViewBounds(true);
-//            img_vowelBottom[countBottom].setPadding(92,10,10,0);
 
             vowelList.addView(img_vowelBottom[countBottom]);
             img_vowelBottom[countBottom].setOnTouchListener(mTouchListener);
@@ -286,6 +268,14 @@ public class SyllableGameActivity2 extends AppCompatActivity {
 
     img_counting = (ImageView) findViewById(R.id.complete_counting);
     makeExamples(dec_consonants,dec_vowels);
+
+    ImageView listenBtn = (ImageView) findViewById(R.id.repeatButton2);
+    listenBtn.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        MusicService.MediaPlay(getApplicationContext(), correctSound[2]);
+      }
+    });
   }
 
   class ImageDrag extends View.DragShadowBuilder {
@@ -308,12 +298,6 @@ public class SyllableGameActivity2 extends AppCompatActivity {
     @Override
     public void onProvideShadowMetrics(Point shadowSize, Point shadowTouchPoint) {
       super.onProvideShadowMetrics(shadowSize, shadowTouchPoint);
-//      float xPixels = TypedValue
-//          .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 150, getResources().getDisplayMetrics());
-//      float yPixels = TypedValue
-//          .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 125, getResources().getDisplayMetrics());
-//      shadowSize.set((int) xPixels, (int) yPixels);
-//      shadowTouchPoint.set((int) xPixels / 2, (int) yPixels / 2);
       if(mHeight > mWidth) {
         shadowSize.set(mPuzzleWidth, mPuzzleHeight);
         shadowTouchPoint.set((int)(mPuzzleWidth/2), (int)(mPuzzleHeight/2));
@@ -365,10 +349,6 @@ public class SyllableGameActivity2 extends AppCompatActivity {
       switch (event.getAction()) {
         case DragEvent.ACTION_DRAG_STARTED:
           if (!flagMoved) {
-//            frame_consonant.setX(frame_consonant.getX() - 30f);
-//            frame_vowelRight.setX(frame_vowelRight.getX() + 30f);
-//            frame_vowelBottom.setY(frame_vowelBottom.getY() + 60f);
-//            frame_vowelBottom.setX(frame_vowelBottom.getX() - 30f);
             frame_consonant.setX(frame_consonant.getX()- mPuzzleGap);
             frame_vowelRight.setX(frame_vowelRight.getX() + mPuzzleGap);
             frame_vowelBottom.setY(frame_vowelBottom.getY() + mPuzzleGap*2);
@@ -443,10 +423,6 @@ public class SyllableGameActivity2 extends AppCompatActivity {
             }
 
             if (flagMoved) {
-//              frame_consonant.setX(frame_consonant.getX() + 30f);
-//              frame_vowelRight.setX(frame_vowelRight.getX() - 30f);
-//              frame_vowelBottom.setY(frame_vowelBottom.getY() - 60f);
-//              frame_vowelBottom.setX(frame_vowelBottom.getX() + 30f);
               frame_consonant.setX(frame_consonant.getX() + mPuzzleGap);
               frame_vowelRight.setX(frame_vowelRight.getX() - mPuzzleGap);
               frame_vowelBottom.setY(frame_vowelBottom.getY() - mPuzzleGap*2);
@@ -458,10 +434,6 @@ public class SyllableGameActivity2 extends AppCompatActivity {
           return true;
         case DragEvent.ACTION_DRAG_ENDED:
           if (flagMoved) {
-//            frame_consonant.setX(frame_consonant.getX() + 30f);
-//            frame_vowelRight.setX(frame_vowelRight.getX() - 30f);
-//            frame_vowelBottom.setY(frame_vowelBottom.getY() - 60f);
-//            frame_vowelBottom.setX(frame_vowelBottom.getX() + 30f);
             frame_consonant.setX(frame_consonant.getX() + mPuzzleGap);
             frame_vowelRight.setX(frame_vowelRight.getX() - mPuzzleGap);
             frame_vowelBottom.setY(frame_vowelBottom.getY() - mPuzzleGap*2);
@@ -582,17 +554,14 @@ public class SyllableGameActivity2 extends AppCompatActivity {
             @Override
             public void run() {
               int imageId = 0;
-              int imagePinkId = 0;
               frame_consonant.setVisibility(View.GONE);
               frame_vowelRight.setVisibility(View.GONE);
               frame_vowelBottom.setVisibility(View.GONE);
               if(frame_consonant.getTag() != null){
                 if(frame_vowelRight.getTag() != null){
                   imageId = ((int)frame_consonant.getTag() - 1) * 10 + (int)frame_vowelRight.getTag();
-                  imagePinkId = ((int)frame_consonant.getTag() * 22 + (int)frame_vowelRight.getTag() * 2) + 1;
                 }else if(frame_vowelBottom.getTag() != null){
                   imageId = ((int)frame_consonant.getTag() - 1) * 10 + (int)frame_vowelBottom.getTag();
-                  imagePinkId = ((int)frame_consonant.getTag()  * 22 + (int)frame_vowelBottom.getTag() * 2) + 1;
                 }
               }
               frame_fullsize = new FrameLayout(getApplicationContext());
@@ -606,7 +575,6 @@ public class SyllableGameActivity2 extends AppCompatActivity {
               fullWordView.setImageDrawable(getResources().getDrawable(getResources().getIdentifier("syl"+imageId+"_black","drawable", getPackageName())));
               frame_fullsize.addView(fullWordView);
               frame_fullsize.setTag(imageId);
-              frame_fullsize.setId(imagePinkId);
               frame_fullsize.setOnClickListener(mClickListener);
 
               char completeWord = CommonUtils
@@ -683,7 +651,6 @@ public class SyllableGameActivity2 extends AppCompatActivity {
       switch (msg.what) {
         case SEND_THREAD_START_MESSAGE:
           Log.d("thread", "thread start");
-          char speakWord = ' ';
           chkConVow = msg.arg1;
           newParent = (FrameLayout) msg.obj;
           imageNum = (int)newParent.getTag();
@@ -692,17 +659,14 @@ public class SyllableGameActivity2 extends AppCompatActivity {
           if(chkConVow == 1){
             resourceId = getResources()
                 .getIdentifier("consonant" + imageNum +"_pink", "drawable", getPackageName());
-            speakWord = currentConsonant;
 
             MusicService.MediaPlay(getApplicationContext(), correctSound[0]);
           } else if(chkConVow == 2){
             resourceId = getResources()
                 .getIdentifier("vowel" + imageNum +"_pink", "drawable", getPackageName());
-            speakWord = currentVowel;
             MusicService.MediaPlay(getApplicationContext(), correctSound[1]);
           } else {
-            resourceId = getResources().getIdentifier("han" + newParent.getId(),"drawable", getPackageName());
-            speakWord = CommonUtils.characterCombination(currentConsonant, currentVowel, ' ');
+            resourceId = getResources().getIdentifier("syl"+newParent.getTag()+"_pink","drawable", getPackageName());
 
             MusicService.MediaPlay(getApplicationContext(), correctSound[2]);
 

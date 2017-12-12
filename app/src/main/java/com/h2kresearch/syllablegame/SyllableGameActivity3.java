@@ -752,7 +752,8 @@ public class SyllableGameActivity3 extends AppCompatActivity {
 
             MusicService.MediaPlay(getApplicationContext(), correctSound[1]);
           } else {
-            resourceId = getResources().getIdentifier("han" + newParent.getId(),"drawable", getPackageName());
+            resourceId = getResources().getIdentifier("syl"+newParent.getTag()+"_pink","drawable", getPackageName());
+            //resourceId = getResources().getIdentifier("han" + newParent.getId(),"drawable", getPackageName());
             speakWord = CommonUtils.characterCombination(currentConsonant, currentVowel, ' ');
 
             MusicService.MediaPlay(getApplicationContext(), correctSound[2]);
