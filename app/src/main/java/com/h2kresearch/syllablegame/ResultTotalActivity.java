@@ -19,20 +19,18 @@ public class ResultTotalActivity extends ResultGraphActivity {
     // Get User Email and Date
     ConfigurationModel conf = ConfigurationModel.getInstance();
     mEmail = conf.getEmail();
-//    mDate = conf.getToday();
-//    mDate = "2017/11/29";
 
     // Total Achieve
-    mAchieve = mDB.getTotalAchieve(mEmail);
+    mAchieve = mDB.getTotalAchieve();
 
     // Total Achieve according to sound
-    mAchieveSound = mDB.getTotalAchieveSound(mEmail);
+    mAchieveSound = mDB.getTotalAchieveSound();
 
     // Wrong Answer according to sound
-    mWrongSound = mDB.getTotalWrongSound(mEmail);
+    mWrongSound = mDB.getTotalWrongSound();
 
     // Daily Exam
-    mExam = mDB.getTotalExam(mEmail);
+    mExam = mDB.getTotalExam();
 
     // Draw Graph
     DrawGraph();

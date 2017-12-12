@@ -15,26 +15,17 @@ public class ResultDailyActivity extends ResultGraphActivity {
     mDB = DatabaseAccess.getInstance(this);
     mDB.open();
 
-    // Get User Email and Date
-    ConfigurationModel conf = ConfigurationModel.getInstance();
-    mEmail = conf.getEmail();
-//    mDate = conf.getToday();
-    mDate = "2017/11/29";
-
-    // Daily ID
-    mDailyID = mDB.getDailyID(mEmail, mDate);
-
     // Daily (Total) Achieve
-    mAchieve = mDB.getDailyAchieve(mDailyID);
+    mAchieve = mDB.updateDailyAverage();
 
     // Daily Achieve according to sound
-    mAchieveSound = mDB.getDailyAchieveSound(mDailyID);
+    mAchieveSound = mDB.getDailyAchieveSound();
 
     // Wrong Answer according to sound
-    mWrongSound = mDB.getDailyWrongSound(mDailyID);
+    mWrongSound = mDB.getDailyWrongSound();
 
     // Daily Exam
-    mExam = mDB.getDailyExam(mDailyID);
+    mExam = mDB.getDailyExam();
 
     // DrawGraph
     DrawGraph();

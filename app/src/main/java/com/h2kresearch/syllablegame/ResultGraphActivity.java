@@ -42,9 +42,7 @@ public class ResultGraphActivity extends BGMActivity implements OnClickListener 
   DatabaseAccess mDB;
 
   String mEmail;
-  String mDate;
 
-  int mDailyID;
   int mAchieve;
   ArrayList<Map> mAchieveSound; // {Sound, Achieve}
   ArrayList<Map> mWrongSound; // {Sound, {Wrong Sound, Count}}
@@ -260,7 +258,11 @@ public class ResultGraphActivity extends BGMActivity implements OnClickListener 
       int sound = (int) param.get("syllable_code");
       int correct = (int) param.get("correct_cnt");
       int count = (int) param.get("exam_cnt");
-      float achieve = (float)correct/(float)count;
+
+      float achieve = 0.0f;
+      if(count != 0) {
+        achieve = (float) correct / (float) count;
+      }
       entries.add(new BarEntry((float)(i+1), achieve));
 
       // Add Sound Image View
@@ -353,11 +355,17 @@ public class ResultGraphActivity extends BGMActivity implements OnClickListener 
 
       int correct = (int)map.get("correct_cnt");
       int exam = (int)map.get("exam_cnt");
-      float achieve1 = (float)correct/(float)exam;
+      float achieve1 = 0.0f;
+      if(exam != 0 ) {
+        achieve1 = (float)correct/(float)exam;
+      }
 
       correct = (int)t1.get("correct_cnt");
       exam = (int)t1.get("exam_cnt");
-      float achieve2 = (float)correct/(float)exam;
+      float achieve2 = 0.0f;
+      if(exam != 0 ) {
+        achieve2 = (float)correct/(float)exam;
+      }
 
       return Float.compare(achieve2, achieve1);
     }
