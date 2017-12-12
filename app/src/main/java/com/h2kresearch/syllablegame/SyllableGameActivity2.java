@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
@@ -228,11 +227,11 @@ public class SyllableGameActivity2 extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_syllable_game2);
 
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolBar);
-    setSupportActionBar(toolbar);
-    getSupportActionBar().setDisplayShowTitleEnabled(false);
-    TextView tv = (TextView) findViewById(R.id.toolbar_title);
-    tv.setText("음절 조합 연습");
+//    Toolbar toolbar = (Toolbar) findViewById(R.id.toolBar);
+//    setSupportActionBar(toolbar);
+//    getSupportActionBar().setDisplayShowTitleEnabled(false);
+//    TextView tv = (TextView) findViewById(R.id.toolbar_title);
+//    tv.setText("음절 조합 연습");
 
     Intent preIntent = getIntent();
     select = preIntent.getStringArrayExtra("select");
@@ -261,7 +260,7 @@ public class SyllableGameActivity2 extends AppCompatActivity {
     frame_vowelBottom.setOnClickListener(mClickListener);
     frame_vowelBottom.setClickable(false);
 
-    backBtn = (TextView) findViewById(R.id.backButton);
+    backBtn = (TextView) findViewById(R.id.textViewL);
     backBtn.setOnClickListener(mClickListener);
 
     makeDragItems();

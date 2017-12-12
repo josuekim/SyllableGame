@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.DragEvent;
@@ -17,7 +16,6 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -275,11 +273,11 @@ public class SyllableGameActivity3 extends AppCompatActivity {
     Intent preIntent = getIntent();
     select = preIntent.getStringArrayExtra("select");
 
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolBar);
-    setSupportActionBar(toolbar);
-    getSupportActionBar().setDisplayShowTitleEnabled(false);
-    TextView tv = (TextView) findViewById(R.id.toolbar_title);
-    tv.setText("음절 조합 확인");
+//    Toolbar toolbar = (Toolbar) findViewById(R.id.toolBar);
+//    setSupportActionBar(toolbar);
+//    getSupportActionBar().setDisplayShowTitleEnabled(false);
+//    TextView tv = (TextView) findViewById(R.id.toolbar_title);
+//    tv.setText("음절 조합 확인");
 
     ArrayList<String[]> wordList = CommonUtils.deCombinationList(select);
     dec_consonants = CommonUtils.removeDuplicateArray(wordList.get(0));
@@ -308,7 +306,7 @@ public class SyllableGameActivity3 extends AppCompatActivity {
     mDB = mDB.getInstance(this);
     mConf = mConf.getInstance();
 
-    backBtn = (TextView) findViewById(R.id.backButton);
+    backBtn = (TextView) findViewById(R.id.textViewL);
     backBtn.setOnClickListener(mClickListener);
 
     ImageView listenBtn = (ImageView) findViewById(R.id.repeatButton);

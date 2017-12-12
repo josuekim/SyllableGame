@@ -5,83 +5,78 @@
   android:layout_height="match_parent"
   android:padding="20dp"
   android:background="#AAAAAA"
-  android:orientation="horizontal">
+  android:orientation="vertical">
 
   <LinearLayout
-    android:layout_width="0dp"
-    android:layout_height="match_parent"
-    android:layout_weight="1.5"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <ImageView
+      android:id="@+id/imageViewSound"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:adjustViewBounds="true"
+      app:srcCompat="@drawable/han23" />
     <LinearLayout
       android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_weight="1"
-      android:orientation="horizontal">
-      <ImageView
-        android:id="@+id/imageViewSound"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        app:srcCompat="@drawable/han24" />
-      <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical">
-        <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="horizontal">
-          <TextView
-            android:id="@+id/textView16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="오늘의 성취도 : " />
-          <TextView
-            android:id="@+id/textViewAcheive"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
-        </LinearLayout>
-        <TextView
-          android:id="@+id/textViewNum"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="오늘 7번 테스트 함" />
-      </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
+      android:layout_height="match_parent"
       android:layout_weight="1"
       android:orientation="vertical">
+      <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+          android:id="@+id/textViewAcheive"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="78%" />
+        <TextView
+          android:id="@+id/textViewNum"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="(7번 확인됨)" />
+      </LinearLayout>
       <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/textViewWrong"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="오늘 가장 헷갈려 했던 음소" />
+        android:text="오답 유형" />
       <LinearLayout
         android:id="@+id/LinearLayoutWrong"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="horizontal"></LinearLayout>
     </LinearLayout>
   </LinearLayout>
-  <ScrollView
-    android:layout_width="0dp"
-    android:layout_height="match_parent"
-    android:layout_weight="1">
-    <LinearLayout
-      android:id="@+id/LinearLayoutExam"
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:orientation="vertical">
+    <TextView
+      android:id="@+id/textViewExam"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:text="테스트 상세 내용"
+      android:textSize="14sp" />
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
       android:orientation="vertical">
-      <TextView
-        android:id="@+id/textView4"
+      <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="테스트 상세 내용"
-        android:textSize="14sp" />
+        android:layout_gravity="top">
+        <LinearLayout
+          android:id="@+id/LinearLayoutExam"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"></LinearLayout>
+      </ScrollView>
     </LinearLayout>
-  </ScrollView>
+  </LinearLayout>
 </LinearLayout>

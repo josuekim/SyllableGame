@@ -32,7 +32,7 @@ public class ResultDailyActivity extends ResultGraphActivity {
 
     // Layout
     mTextView.setText("오늘의 결과");
-    mTextViewAchieveText.setText("오늘의 종합 성취도 : ");
+    mTextViewAchieveText.setText("오늘의 종합 성취도는 ");
     mTextViewAchieve.setText(mAchieve+"%");
   }
 }
