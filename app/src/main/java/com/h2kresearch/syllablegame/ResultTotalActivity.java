@@ -37,7 +37,7 @@ public class ResultTotalActivity extends ResultGraphActivity {
 
     // Layout
     mTextView.setText("종합 성취도");
-    mTextViewAchieveText.setText("종합 성취도 : ");
+    mTextViewAchieveText.setText("종합 성취도는 ");
     mTextViewAchieve.setText(mAchieve+"%");
 
   }

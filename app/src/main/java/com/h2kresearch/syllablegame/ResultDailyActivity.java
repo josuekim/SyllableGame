@@ -3,6 +3,8 @@ package com.h2kresearch.syllablegame;
 import android.os.Bundle;
 import com.h2kresearch.syllablegame.database.DatabaseAccess;
 import com.h2kresearch.syllablegame.model.ConfigurationModel;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class ResultDailyActivity extends ResultGraphActivity {
 
