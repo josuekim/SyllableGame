@@ -20,6 +20,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +57,10 @@ public class SyllableGameActivity extends AppCompatActivity {
   boolean flagMoved = false;
 
   int completeCnt = 0;
+
+  float mPuzzleGap = 30.0f;
+  int mPuzzleWidth = 240;
+  int mPuzzleHeight = 300;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +108,10 @@ public class SyllableGameActivity extends AppCompatActivity {
       }
     });
 
+    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 0);
+    layoutParams.weight = 1;
+    layoutParams.setMargins(0,10,0,10);
+
     float xPixels = TypedValue
         .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 77, getResources().getDisplayMetrics());
     float yPixels = TypedValue
@@ -116,16 +125,18 @@ public class SyllableGameActivity extends AppCompatActivity {
       for (int i = 0; i < dec_consonants.length; i++) {
         if (ct.getName().equals(dec_consonants[i].toString())) {
           img_consonant[i] = new ImageView(this);
-          LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((int) xPixels,
-              LayoutParams.WRAP_CONTENT);
-          layoutParams.gravity = Gravity.TOP;
-          img_consonant[i].setLayoutParams(layoutParams);
-          img_consonant[i].setAdjustViewBounds(true);
-          img_consonant[i].setPadding(0, 10, 5, 0);
           resourceId = getResources()
               .getIdentifier("consonant" + (ct.ordinal() + 1), "drawable", getPackageName());
           img_consonant[i].setImageResource(resourceId);
           consonantList.addView(img_consonant[i]);
+
+          //          LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((int) xPixels,
+//              LayoutParams.WRAP_CONTENT);
+//          layoutParams.gravity = Gravity.TOP;
+          img_consonant[i].setLayoutParams(layoutParams);
+          img_consonant[i].setAdjustViewBounds(true);
+//          img_consonant[i].setPadding(0, 10, 5, 0);
+
           img_consonant[i].setOnTouchListener(mTouchListener);
           img_consonant[i].setId(i + 100);
           consonantsIdList[i] = img_consonant[i].getId();
@@ -158,40 +169,44 @@ public class SyllableGameActivity extends AppCompatActivity {
       for (int i = 0; i < dec_vowels.length; i++) {
         if (vt.getVow().equals(dec_vowels[i].toString())) {
           if (vt.getSide().equals("R")) {
-            xPixels = TypedValue
-                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 96,
-                    getResources().getDisplayMetrics());
             img_vowelRight[countRight] = new ImageView(this);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((int) xPixels,
-                LayoutParams.WRAP_CONTENT);
-            layoutParams.gravity = Gravity.TOP;
-            img_vowelRight[countRight].setLayoutParams(layoutParams);
-            img_vowelRight[countRight].setAdjustViewBounds(true);
-            img_vowelRight[countRight].setPadding(0, 10, 10, 0);
             resourceId = getResources()
                 .getIdentifier("vowel" + (vt.ordinal() + 1), "drawable", getPackageName());
             img_vowelRight[countRight].setImageResource(resourceId);
             vowelList.addView(img_vowelRight[countRight]);
+
+//            xPixels = TypedValue
+//                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 96,
+//                    getResources().getDisplayMetrics());
+            //            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((int) xPixels,
+//                LayoutParams.WRAP_CONTENT);
+//            layoutParams.gravity = Gravity.TOP;
+            img_vowelRight[countRight].setLayoutParams(layoutParams);
+            img_vowelRight[countRight].setAdjustViewBounds(true);
+//            img_vowelRight[countRight].setPadding(0, 10, 10, 0);
+
             img_vowelRight[countRight].setOnTouchListener(mTouchListener);
             img_vowelRight[countRight].setId(i + 200);
             vowelRightIdList[countRight] = img_vowelRight[countRight].getId();
             img_vowelRight[countRight].setContentDescription(dec_vowels[i].toString());
             countRight++;
           } else if (vt.getSide().equals("B")) {
-            xPixels = TypedValue
-                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 77,
-                    getResources().getDisplayMetrics());
             img_vowelBottom[countBottom] = new ImageView(this);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((int) xPixels,
-                LayoutParams.WRAP_CONTENT);
-            layoutParams.gravity = Gravity.TOP;
-            img_vowelBottom[countBottom].setLayoutParams(layoutParams);
-            img_vowelBottom[countBottom].setAdjustViewBounds(true);
-            img_vowelBottom[countBottom].setPadding(0, 10, 10, 0);
             resourceId = getResources()
                 .getIdentifier("vowel" + (vt.ordinal() + 1), "drawable", getPackageName());
             img_vowelBottom[countBottom].setImageResource(resourceId);
             vowelList.addView(img_vowelBottom[countBottom]);
+
+            //            xPixels = TypedValue
+//                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 77,
+//                    getResources().getDisplayMetrics());
+//            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((int) xPixels,
+//                LayoutParams.WRAP_CONTENT);
+//            layoutParams.gravity = Gravity.TOP;
+            img_vowelBottom[countBottom].setLayoutParams(layoutParams);
+            img_vowelBottom[countBottom].setAdjustViewBounds(true);
+//            img_vowelBottom[countBottom].setPadding(0, 10, 10, 0);
+
             img_vowelBottom[countBottom].setOnTouchListener(mTouchListener);
             img_vowelBottom[countBottom].setId(i + 300);
             vowelBottomIdList[countBottom] = img_vowelBottom[countBottom].getId();
@@ -225,17 +240,30 @@ public class SyllableGameActivity extends AppCompatActivity {
     @Override
     public void onProvideShadowMetrics(Point shadowSize, Point shadowTouchPoint) {
       super.onProvideShadowMetrics(shadowSize, shadowTouchPoint);
-      float xPixels = TypedValue
-          .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 250, getResources().getDisplayMetrics());
-      float yPixels = TypedValue
-          .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 250, getResources().getDisplayMetrics());
-      shadowSize.set((int) xPixels, (int) yPixels);
-      shadowTouchPoint.set((int) xPixels / 2, (int) yPixels / 2);
+      if(mHeight > mWidth) {
+        shadowSize.set(mPuzzleWidth, mPuzzleHeight);
+        shadowTouchPoint.set((int)(mPuzzleWidth/2), (int)(mPuzzleHeight/2));
+      } else if (mWidth > mHeight) {
+        shadowSize.set(mPuzzleHeight, mPuzzleWidth);
+        shadowTouchPoint.set((int)(mPuzzleHeight/2), (int)(mPuzzleWidth/2));
+      } else {
+        shadowSize.set(mPuzzleWidth, mPuzzleWidth);
+        shadowTouchPoint.set((int)(mPuzzleWidth/2), (int)(mPuzzleWidth/2));
+      }
     }
 
     @Override
     public void onDrawShadow(Canvas canvas) {
-      canvas.scale(2.6f, 2.6f);
+      if(mHeight > mWidth) {
+        float scale = (float) mPuzzleWidth / (float) mWidth;
+        canvas.scale(scale, scale);
+      } else if (mWidth > mHeight) {
+        float scale = (float) mPuzzleHeight / (float) mWidth;
+        canvas.scale(scale, scale);
+      } else {
+        float scale = (float) mPuzzleWidth / (float) mWidth;
+        canvas.scale(scale, scale);
+      }
       super.onDrawShadow(canvas);
     }
   }
@@ -247,7 +275,7 @@ public class SyllableGameActivity extends AppCompatActivity {
 
       ClipData clipData = ClipData.newPlainText("", "");
       v.startDrag(clipData, new ImageDrag(v, (int) v.getX(), (int) v.getY()), v, 0);
-      v.setVisibility(View.INVISIBLE);
+      v.setVisibility(View.GONE);
 
       return true;
     }
@@ -260,7 +288,7 @@ public class SyllableGameActivity extends AppCompatActivity {
         case MotionEvent.ACTION_DOWN:
           ClipData clipData = ClipData.newPlainText("", "");
           v.startDrag(clipData, new ImageDrag(v, (int) event.getX(), (int) event.getY()), v, 0);
-          v.setVisibility(View.INVISIBLE);
+          v.setVisibility(View.GONE);
 
           return true;
       }
@@ -275,10 +303,14 @@ public class SyllableGameActivity extends AppCompatActivity {
       switch (event.getAction()) {
         case DragEvent.ACTION_DRAG_STARTED:
           if (!flagMoved) {
-            frame_consonant.setX(frame_consonant.getX() - 30f);
-            frame_vowelRight.setX(frame_vowelRight.getX() + 30f);
-            frame_vowelBottom.setY(frame_vowelBottom.getY() + 60f);
-            frame_vowelBottom.setX(frame_vowelBottom.getX() - 30f);
+//            frame_consonant.setX(frame_consonant.getX() - 30f);
+//            frame_vowelRight.setX(frame_vowelRight.getX() + 30f);
+//            frame_vowelBottom.setY(frame_vowelBottom.getY() + 60f);
+//            frame_vowelBottom.setX(frame_vowelBottom.getX() - 30f);
+            frame_consonant.setX(frame_consonant.getX()- mPuzzleGap);
+            frame_vowelRight.setX(frame_vowelRight.getX() + mPuzzleGap);
+            frame_vowelBottom.setY(frame_vowelBottom.getY() + mPuzzleGap*2);
+            frame_vowelBottom.setX(frame_vowelBottom.getX() - mPuzzleGap);
             flagMoved = true;
           }
           return true;
@@ -351,10 +383,14 @@ public class SyllableGameActivity extends AppCompatActivity {
             }
 
             if (flagMoved) {
-              frame_consonant.setX(frame_consonant.getX() + 30f);
-              frame_vowelRight.setX(frame_vowelRight.getX() - 30f);
-              frame_vowelBottom.setY(frame_vowelBottom.getY() - 60f);
-              frame_vowelBottom.setX(frame_vowelBottom.getX() + 30f);
+//              frame_consonant.setX(frame_consonant.getX() + 30f);
+//              frame_vowelRight.setX(frame_vowelRight.getX() - 30f);
+//              frame_vowelBottom.setY(frame_vowelBottom.getY() - 60f);
+//              frame_vowelBottom.setX(frame_vowelBottom.getX() + 30f);
+              frame_consonant.setX(frame_consonant.getX() + mPuzzleGap);
+              frame_vowelRight.setX(frame_vowelRight.getX() - mPuzzleGap);
+              frame_vowelBottom.setY(frame_vowelBottom.getY() - mPuzzleGap*2);
+              frame_vowelBottom.setX(frame_vowelBottom.getX() + mPuzzleGap);
               flagMoved = false;
             }
 
@@ -362,10 +398,14 @@ public class SyllableGameActivity extends AppCompatActivity {
           return true;
         case DragEvent.ACTION_DRAG_ENDED:
           if (flagMoved) {
-            frame_consonant.setX(frame_consonant.getX() + 30f);
-            frame_vowelRight.setX(frame_vowelRight.getX() - 30f);
-            frame_vowelBottom.setY(frame_vowelBottom.getY() - 60f);
-            frame_vowelBottom.setX(frame_vowelBottom.getX() + 30f);
+//            frame_consonant.setX(frame_consonant.getX() + 30f);
+//            frame_vowelRight.setX(frame_vowelRight.getX() - 30f);
+//            frame_vowelBottom.setY(frame_vowelBottom.getY() - 60f);
+//            frame_vowelBottom.setX(frame_vowelBottom.getX() + 30f);
+            frame_consonant.setX(frame_consonant.getX() + mPuzzleGap);
+            frame_vowelRight.setX(frame_vowelRight.getX() - mPuzzleGap);
+            frame_vowelBottom.setY(frame_vowelBottom.getY() - mPuzzleGap*2);
+            frame_vowelBottom.setX(frame_vowelBottom.getX() + mPuzzleGap);
             flagMoved = false;
           }
 
@@ -422,48 +462,58 @@ public class SyllableGameActivity extends AppCompatActivity {
     }
   }
 
+  void adjustWindowView() {
+
+    // Linear Layout (Total Size)
+    LinearLayout linearLayout = (LinearLayout) findViewById(R.id.LinearLayout);
+    int maxWidth = linearLayout.getWidth();
+    int maxHeight = linearLayout.getHeight();
+
+    float limit = 0.35f;
+    float ratioWH = 0.8f;
+    float ratioIH = 0.588f;
+    float ratioMH = 0.2f;
+    float ratioGH = 0.1f;
+
+    float imgHeight = maxHeight * limit;
+    float imgWidth = imgHeight * ratioWH;
+    float imgMarginInterval = imgHeight * ratioIH;
+    float imgMargin = imgHeight*ratioMH;
+
+    mPuzzleGap = maxHeight * limit * ratioGH;
+    mPuzzleWidth = (int) imgWidth;
+    mPuzzleHeight = (int) imgHeight;
+
+    int width = (int) imgWidth;
+    int height = (int) imgHeight;
+    int marginInterval = (int) imgMarginInterval;
+    int margin = (int) imgMargin;
+
+    // Assign
+    frame_consonant.getLayoutParams().width = width;
+    frame_consonant.getLayoutParams().height = height+4;
+    ((RelativeLayout.LayoutParams)frame_consonant.getLayoutParams()).leftMargin = margin;
+    ((RelativeLayout.LayoutParams)frame_consonant.getLayoutParams()).topMargin = margin;
+
+    frame_vowelRight.getLayoutParams().width = height;
+    frame_vowelRight.getLayoutParams().height = width;
+    ((RelativeLayout.LayoutParams)frame_vowelRight.getLayoutParams()).leftMargin = marginInterval;
+    ((RelativeLayout.LayoutParams)frame_vowelRight.getLayoutParams()).setMarginStart(marginInterval);
+    ((RelativeLayout.LayoutParams)frame_vowelRight.getLayoutParams()).setMarginEnd(margin);
+
+    frame_vowelBottom.getLayoutParams().width = width;
+    frame_vowelBottom.getLayoutParams().height = width;
+    ((RelativeLayout.LayoutParams)frame_vowelBottom.getLayoutParams()).bottomMargin = margin;
+
+    frame_consonant.removeAllViews();
+    frame_vowelRight.removeAllViews();
+    frame_vowelBottom.removeAllViews();
+  }
+
   @Override
   public void onWindowFocusChanged(boolean hasFocus) {
     super.onWindowFocusChanged(hasFocus);
 
-    // Display Metrics
-//    DisplayMetrics displayMetrics = new DisplayMetrics();
-//    getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-//    int dp = Math.round(height / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-
-//    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)frame_vowelRight.getLayoutParams();
-//
-//    // Linear Layout (Total Size)
-//    LinearLayout linearLayout = (LinearLayout) findViewById(R.id.LinearLayout);
-//    int maxWidth = linearLayout.getWidth();
-//    int maxHeight = linearLayout.getHeight();
-//
-//    // Width/Height Ratio
-//    int originalW = frame_consonant.getWidth();
-//    int originalH = frame_consonant.getHeight();
-//    int originalM = ((RelativeLayout.LayoutParams)frame_vowelRight.getLayoutParams()).getMarginStart();
-//
-//    // Ratio
-//    float ratio = (float) originalW / (float) originalH;
-//    ratio = 0.8f;
-//
-//    // Target Size
-//    float limit = 0.5f;
-//    int height = (int) (maxHeight * limit);
-//    int width = (int) (height * ratio);
-//    float scale = (float)width / (float)originalW;
-//    int margin = (int) (originalM * scale);
-//
-//    // Assign
-//    frame_consonant.getLayoutParams().width = width;
-//    frame_consonant.getLayoutParams().height = height;
-//
-//    frame_vowelRight.getLayoutParams().width = height;
-//    frame_vowelRight.getLayoutParams().height = width;
-//    ((RelativeLayout.LayoutParams)frame_vowelRight.getLayoutParams()).leftMargin = margin;
-//    ((RelativeLayout.LayoutParams)frame_vowelRight.getLayoutParams()).setMarginStart(margin);
-//
-//    frame_vowelBottom.getLayoutParams().width = width;
-//    frame_vowelBottom.getLayoutParams().height = width;
+    adjustWindowView();
   }
 }
