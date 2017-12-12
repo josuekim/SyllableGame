@@ -681,8 +681,8 @@ public class DatabaseAccess {
 
         // Wrong Sound List
         Map<String, Integer> param = new HashMap<String, Integer>();
-        param.put("wrong_code", cursor.getInt(3));
-        param.put("wrong_code_cnt", cursor.getInt(4));
+        param.put("wrong_code", cursor.getInt(4));
+        param.put("wrong_code_cnt", cursor.getInt(5));
 
         // Add to List
         list.add(param);

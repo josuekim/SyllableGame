@@ -9,7 +9,7 @@
     <color name="colorPink1">#F8BBD0</color>
     <color name="titleBarColor">#424C58</color>
     <color name="titleBarTextColor">#FFFFFF</color>
-    <color name="highlightColor">#FF4081</color>
+    <color name="highlightColor">#EF4581</color>
     <color name="dragAreaColor">#F3F4F5</color>
     <color name="backgroundColor">#FFFFFF</color>
     <color name="textColor">#000000</color>

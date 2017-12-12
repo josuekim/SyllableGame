@@ -28,7 +28,7 @@
         android:orientation="horizontal">
         <TextView
           android:id="@+id/textViewL"
-          android:textStyle=""
+          android:textStyle="bold"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
@@ -39,7 +39,7 @@
           android:text="로그아웃"
           android:textAlignment="gravity"
           android:textColor="@color/colorAccent"
-          android:textSize="14dp"/>
+          android:textSize="14dp" />
         <TextView
           android:id="@+id/textView"
           android:textStyle="bold"
@@ -53,10 +53,10 @@
           android:text="음절표"
           android:textAlignment="gravity"
           android:textColor="@color/titleBarTextColor"
-          android:textSize="20dp"/>
+          android:textSize="18dp" />
         <TextView
           android:id="@+id/textViewR"
-          android:textStyle=""
+          android:textStyle="bold"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
@@ -67,7 +67,7 @@
           android:text="선택"
           android:textAlignment="gravity"
           android:textColor="@color/colorAccent"
-          android:textSize="16dp"/>
+          android:textSize="14dp" />
       </LinearLayout>
       <TableLayout
         android:id="@+id/TableLayout"

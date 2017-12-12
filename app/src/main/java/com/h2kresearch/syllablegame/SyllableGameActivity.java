@@ -9,7 +9,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.DragEvent;
 import android.view.Gravity;
@@ -74,9 +73,9 @@ public class SyllableGameActivity extends AppCompatActivity {
     Object[] dec_consonants = CommonUtils.removeDuplicateArray(wordList.get(0));
     Object[] dec_vowels = CommonUtils.removeDuplicateArray(wordList.get(1));
 
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolBar);
-    setSupportActionBar(toolbar);
-    getSupportActionBar().setDisplayShowTitleEnabled(false);
+//    Toolbar toolbar = (Toolbar) findViewById(R.id.toolBar);
+//    setSupportActionBar(toolbar);
+//    getSupportActionBar().setDisplayShowTitleEnabled(false);
 
     consonantList = (LinearLayout) findViewById(R.id.consonantList);
     vowelList = (LinearLayout) findViewById(R.id.vowelList);
@@ -90,7 +89,7 @@ public class SyllableGameActivity extends AppCompatActivity {
     frame_vowelBottom = (FrameLayout) findViewById(R.id.vowelBottom);
     frame_vowelBottom.setOnDragListener(mDragListener);
 
-    TextView backBtn = (TextView) findViewById(R.id.backButton);
+    TextView backBtn = (TextView) findViewById(R.id.textViewL);
     backBtn.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {

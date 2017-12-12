@@ -15,6 +15,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.Space;
 import android.widget.TextView;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -157,7 +158,7 @@ public class ResultGraphActivity extends BGMActivity implements OnClickListener 
               break;
             Map param2 = wrongList.get(j);
             int wrongSound = (int) param2.get("wrong_code");
-            int resource = CalResource(wrongSound);
+            int resource = CalResourceGray(wrongSound);
 
             ImageView imageView = new ImageView(this);
             imageView.setImageResource(resource);
@@ -202,7 +203,7 @@ public class ResultGraphActivity extends BGMActivity implements OnClickListener 
 
         // Consonant
         ImageView consImageView = new ImageView(this);
-        int consResource = CalResource(sound1);
+        int consResource = CalResourceGray(sound1);
         consImageView.setImageResource(consResource);
         examLayout.addView(consImageView);
         LinearLayout.LayoutParams consImageViewParams = (LinearLayout.LayoutParams) consImageView.getLayoutParams();
@@ -213,7 +214,7 @@ public class ResultGraphActivity extends BGMActivity implements OnClickListener 
 
         // Vowel
         ImageView vowelImageView = new ImageView(this);
-        int vowelResource = CalResource(sound2);
+        int vowelResource = CalResourceGray(sound2);
         vowelImageView.setImageResource(vowelResource);
         examLayout.addView(vowelImageView);
         LinearLayout.LayoutParams vowelImageViewParams = (LinearLayout.LayoutParams) vowelImageView.getLayoutParams();
@@ -245,13 +246,15 @@ public class ResultGraphActivity extends BGMActivity implements OnClickListener 
     LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) space.getLayoutParams();
     params.width = 0;
     params.weight = 0.5f;
+    params.setMargins(5, 0, 0, 0);
 
     // mAchieveSound Sort (1. Value, 2. Type)
     Collections.sort(mAchieveSound, SortByAchieve);
 
     // Graph
+    int NumEntry = mAchieveSound.size();
     List<BarEntry> entries = new ArrayList<BarEntry>();
-    for(int i=0; i<mAchieveSound.size(); i++) {
+    for(int i=0; i<NumEntry; i++) {
 
       // Data According to Sound
       Map param = mAchieveSound.get(i);
@@ -259,28 +262,36 @@ public class ResultGraphActivity extends BGMActivity implements OnClickListener 
       int correct = (int) param.get("correct_cnt");
       int count = (int) param.get("exam_cnt");
 
-      float achieve = 0.0f;
-      if(count != 0) {
-        achieve = (float) correct / (float) count;
-      }
-      entries.add(new BarEntry((float)(i+1), achieve));
-
       // Add Sound Image View
       SyllableImageView imageView = new SyllableImageView(this);
       imageView.code = sound;
 
-      int resource = CalResource(sound);
-//      int resource = R.drawable.han24;
+      float achieve = 0.0f;
+      int resource = CalResourceGray(sound);
+      if(count != 0) {
+        achieve = (float) correct / (float) count * 100.0f;
+        resource = CalResourceRed(sound);
+        imageView.setOnClickListener(this);
+      }
+      entries.add(new BarEntry((float)(i+1), achieve));
 
       // Set View Param
       imageView.setImageResource(resource);
       imageView.setAdjustViewBounds(true);
-      imageView.setOnClickListener(this);
       layout.addView(imageView);
       params = (LinearLayout.LayoutParams) imageView.getLayoutParams();
       params.width = 0;
       params.weight = 1;
-      params.setMargins(10, 0, 0, 0);
+      params.setMargins(5, 0, 0, 0);
+    }
+
+    for(int i=NumEntry; i<24; i++) {
+      Space spaceEntry = new Space(this);
+      layout.addView(spaceEntry);
+      params = (LinearLayout.LayoutParams) spaceEntry.getLayoutParams();
+      params.width = 0;
+      params.weight = 1.0f;
+      params.setMargins(5, 0, 0, 0);
     }
 
     // Space End
@@ -289,20 +300,24 @@ public class ResultGraphActivity extends BGMActivity implements OnClickListener 
     params = (LinearLayout.LayoutParams) space2.getLayoutParams();
     params.width = 0;
     params.weight = 0.5f;
+    params.setMargins(5, 0, 0, 0);
 
     // Graph View Draw
     BarChart chart = (BarChart) findViewById(R.id.chart);
     BarDataSet dataSet = new BarDataSet(entries, "Label"); // add entries to dataset
-    dataSet.setColor(Color.parseColor("#424C58"));
+    dataSet.setColor(getResources().getColor(R.color.titleBarColor));
+    dataSet.setHighLightColor(getResources().getColor(R.color.highlightColor));
+    dataSet.setHighLightAlpha(255);
 //    dataSet.setValueTextColor(...); // styling, ...
 
     BarData barData = new BarData(dataSet);
     chart.setData(barData);
+    chart.setScaleEnabled(false);
 //    chart.invalidate(); // refresh
 
     YAxis yAxis = chart.getAxisLeft();
     yAxis.setAxisMinimum(0);
-    yAxis.setAxisMaximum(1);
+    yAxis.setAxisMaximum(100);
 
     YAxis yAxis2 = chart.getAxisRight();
     yAxis2.setDrawGridLines(false);
@@ -311,15 +326,37 @@ public class ResultGraphActivity extends BGMActivity implements OnClickListener 
 
     XAxis xAxis = chart.getXAxis();
     xAxis.setAxisMinimum(0);
-    xAxis.setAxisMaximum(10);
+    xAxis.setAxisMaximum(24+1);
     xAxis.setDrawGridLines(false);
     xAxis.setDrawLabels(false);
 
     Legend legend = chart.getLegend();
     legend.setEnabled(false);
+
+    Description description = chart.getDescription();
+    description.setEnabled(false);
   }
 
-  int CalResource(int code) {
+  int CalResourceRed(int code) {
+
+    // Get Resource
+    int x = 0;
+    int y = 0;
+
+    if(code < 15) {
+      x = 0;
+      y = code;
+    } else {
+      x = code - 14;
+      y = 0;
+    }
+
+    String imageName = "han" + (y * 11 * 2 + x * 2 + 1);
+
+    return getResources().getIdentifier(imageName, "drawable", getPackageName());
+  }
+
+  int CalResourceGray(int code) {
 
     // Get Resource
     int x = 0;
