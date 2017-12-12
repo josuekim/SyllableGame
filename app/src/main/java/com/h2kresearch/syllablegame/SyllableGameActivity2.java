@@ -651,6 +651,7 @@ public class SyllableGameActivity2 extends AppCompatActivity {
             img_counting.setImageDrawable(getResources().getDrawable(R.drawable.count10));
 
             mLessonIntent = new Intent(SyllableGameActivity2.this, LessonActivity.class);
+            mLessonIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             mLessonIntent.putExtra("select", select);
 
             Handler handler = new Handler();

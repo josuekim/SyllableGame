@@ -135,21 +135,19 @@ public class SignActivity extends BGMActivity {
       public void onClick(View view) {
 
         // 회원가입 & 로그인
-        String url = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidSignup";
         String id = mID.getText().toString();
         String pw = mPW.getText().toString();
-
-        // Sign Result
-        String signResult = "";
 
         // Check Network State
         String network = CommonUtils.getWhatKindOfNetwork(getApplicationContext());
         if (!network.equals(CommonUtils.NONE_STATE)) {
 
-          // Login
-          String signURL = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidSignup";
-          LoginServer loginServer = new LoginServer(signURL, id, pw);
+          // Sign Result
+          String signResult = "";
           try {
+            // Sign up and Login
+            String signURL = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidSignup";
+            LoginServer loginServer = new LoginServer(signURL, id, pw);
             signResult = (String) loginServer.execute().get(3, TimeUnit.SECONDS);
           } catch (Exception e) {
             e.printStackTrace();
@@ -160,23 +158,24 @@ public class SignActivity extends BGMActivity {
             // Local DB
             DatabaseAccess db = DatabaseAccess.getInstance(getApplicationContext());
             db.open();
+            long signLocalResult = db.signup(id, pw);
 
-            if (db.signup(id, pw) >= 0) {
+            if (signLocalResult > 0) { // Sign-up Success
+              // Main Start
               ConfigurationModel conf = ConfigurationModel.getInstance();
               conf.setEmail(id);
-              // Next Intent
               startActivity(mMainIntent);
             } else {
-              Toast.makeText(getApplicationContext(), "Local DB Check!", Toast.LENGTH_LONG).show();
+              Toast.makeText(getApplicationContext(), "Local DB Written Fail.", Toast.LENGTH_LONG).show();
             }
 
           } else if (signResult.equals("1")) {
             Toast.makeText(getApplicationContext(), "이미 등록된 계정입니다.", Toast.LENGTH_LONG).show();
           } else if (signResult.equals("2")) {
-            Toast.makeText(getApplicationContext(), "Database Addition Failed.", Toast.LENGTH_LONG)
+            Toast.makeText(getApplicationContext(), "Database Addition Fail.", Toast.LENGTH_LONG)
                 .show();
           } else if (signResult.equals("3")) {
-            Toast.makeText(getApplicationContext(), "Database Search Failed.", Toast.LENGTH_LONG)
+            Toast.makeText(getApplicationContext(), "Database Search Fail.", Toast.LENGTH_LONG)
                 .show();
           }
         } else {
