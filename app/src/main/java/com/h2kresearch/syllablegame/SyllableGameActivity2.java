@@ -47,7 +47,6 @@ public class SyllableGameActivity2 extends AppCompatActivity {
   ImageView[] img_consonant;
   ImageView[] img_vowelRight;
   ImageView[] img_vowelBottom;
-  ImageView img_counting;
   ImageView nextImage;
 
   TextView backBtn;
@@ -227,12 +226,6 @@ public class SyllableGameActivity2 extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_syllable_game2);
 
-//    Toolbar toolbar = (Toolbar) findViewById(R.id.toolBar);
-//    setSupportActionBar(toolbar);
-//    getSupportActionBar().setDisplayShowTitleEnabled(false);
-//    TextView tv = (TextView) findViewById(R.id.toolbar_title);
-//    tv.setText("음절 조합 연습");
-
     Intent preIntent = getIntent();
     select = preIntent.getStringArrayExtra("select");
 
@@ -265,7 +258,6 @@ public class SyllableGameActivity2 extends AppCompatActivity {
 
     makeDragItems();
 
-    img_counting = (ImageView) findViewById(R.id.complete_counting);
     makeExamples(dec_consonants,dec_vowels);
 
     ImageView listenBtn = (ImageView) findViewById(R.id.repeatButton2);
@@ -576,9 +568,6 @@ public class SyllableGameActivity2 extends AppCompatActivity {
               frame_fullsize.setTag(imageId);
               frame_fullsize.setOnClickListener(mClickListener);
 
-              char completeWord = CommonUtils
-                  .characterCombination(currentConsonant, currentVowel, ' ');
-
               MusicService.MediaPlay(getApplicationContext(), correctSound[2]);
 
               puzzleLayout.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
@@ -587,9 +576,39 @@ public class SyllableGameActivity2 extends AppCompatActivity {
             }
           }, 2500);
 
+          completeCnt++;
+          int resourceId = getResources()
+              .getIdentifier("complete_counting" + completeCnt, "id", getPackageName());
+          ImageView complete_img = (ImageView) findViewById(resourceId);
+
+          int resourceId2 = -1;
+          if(frame_vowelRight.getTag() != null){
+            resourceId2 = getResources()
+                .getIdentifier("han" + (((int)frame_consonant.getTag() * 22 + (int)frame_vowelRight.getTag() * 2) + 1), "drawable", getPackageName());
+          }else if(frame_vowelBottom.getTag() != null){
+            resourceId2 = getResources()
+                .getIdentifier("han" + (((int)frame_consonant.getTag()  * 22 + (int)frame_vowelBottom.getTag() * 2) + 1), "drawable", getPackageName());
+          }
+          complete_img.setImageDrawable(getResources().getDrawable(resourceId2));
+
           mSeq = 2;
 
         }else if(mSeq == 2){
+
+          if(completeCnt == 5){
+            mLessonIntent = new Intent(SyllableGameActivity2.this, LessonActivity.class);
+            mLessonIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            mLessonIntent.putExtra("select", select);
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+              @Override
+              public void run() {
+                startActivity(mLessonIntent);
+              }
+            }, 0);
+          }
+
           nextImage.setClickable(false);
           vowelList.removeAllViews();
           makeDragItems();
@@ -607,27 +626,8 @@ public class SyllableGameActivity2 extends AppCompatActivity {
 
           mSeq = 1;
 
-          if (completeCnt != 9) {
-            completeCnt++;
-            int resourceId = getResources()
-                .getIdentifier("count" + completeCnt, "drawable", getPackageName());
-            img_counting.setImageDrawable(getResources().getDrawable(resourceId));
+          if(completeCnt < 5){
             makeExamples(dec_consonants,dec_vowels);
-
-          } else {
-            img_counting.setImageDrawable(getResources().getDrawable(R.drawable.count10));
-
-            mLessonIntent = new Intent(SyllableGameActivity2.this, LessonActivity.class);
-            mLessonIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            mLessonIntent.putExtra("select", select);
-
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-              @Override
-              public void run() {
-                startActivity(mLessonIntent);
-              }
-            }, 500);
           }
 
         }

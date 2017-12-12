@@ -54,20 +54,54 @@
               android:textAlignment="gravity"
               android:textColor="@color/titleBarTextColor"
               android:textSize="18dp" />
-            <FrameLayout
+
+            <LinearLayout
               android:layout_width="0dp"
               android:layout_height="match_parent"
-              android:layout_weight="1">
-
+              android:layout_weight="1"
+              android:gravity="right"
+              android:orientation="horizontal">
                 <ImageView
-                  android:id="@+id/complete_counting"
-                  android:layout_width="100dp"
+                  android:id="@+id/complete_counting1"
+                  android:layout_width="15dp"
                   android:layout_height="wrap_content"
-                  android:layout_marginRight="10dp"
-                  android:layout_gravity="right|center_vertical"
+                  android:layout_marginRight="5dp"
+                  android:layout_gravity="right|bottom"
                   android:adjustViewBounds="true"
-                  app:srcCompat="@drawable/count" />
-            </FrameLayout>
+                  app:srcCompat="@drawable/han0"/>
+                <ImageView
+                  android:id="@+id/complete_counting2"
+                  android:layout_width="15dp"
+                  android:layout_height="wrap_content"
+                  android:layout_marginRight="5dp"
+                  android:layout_gravity="right|bottom"
+                  android:adjustViewBounds="true"
+                  app:srcCompat="@drawable/han0"/>
+                <ImageView
+                  android:id="@+id/complete_counting3"
+                  android:layout_width="15dp"
+                  android:layout_height="wrap_content"
+                  android:layout_marginRight="5dp"
+                  android:layout_gravity="right|bottom"
+                  android:adjustViewBounds="true"
+                  app:srcCompat="@drawable/han0"/>
+                <ImageView
+                  android:id="@+id/complete_counting4"
+                  android:layout_width="15dp"
+                  android:layout_height="wrap_content"
+                  android:layout_marginRight="5dp"
+                  android:layout_gravity="right|bottom"
+                  android:adjustViewBounds="true"
+                  app:srcCompat="@drawable/han0"/>
+                <ImageView
+                  android:id="@+id/complete_counting5"
+                  android:layout_width="15dp"
+                  android:layout_height="wrap_content"
+                  android:layout_marginRight="5dp"
+                  android:layout_gravity="right|bottom"
+                  android:adjustViewBounds="true"
+                  app:srcCompat="@drawable/han0"/>
+            </LinearLayout>
         </LinearLayout>
 
 
