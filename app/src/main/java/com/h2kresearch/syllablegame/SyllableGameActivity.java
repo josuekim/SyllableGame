@@ -301,12 +301,12 @@ public class SyllableGameActivity extends AppCompatActivity {
                 if (consonantId == view.getId()) {
                   frame_consonant.removeAllViews();
                   flag2 = true;
+                  getNum = (int) view.getId() - 100;
+                  imageId = getResources().getIdentifier("consonant" + getNum + "_black", "drawable", getPackageName());
+                  currentSound[0] = getResources().getIdentifier("sound" + (getNum*11), "raw", getPackageName());
+                  currentWord[0] = getNum;
                 }
               }
-              getNum = (int) view.getId() - 100;
-              imageId = getResources().getIdentifier("consonant" + getNum + "_black", "drawable", getPackageName());
-              currentSound[0] = getResources().getIdentifier("sound" + (getNum*11), "raw", getPackageName());
-              currentWord[0] = getNum;
 
             } else if (v.getId() == R.id.vowelRight) {
               flag1 = true;
@@ -315,12 +315,12 @@ public class SyllableGameActivity extends AppCompatActivity {
                   frame_vowelRight.removeAllViews();
                   frame_vowelBottom.removeAllViews();
                   flag2 = true;
+                  getNum =(int)view.getId() - 200;
+                  imageId = getResources().getIdentifier("vowel"  +getNum + "_black","drawable", getPackageName());
+                  currentSound[1] = getResources().getIdentifier("sound" + (getNum), "raw", getPackageName());
+                  currentWord[1] = getNum;
                 }
               }
-              getNum =(int)view.getId() - 200;
-              imageId = getResources().getIdentifier("vowel"  +getNum + "_black","drawable", getPackageName());
-              currentSound[1] = getResources().getIdentifier("sound" + (getNum), "raw", getPackageName());
-              currentWord[1] = getNum;
 
             } else if (v.getId() == R.id.vowelBottom) {
               flag1 = true;
@@ -329,12 +329,12 @@ public class SyllableGameActivity extends AppCompatActivity {
                   frame_vowelRight.removeAllViews();
                   frame_vowelBottom.removeAllViews();
                   flag2 = true;
+                  getNum =(int)view.getId() - 300;
+                  imageId = getResources().getIdentifier("vowel"  +getNum + "_black","drawable", getPackageName());
+                  currentSound[1] = getResources().getIdentifier("sound" + (getNum), "raw", getPackageName());
+                  currentWord[1] = getNum;
                 }
               }
-              getNum =(int)view.getId() - 300;
-              imageId = getResources().getIdentifier("vowel"  +getNum + "_black","drawable", getPackageName());
-              currentSound[1] = getResources().getIdentifier("sound" + (getNum), "raw", getPackageName());
-              currentWord[1] = getNum;
             }
 
             if (flag1 && flag2) {
