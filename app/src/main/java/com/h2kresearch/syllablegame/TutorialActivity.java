@@ -47,6 +47,7 @@ public class TutorialActivity extends BGMActivity {
             @Override
             public void run() {
               finish();
+              overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
           }, 500);
         }

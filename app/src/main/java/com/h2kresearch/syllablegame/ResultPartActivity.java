@@ -9,6 +9,7 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -116,6 +117,9 @@ public class ResultPartActivity extends BGMActivity {
       Legend pieLegend = pieChart.getLegend();
       pieLegend.setEnabled(false);
 
+      Description pieDescription = pieChart.getDescription();
+      pieDescription.setEnabled(false);
+
       // Line Graph
       LineChart lineChart = new LineChart(this);
 
@@ -161,6 +165,9 @@ public class ResultPartActivity extends BGMActivity {
 
       Legend legend = lineChart.getLegend();
       legend.setEnabled(false);
+
+      Description lineDescription = lineChart.getDescription();
+      lineDescription.setEnabled(false);
 
       // Add View
       linearLayout.addView(pieChart);

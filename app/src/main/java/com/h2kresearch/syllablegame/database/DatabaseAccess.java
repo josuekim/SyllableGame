@@ -714,15 +714,48 @@ public class DatabaseAccess {
       while (!cursor.isAfterLast()) {
 
         // Exam List
-        Map<String, Integer> param = new HashMap<String, Integer>();
+        Map<String, Object> param = new HashMap<String, Object>();
         param.put("exam_consonant", cursor.getInt(3));
         param.put("exam_vowel", cursor.getInt(4));
         param.put("exam_repeat", cursor.getInt(5));
         param.put("exam_consonant_ok", cursor.getInt(6));
         param.put("exam_vowel_ok", cursor.getInt(7));
 
+        // Response List
+        ArrayList<Integer> responseList = getExamResponseList(cursor.getInt(0));
+        param.put("response_list", responseList);
+
         // Add to List
         list.add(param);
+
+        // Move to Next
+        cursor.moveToNext();
+      }
+    }
+    cursor.close();
+
+    return list;
+  }
+
+  /***
+   * 오늘의 시험 응답 리스트 출력 function
+   * @return 오늘의 시험 응답 리스트
+   */
+  public ArrayList<Integer> getExamResponseList(int id) {
+
+    // Return Value
+    ArrayList<Integer> list = new ArrayList<Integer>();
+
+    // Access DB where Exam ID
+    Cursor cursor = database
+        .query("hangul_exam_response", null, "exam_id=?", new String[]{String.valueOf(id)}, null,
+            null, null);
+    cursor.moveToFirst();
+    if (cursor.getCount() > 0) {
+      while (!cursor.isAfterLast()) {
+
+        // Add to List
+        list.add(cursor.getInt(2));
 
         // Move to Next
         cursor.moveToNext();
@@ -909,12 +942,15 @@ public class DatabaseAccess {
           while (!cursor2.isAfterLast()) {
 
             // Exam List
-            Map<String, Integer> param = new HashMap<String, Integer>();
-            param.put("exam_consonant", cursor2.getInt(2));
-            param.put("exam_vowel", cursor2.getInt(3));
-            param.put("exam_repeat", cursor2.getInt(4));
-            param.put("exam_consonant_ok", cursor2.getInt(5));
-            param.put("exam_vowel_ok", cursor2.getInt(6));
+            Map<String, Object> param = new HashMap<String, Object>();
+            param.put("exam_consonant", cursor2.getInt(3));
+            param.put("exam_vowel", cursor2.getInt(4));
+            param.put("exam_repeat", cursor2.getInt(5));
+            param.put("exam_consonant_ok", cursor2.getInt(6));
+            param.put("exam_vowel_ok", cursor2.getInt(7));
+
+            ArrayList<Integer> responseList = getExamResponseList(cursor2.getInt(0));
+            param.put("response_list", responseList);
 
             // Add to List
             list.add(param);
@@ -944,20 +980,16 @@ public class DatabaseAccess {
     cursor.moveToFirst();
     if (cursor.getCount() > 0) {
       while (!cursor.isAfterLast()) {
-
-        // DailyID
-        int dailyID = cursor.getInt(0);
-
         // Date
         String date = cursor.getString(2);
 
         Cursor cursor2 = database
-            .rawQuery("SELECT * FROM hangul_study_daily WHERE daily_id ='" + dailyID + "'", null);
+            .rawQuery("SELECT * FROM hangul_study_daily WHERE learning_date ='" + date + "'", null);
         cursor2.moveToFirst();
         if (cursor2.getCount() > 0) {
           while (!cursor2.isAfterLast()) {
 
-            int syllableCode = cursor2.getInt(2);
+            int syllableCode = cursor2.getInt(3);
 
             // Find Code
             boolean findCode = false;
@@ -974,8 +1006,8 @@ public class DatabaseAccess {
                 Map<String, Object> param2 = new HashMap<String, Object>();
 
                 param2.put("learning_date", date);
-                param2.put("exam_cnt", cursor2.getInt(3));
-                param2.put("correct_cnt", cursor2.getInt(4));
+                param2.put("exam_cnt", cursor2.getInt(4));
+                param2.put("correct_cnt", cursor2.getInt(5));
 
                 achieveList.add(param2);
 
@@ -987,7 +1019,7 @@ public class DatabaseAccess {
             if (!findCode) {
               // Param
               Map<String, Object> param = new HashMap<String, Object>();
-              param.put("syllable_code", cursor2.getInt(2));
+              param.put("syllable_code", cursor2.getInt(3));
 
               Cursor cursor3 = database
                   .rawQuery("SELECT * FROM hangul_stat WHERE syllable_code ='" + syllableCode + "'",
@@ -1003,8 +1035,8 @@ public class DatabaseAccess {
               Map<String, Object> param2 = new HashMap<String, Object>();
 
               param2.put("learning_date", date);
-              param2.put("exam_cnt", cursor2.getInt(3));
-              param2.put("correct_cnt", cursor2.getInt(4));
+              param2.put("exam_cnt", cursor2.getInt(4));
+              param2.put("correct_cnt", cursor2.getInt(5));
 
               achieveList.add(param2);
               param.put("achieve_list", achieveList);

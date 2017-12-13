@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,6 +24,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.h2kresearch.syllablegame.SyllableGameActivity.ImageDrag;
 import com.h2kresearch.syllablegame.database.DatabaseAccess;
 import com.h2kresearch.syllablegame.model.SyllableImageView;
 import java.util.ArrayList;
@@ -47,7 +50,7 @@ public class ResultGraphActivity extends BGMActivity implements OnClickListener 
   int mAchieve;
   ArrayList<Map> mAchieveSound; // {Sound, Achieve}
   ArrayList<Map> mWrongSound; // {Sound, {Wrong Sound, Count}}
-  ArrayList<Map> mExam; // {Cons, Vowl, Repeat, ConsOK, VowlOK}
+  ArrayList<Map> mExam; // {Cons, Vowl, Repeat, ConsOK, VowlOK, {Response}}
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -67,32 +70,6 @@ public class ResultGraphActivity extends BGMActivity implements OnClickListener 
         onBackPressed();
       }
     });
-//    mRightButton.setOnClickListener(new OnClickListener() {
-//      @Override
-//      public void onClick(View view) {
-//        // 종료하기
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-//        builder.setTitle("알림");
-//        builder.setMessage("앱을 종료하시겠습니까?");
-//        builder.setPositiveButton("예",
-//            new DialogInterface.OnClickListener() {
-//              public void onClick(DialogInterface dialog, int which) {
-//                Intent intent = new Intent(
-//                    getApplicationContext(),//현재제어권자
-//                    MusicService.class); // 이동할 컴포넌트
-//                stopService(intent); // 서비스 시작
-//                ActivityCompat.finishAffinity(ResultGraphActivity.this);
-//              }
-//            });
-//        builder.setNegativeButton("아니오",
-//            new DialogInterface.OnClickListener() {
-//              public void onClick(DialogInterface dialog, int which) {
-////            Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.",Toast.LENGTH_LONG).show();
-//              }
-//            });
-//        builder.show();
-//      }
-//    });
   }
 
   @Override
@@ -125,6 +102,7 @@ public class ResultGraphActivity extends BGMActivity implements OnClickListener 
 
     // Achieve
     float achieve = 0;
+    int correct = 0;
     int count = 0;
     for(int i=0; i<mAchieveSound.size(); i++) {
       // Data According to Sound
@@ -132,7 +110,7 @@ public class ResultGraphActivity extends BGMActivity implements OnClickListener 
       int sound = (int) param.get("syllable_code");
 
       if(sound == code) {
-        int correct = (int) param.get("correct_cnt");
+        correct = (int) param.get("correct_cnt");
         count = (int) param.get("exam_cnt");
         achieve = (float)correct/(float)count;
         break;
@@ -141,7 +119,9 @@ public class ResultGraphActivity extends BGMActivity implements OnClickListener 
     TextView textViewAcheive = (TextView) layoutView.findViewById(R.id.textViewAcheive);
     textViewAcheive.setText(achieve*100+"%");
     TextView textViewNum = (TextView) layoutView.findViewById(R.id.textViewNum);
-    textViewNum.setText("현재까지 " + count + "번 공부했습니다.");
+    textViewNum.setText(correct + "");
+    TextView textViewNumTotal = (TextView) layoutView.findViewById(R.id.textViewNumTotal);
+    textViewNumTotal.setText(count + "");
 
     // Wrong Answer
     LinearLayout layout = (LinearLayout) layoutView.findViewById(R.id.LinearLayoutWrong);
@@ -163,6 +143,13 @@ public class ResultGraphActivity extends BGMActivity implements OnClickListener 
             ImageView imageView = new ImageView(this);
             imageView.setImageResource(resource);
             layout.addView(imageView);
+
+            LinearLayout.LayoutParams wrongImageViewParams = (LinearLayout.LayoutParams) imageView.getLayoutParams();
+            wrongImageViewParams.width = LayoutParams.WRAP_CONTENT;
+            wrongImageViewParams.height = LayoutParams.MATCH_PARENT;
+            wrongImageViewParams.setMargins(5,5,5,5);
+//            wrongImageViewParams.weight = 1;
+            imageView.setAdjustViewBounds(true);
           }
           break;
         }
@@ -179,6 +166,10 @@ public class ResultGraphActivity extends BGMActivity implements OnClickListener 
       int sound2 = (int) param.get("exam_vowel");
       int numCons = (int) param.get("exam_consonant_ok");
       int numVowel = (int) param.get("exam_vowel_ok");
+      ArrayList<Integer> responseList = (ArrayList) param.get("response_list");
+
+      // Garbage Exam Deletion
+      if(numCons == 0 || numVowel == 0) continue;
 
       if(sound1 == code || sound2 == code) {
 
@@ -188,40 +179,76 @@ public class ResultGraphActivity extends BGMActivity implements OnClickListener 
         layout2.addView(examLayout);
         LinearLayout.LayoutParams examLayoutParams = (LinearLayout.LayoutParams) examLayout.getLayoutParams();
         examLayoutParams.width = LayoutParams.MATCH_PARENT;
-        examLayoutParams.height = LayoutParams.WRAP_CONTENT;
+        examLayoutParams.height = 100;
 
         // Exam View
         ImageView examImageView = new ImageView(this);
-        int examResource = CalResourceComb(sound1, sound2);
+        int examResource = CalResourceCombGray(sound1, sound2);
         examImageView.setImageResource(examResource);
         examLayout.addView(examImageView);
         LinearLayout.LayoutParams examImageViewParams = (LinearLayout.LayoutParams) examImageView.getLayoutParams();
-        examImageViewParams.width = 0;
-        examImageViewParams.height = LayoutParams.WRAP_CONTENT;
-        examImageViewParams.weight = 1;
+        examImageViewParams.width = LayoutParams.WRAP_CONTENT;
+        examImageViewParams.height = LayoutParams.MATCH_PARENT;
+        examImageViewParams.setMargins(5,5,5,5);
+//        examImageViewParams.weight = 1;
         examImageView.setAdjustViewBounds(true);
 
-        // Consonant
-        ImageView consImageView = new ImageView(this);
-        int consResource = CalResourceGray(sound1);
-        consImageView.setImageResource(consResource);
-        examLayout.addView(consImageView);
-        LinearLayout.LayoutParams consImageViewParams = (LinearLayout.LayoutParams) consImageView.getLayoutParams();
-        consImageViewParams.width = 0;
-        consImageViewParams.height = LayoutParams.WRAP_CONTENT;
-        consImageViewParams.weight = 1;
-        consImageView.setAdjustViewBounds(true);
+        // Text View
+        TextView colonView = new TextView(this);
+        colonView.setText(" : ");
+        colonView.setTextSize(TypedValue.COMPLEX_UNIT_DIP,14);
+        colonView.setTextColor(getResources().getColor(R.color.textColor));
+        colonView.setGravity(Gravity.CENTER_VERTICAL);
+        examLayout.addView(colonView);
 
-        // Vowel
-        ImageView vowelImageView = new ImageView(this);
-        int vowelResource = CalResourceGray(sound2);
-        vowelImageView.setImageResource(vowelResource);
-        examLayout.addView(vowelImageView);
-        LinearLayout.LayoutParams vowelImageViewParams = (LinearLayout.LayoutParams) vowelImageView.getLayoutParams();
-        vowelImageViewParams.width = 0;
-        vowelImageViewParams.height = LayoutParams.WRAP_CONTENT;
-        vowelImageViewParams.weight = 1;
-        vowelImageView.setAdjustViewBounds(true);
+        LinearLayout.LayoutParams colonViewParams = (LinearLayout.LayoutParams) colonView.getLayoutParams();
+        colonViewParams.width = LayoutParams.WRAP_CONTENT;
+        colonViewParams.height = LayoutParams.MATCH_PARENT;
+        colonViewParams.setMargins(5,5,5,5);
+
+        for(int j=0; j<responseList.size(); j++) {
+          int responseCode = responseList.get(j);
+
+          ImageView consImageView = new ImageView(this);
+
+          int consResource = CalResourceGray(responseCode);
+          if(sound1 == responseCode || sound2 == responseCode) {
+            consResource = CalResourceRed(responseCode);
+          }
+
+          consImageView.setImageResource(consResource);
+          examLayout.addView(consImageView);
+          LinearLayout.LayoutParams consImageViewParams = (LinearLayout.LayoutParams) consImageView.getLayoutParams();
+          consImageViewParams.width = LayoutParams.WRAP_CONTENT;
+          consImageViewParams.height = LayoutParams.MATCH_PARENT;
+          consImageViewParams.setMargins(5,5,5,5);
+//        consImageViewParams.weight = 1;
+          consImageView.setAdjustViewBounds(true);
+        }
+
+//        // Consonant
+//        ImageView consImageView = new ImageView(this);
+//        int consResource = CalResourceGray(sound1);
+//        consImageView.setImageResource(consResource);
+//        examLayout.addView(consImageView);
+//        LinearLayout.LayoutParams consImageViewParams = (LinearLayout.LayoutParams) consImageView.getLayoutParams();
+//        consImageViewParams.width = LayoutParams.WRAP_CONTENT;
+//        consImageViewParams.height = LayoutParams.MATCH_PARENT;
+//        consImageViewParams.setMargins(5,5,5,5);
+////        consImageViewParams.weight = 1;
+//        consImageView.setAdjustViewBounds(true);
+//
+//        // Vowel
+//        ImageView vowelImageView = new ImageView(this);
+//        int vowelResource = CalResourceGray(sound2);
+//        vowelImageView.setImageResource(vowelResource);
+//        examLayout.addView(vowelImageView);
+//        LinearLayout.LayoutParams vowelImageViewParams = (LinearLayout.LayoutParams) vowelImageView.getLayoutParams();
+//        vowelImageViewParams.width = LayoutParams.WRAP_CONTENT;
+//        vowelImageViewParams.height = LayoutParams.MATCH_PARENT;
+//        vowelImageViewParams.setMargins(5,5,5,5);
+////        vowelImageViewParams.weight = 1;
+//        vowelImageView.setAdjustViewBounds(true);
 
 //        TextView textView = new TextView(this);
 //        String exam = "모음은 " + numVowel + "번만에, 자음은 " + numCons + "번만에 맞췄습니다.";
@@ -375,7 +402,18 @@ public class ResultGraphActivity extends BGMActivity implements OnClickListener 
     return getResources().getIdentifier(imageName, "drawable", getPackageName());
   }
 
-  int CalResourceComb(int cons, int vowel) {
+  int CalResourceCombRed(int cons, int vowel) {
+
+    // Get Resource
+    int x = vowel-14;
+    int y = cons;
+
+    String imageName = "han" + (y * 11 * 2 + x * 2 + 1);
+
+    return getResources().getIdentifier(imageName, "drawable", getPackageName());
+  }
+
+  int CalResourceCombGray(int cons, int vowel) {
 
     // Get Resource
     int x = vowel-14;
