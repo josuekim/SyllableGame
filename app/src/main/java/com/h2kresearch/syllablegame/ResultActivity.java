@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.h2kresearch.syllablegame.database.DatabaseAccess;
 import com.h2kresearch.syllablegame.utils.MusicService;
 
@@ -88,13 +89,14 @@ public class ResultActivity extends BGMActivity
         mButton1.setBackgroundResource(R.drawable.roundcorner);
         mButton3.setBackgroundResource(R.drawable.roundcorner);
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-          @Override
-          public void run() {
-            startActivity(mIntent2);
-          }
-        }, 500);
+        Toast.makeText(getApplicationContext(), "추후 업데이트 될 예정입니다.", Toast.LENGTH_LONG).show();
+//        Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//          @Override
+//          public void run() {
+//            startActivity(mIntent2);
+//          }
+//        }, 500);
       }
     });
 

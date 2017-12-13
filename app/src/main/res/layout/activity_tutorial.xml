@@ -26,6 +26,7 @@
       android:id="@+id/radioGroup"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
       android:orientation="horizontal">
       <RadioButton
         android:id="@+id/radioButton0"
@@ -47,7 +48,8 @@
         android:id="@+id/radioButton3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:buttonTint="@color/highlightColor" />
+        android:buttonTint="@color/highlightColor"
+        android:visibility="gone" />
     </RadioGroup>
   </LinearLayout>
 </android.support.constraint.ConstraintLayout>
