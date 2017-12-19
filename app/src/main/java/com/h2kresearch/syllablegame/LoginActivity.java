@@ -33,6 +33,12 @@ public class LoginActivity extends BGMActivity {
   Intent mSignIntent;
   TextView mSignButton;
 
+  // Find PW
+  // Sign up
+  Intent mFindIntent;
+  TextView mFindIDButton;
+  TextView mFindPWButton;
+
   // Database
   DatabaseAccess mDB;
 
@@ -195,6 +201,23 @@ public class LoginActivity extends BGMActivity {
       @Override
       public void onClick(View view) {
         startActivity(mSignIntent);
+      }
+    });
+
+    mFindIntent = new Intent(LoginActivity.this, FindPWActivity.class);
+    mFindIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    mFindIDButton = (TextView) findViewById(R.id.textView1);
+    mFindIDButton.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Toast.makeText(getApplicationContext(), "추후 업데이트 될 예정입니다.", Toast.LENGTH_LONG).show();
+      }
+    });
+    mFindPWButton = (TextView) findViewById(R.id.textView2);
+    mFindPWButton.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        startActivity(mFindIntent);
       }
     });
   }

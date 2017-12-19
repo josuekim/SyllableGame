@@ -8,14 +8,14 @@
 
   <application
     android:allowBackup="false"
-    tools:replace="android:allowBackup"
     android:hardwareAccelerated="true"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"
     android:largeHeap="true"
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
-    android:theme="@style/Theme.AppCompat.NoActionBar.FullScreen">
+    android:theme="@style/Theme.AppCompat.NoActionBar.FullScreen"
+    tools:replace="android:allowBackup">
     <service android:name=".utils.MusicService" />
 
     <activity
@@ -69,7 +69,10 @@
       android:name=".ResultPartActivity"
       android:screenOrientation="landscape" />
     <activity android:name=".BGMActivity" />
-    <activity android:name=".ResultGraphActivity" />
+    <activity android:name=".ResultGraphActivity"
+      android:screenOrientation="landscape"/>
+    <activity android:name=".FindPWActivity"
+      android:screenOrientation="landscape"></activity>
   </application>
 
 </manifest>
