@@ -48,6 +48,7 @@ public class SyllableGameActivity2 extends AppCompatActivity {
   ImageView[] img_vowelRight;
   ImageView[] img_vowelBottom;
   ImageView nextImage;
+  ImageView listenBtn;
 
   TextView backBtn;
 
@@ -260,7 +261,7 @@ public class SyllableGameActivity2 extends AppCompatActivity {
 
     makeExamples(dec_consonants,dec_vowels);
 
-    ImageView listenBtn = (ImageView) findViewById(R.id.repeatButton2);
+    listenBtn = (ImageView) findViewById(R.id.repeatButton2);
     listenBtn.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -440,6 +441,8 @@ public class SyllableGameActivity2 extends AppCompatActivity {
             consonantList.removeAllViews();
             vowelList.removeAllViews();
 
+            listenBtn.setVisibility(View.GONE);
+
             frame_consonant.setClickable(true);
             frame_vowelRight.setClickable(true);
             frame_vowelBottom.setClickable(true);
@@ -523,7 +526,7 @@ public class SyllableGameActivity2 extends AppCompatActivity {
     public void onClick(View v) {
       if(v.getId() == nextImage.getId()){
         if(mSeq == 1){
-          nextImage.setClickable(false);
+          nextImage.setVisibility(View.GONE);
 
           frame_consonant.postDelayed(new Runnable() {  //delay button
             public void run() {
@@ -572,7 +575,7 @@ public class SyllableGameActivity2 extends AppCompatActivity {
 
               puzzleLayout.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
               puzzleLayout.addView(frame_fullsize);
-              nextImage.setClickable(true);
+              nextImage.setVisibility(View.VISIBLE);
             }
           }, 2500);
 
@@ -628,6 +631,7 @@ public class SyllableGameActivity2 extends AppCompatActivity {
 
           if(completeCnt < 5){
             makeExamples(dec_consonants,dec_vowels);
+            listenBtn.setVisibility(View.VISIBLE);
           }
 
         }

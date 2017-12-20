@@ -120,11 +120,26 @@
               android:layout_weight="2"
               android:background="@color/dragAreaColor"
               android:orientation="horizontal">
-                <Space
-                  android:layout_width="0dp"
-                  android:layout_height="wrap_content"
-                  android:layout_weight="0.25" />
-                <ScrollView
+                <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:weightSum="2"
+                  android:layout_gravity="center_vertical"
+                  android:orientation="vertical">
+                    <ListView
+                      android:id="@+id/consonantList"
+                      android:layout_width="match_parent"
+                      android:layout_height="0dp"
+                      android:layout_weight="1.8">
+                    </ListView>
+                    <ImageView
+                      android:id="@+id/scrollConsonants"
+                      android:layout_width="match_parent"
+                      android:layout_height="0dp"
+                      android:layout_weight="0.2"
+                      app:srcCompat="@drawable/arrow_down"/>
+                </LinearLayout>
+                <!--<ScrollView
                   android:layout_width="0dp"
                   android:layout_height="wrap_content"
                   android:layout_weight="1"
@@ -138,7 +153,7 @@
                       android:orientation="vertical">
 
                     </LinearLayout>
-                </ScrollView>
+                </ScrollView>-->
             </LinearLayout>
             <LinearLayout
               android:id="@+id/LinearLayout"
@@ -203,7 +218,28 @@
               android:layout_weight="2"
               android:background="@color/dragAreaColor"
               android:orientation="horizontal">
-                <ScrollView
+              <LinearLayout
+                android:id="@+id/vowelContents"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="2"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
+                <ListView
+                  android:id="@+id/vowelList"
+                  android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_weight="1.8">
+                </ListView>
+                <ImageView
+                  android:id="@+id/scrollVowels"
+                  android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_weight="0.2"
+                  app:srcCompat="@drawable/arrow_down"/>
+              </LinearLayout>
+                <!--<ScrollView
                   android:layout_width="0dp"
                   android:layout_height="wrap_content"
                   android:layout_weight="2"
@@ -215,11 +251,7 @@
                       android:layout_height="wrap_content"
                       android:gravity="right"
                       android:orientation="vertical"></LinearLayout>
-                </ScrollView>
-                <Space
-                  android:layout_width="0dp"
-                  android:layout_height="wrap_content"
-                  android:layout_weight="0.25" />
+                </ScrollView>-->
             </LinearLayout>
 
         </LinearLayout>

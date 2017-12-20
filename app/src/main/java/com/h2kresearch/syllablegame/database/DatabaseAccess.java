@@ -819,7 +819,7 @@ public class DatabaseAccess {
             + mConf.getEmail()
             + "' union all select email, syllable_code, sum(exam_cnt) as exam_cnt, sum(correct_cnt) as correct_cnt from hangul_study_daily where email = '"
             + mConf.getEmail() + "'  and learning_date = '" + mConf.getToday()
-            + "' group by email, syllable_code) where exam_cnt != 0 and correct_cnt != 0 group by email, syllable_code order by syllable_code",
+            + "' group by email, syllable_code) where exam_cnt != 0 or correct_cnt != 0 group by email, syllable_code order by syllable_code",
         null);
 
     cursor.moveToFirst();
