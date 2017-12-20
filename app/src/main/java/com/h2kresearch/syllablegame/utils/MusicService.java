@@ -108,8 +108,12 @@ public class MusicService extends Service {
                 } catch (Exception e) {
                 }
                 // Pause
-                mPosition = mMP.getCurrentPosition();
-                mMP.pause();
+                try{
+                  mPosition = mMP.getCurrentPosition();
+                  mMP.pause();
+                } catch (Exception e) {
+                  e.printStackTrace();
+                }
               }
             });
             fadeout.start();
