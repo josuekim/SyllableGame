@@ -17,13 +17,15 @@ public class LoginServer extends AsyncTask {
   String mURL;
 
   //ID
-  String mID;
-  String mPW;
+//  String mID;
+//  String mPW;
+  String mParam;
 
-  public LoginServer(String URL, String id, String pw) {
+  public LoginServer(String URL, String param) {
     mURL = URL;
-    mID = id;
-    mPW = pw;
+//    mID = id;
+//    mPW = pw;
+    mParam = param;
   }
 
   @Override
@@ -32,7 +34,7 @@ public class LoginServer extends AsyncTask {
     String ret_val = "";
 
     // 인풋 파라메터값 생성
-    String param = "u_id=" + mID + "&u_pw=" + mPW + "";
+//    String param = "u_id=" + mID + "&u_pw=" + mPW + "";
     try {
       // 서버연결
       URL url = new URL(mURL);
@@ -47,7 +49,7 @@ public class LoginServer extends AsyncTask {
 
       // 안드로이드 -> 서버 파라메터값 전달
       OutputStream outs = conn.getOutputStream();
-      outs.write(param.getBytes("UTF-8"));
+      outs.write(mParam.getBytes("UTF-8"));
       outs.flush();
       outs.close();
 

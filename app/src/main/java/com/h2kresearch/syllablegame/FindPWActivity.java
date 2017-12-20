@@ -67,16 +67,20 @@ public class FindPWActivity extends AppCompatActivity {
           if (mTemporal) { // 임시 비밀번호 발급
 
             // Get Email
-            mEmail = mEditText2.getText().toString();
+            mEmail = mEditText1.getText().toString();
 
             // Temporal PW Server
-            int serverResult = 0;
-//            String temporalPWURL = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidSignup";
-//            LoginServer loginServer = new LoginServer(temporalPWURL, mEmail, "");
-//            serverResult = (String) loginServer.execute().get(3, TimeUnit.SECONDS);
-
+            String serverResult = "";
+            try {
+              String temporalPWURL = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidFindPassword";
+              String param = "u_id=" + mEmail;
+              LoginServer loginServer = new LoginServer(temporalPWURL, param);
+              serverResult = (String) loginServer.execute().get(3, TimeUnit.SECONDS);
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
             // IF Success
-            if (serverResult == 0) {
+            if (serverResult.equals("0")) {
 
               Toast.makeText(getApplicationContext(), "임시 비밀번호 발급을 위한 인증 메일이 발송 되었습니다.", Toast.LENGTH_LONG).show();
 
@@ -94,9 +98,11 @@ public class FindPWActivity extends AppCompatActivity {
               mEditText3.setVisibility(View.VISIBLE);
               mButton.setText("비밀번호 설정");
 
-            } else {
               // Error
-              Toast.makeText(getApplicationContext(), "Result: "+serverResult, Toast.LENGTH_LONG).show();
+            } else if (serverResult.equals("1")) {
+              Toast.makeText(getApplicationContext(), "등록되지 않은 계정입니다.", Toast.LENGTH_LONG).show();
+            } else {
+              Toast.makeText(getApplicationContext(), "Database Issues!", Toast.LENGTH_LONG).show();
             }
 
           } else { // 새로운 비밀번호 설정
@@ -106,18 +112,27 @@ public class FindPWActivity extends AppCompatActivity {
             String pw = mEditText2.getText().toString();
 
             // New PW Server
-            int serverResult = 0;
-//            String temporalPWURL = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidSignup";
-//            LoginServer loginServer = new LoginServer(temporalPWURL, temporalPW, pw);
-//            serverResult = (String) loginServer.execute().get(3, TimeUnit.SECONDS);
+            String serverResult = "";
+            try {
+              String temporalPWURL = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidChangePassword";
+              String param = "u_id=" + mEmail + "&u_currPW=" + temporalPW + "&u_newPW=" + pw;
+              LoginServer loginServer = new LoginServer(temporalPWURL, param);
+              serverResult = (String) loginServer.execute().get(3, TimeUnit.SECONDS);
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
 
-            if(serverResult == 0) {
+            if(serverResult.equals("0")) {
 
               Toast.makeText(getApplicationContext(), "비밀번호가 변경되었습니다.", Toast.LENGTH_LONG).show();
 
               // Intent
               startActivity(mLoginIntent);
 
+            } else if(serverResult.equals("1")) {
+              Toast.makeText(getApplicationContext(), "임시 비밀번호를 정확히 입력해주세요.", Toast.LENGTH_LONG).show();
+            } else if(serverResult.equals("2")) {
+              Toast.makeText(getApplicationContext(), "등록되지 않은 계정입니다.", Toast.LENGTH_LONG).show();
             } else {
               // Error
               Toast.makeText(getApplicationContext(), "Result: "+serverResult, Toast.LENGTH_LONG).show();

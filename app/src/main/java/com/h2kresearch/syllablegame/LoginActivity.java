@@ -150,7 +150,8 @@ public class LoginActivity extends BGMActivity {
           try {
             // Login
             String loginURL = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidLogin";
-            LoginServer loginServer = new LoginServer(loginURL, id, pw);
+            String param = "u_id=" + id + "&u_pw=" + pw;
+            LoginServer loginServer = new LoginServer(loginURL, param);
             loginResult = (String) loginServer.execute().get(3, TimeUnit.SECONDS);
           } catch (Exception e) {
             e.printStackTrace();
@@ -220,5 +221,14 @@ public class LoginActivity extends BGMActivity {
         startActivity(mFindIntent);
       }
     });
+  }
+
+  @Override
+  protected void onStart() {
+    super.onStart();
+
+    mID.setText("");
+    mPW.setText("");
+    mID.requestFocus();
   }
 }
