@@ -121,7 +121,38 @@
         android:layout_weight="2"
         android:background="@color/dragAreaColor"
         android:orientation="horizontal">
-        <Space
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:weightSum="2"
+          android:layout_gravity="center_vertical"
+          android:orientation="vertical">
+          <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"/>
+          <ListView
+            android:id="@+id/consonantList"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.6">
+          </ListView>
+          <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"/>
+          <ImageView
+            android:id="@+id/scrollConsonants"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            app:srcCompat="@drawable/arrow_down"/>
+          <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"/>
+        </LinearLayout>
+        <!--<Space
           android:layout_width="0dp"
           android:layout_height="match_parent"
           android:layout_weight="0.25" />
@@ -139,7 +170,7 @@
             android:orientation="vertical">
 
           </LinearLayout>
-        </ScrollView>
+        </ScrollView>-->
       </LinearLayout>
       <LinearLayout
         android:id="@+id/LinearLayout"
@@ -208,15 +239,15 @@
           </FrameLayout>
           <ImageView
             android:id="@+id/repeatButton2"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
             android:layout_alignParentBottom="false"
             android:layout_alignParentEnd="false"
             android:layout_gravity="right"
             android:adjustViewBounds="true"
             app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
             app:layout_constraintEnd_toEndOf="@+id/frameLayout"
-            app:srcCompat="@drawable/listen" />
+            app:srcCompat="@drawable/listen"/>
         </android.support.constraint.ConstraintLayout>
       </LinearLayout>
 
@@ -227,7 +258,40 @@
         android:layout_weight="2"
         android:background="@color/dragAreaColor"
         android:orientation="horizontal">
-        <ScrollView
+        <LinearLayout
+          android:id="@+id/vowelContents"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:weightSum="2"
+          android:gravity="center_vertical|center_horizontal"
+          android:layout_gravity="center_vertical"
+          android:orientation="vertical">
+          <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"/>
+          <ListView
+            android:id="@+id/vowelList"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.6">
+          </ListView>
+          <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"/>
+          <ImageView
+            android:id="@+id/scrollVowels"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            app:srcCompat="@drawable/arrow_down"/>
+          <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"/>
+        </LinearLayout>
+        <!--<ScrollView
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
@@ -243,7 +307,7 @@
         <Space
           android:layout_width="0dp"
           android:layout_height="match_parent"
-          android:layout_weight="0.25" />
+          android:layout_weight="0.25" />-->
       </LinearLayout>
 
     </LinearLayout>

@@ -12,6 +12,7 @@ public class HangulListAdapter extends BaseAdapter {
 
   private BaseAdapter mListAdapter;
   private int mListAdapterCount;
+  private static int minDisplayCount = 4;
 
   public HangulListAdapter(BaseAdapter listAdapter) {
     if(listAdapter == null) {
@@ -24,7 +25,7 @@ public class HangulListAdapter extends BaseAdapter {
 
   @Override
   public int getCount() {
-    if(mListAdapterCount < 5){
+    if(mListAdapterCount < minDisplayCount){
       return mListAdapterCount;
     }else{
       return Integer.MAX_VALUE;
@@ -33,7 +34,7 @@ public class HangulListAdapter extends BaseAdapter {
 
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
-    if(mListAdapterCount < 5){
+    if(mListAdapterCount < minDisplayCount){
       return mListAdapter.getView(position, convertView, parent);
     }else{
       return mListAdapter.getView(position % mListAdapterCount, convertView, parent);
@@ -42,7 +43,7 @@ public class HangulListAdapter extends BaseAdapter {
 
   @Override
   public Object getItem(int position) {
-    if(mListAdapterCount < 5){
+    if(mListAdapterCount < minDisplayCount){
       return mListAdapter.getItem(position);
     }else{
       return mListAdapter.getItem(position % mListAdapterCount);
@@ -51,7 +52,7 @@ public class HangulListAdapter extends BaseAdapter {
 
   @Override
   public long getItemId(int position) {
-    if(mListAdapterCount < 5){
+    if(mListAdapterCount < minDisplayCount){
       return mListAdapter.getItemId(position);
     }else{
       return mListAdapter.getItemId(position % mListAdapterCount);
@@ -65,7 +66,7 @@ public class HangulListAdapter extends BaseAdapter {
 
   @Override
   public int getItemViewType(int position) {
-    if(mListAdapterCount < 5){
+    if(mListAdapterCount < minDisplayCount){
       return mListAdapter.getItemViewType(position);
     }else{
       return mListAdapter.getItemViewType(position % mListAdapterCount);
@@ -84,7 +85,7 @@ public class HangulListAdapter extends BaseAdapter {
 
   @Override
   public boolean isEnabled(int position) {
-    if(mListAdapterCount < 5){
+    if(mListAdapterCount < minDisplayCount){
       return mListAdapter.isEnabled(position);
     }else{
       return mListAdapter.isEnabled(position % mListAdapterCount);
@@ -107,7 +108,7 @@ public class HangulListAdapter extends BaseAdapter {
 
   @Override
   public View getDropDownView(int position, View convertView, ViewGroup parent) {
-    if(mListAdapterCount < 5){
+    if(mListAdapterCount < minDisplayCount){
       return mListAdapter.getDropDownView(position,
           convertView, parent);
     }else{
