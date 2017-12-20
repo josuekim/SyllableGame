@@ -25,10 +25,9 @@ public class TableRowColImageView extends TableImageView {
 
   @Override
   void selectImage() {
-    super.selectImage();
-
     boolean mode = ((MainActivity)mCallback).mSelectMode;
     if(mode) {
+      super.selectImage();
       for (int i = 0; i < mList.size(); i++) {
         TableImageView item = mList.get(i);
         if (!item.mSelect) {
@@ -41,10 +40,9 @@ public class TableRowColImageView extends TableImageView {
 
   @Override
   void cancelImage() {
-    super.cancelImage();
-
     boolean mode = ((MainActivity)mCallback).mSelectMode;
     if(mode) {
+      super.cancelImage();
       for (int i = 0; i < mList.size(); i++) {
         TableImageView item = mList.get(i);
         if (item.mSelect) {

@@ -117,7 +117,7 @@ public class ResultGraphActivity extends BGMActivity implements OnClickListener 
       }
     }
     TextView textViewAcheive = (TextView) layoutView.findViewById(R.id.textViewAcheive);
-    textViewAcheive.setText(achieve*100+"%");
+    textViewAcheive.setText(String.format("%.2f", (achieve*100.0f))+"%");
     TextView textViewNum = (TextView) layoutView.findViewById(R.id.textViewNum);
     textViewNum.setText(correct + "");
     TextView textViewNumTotal = (TextView) layoutView.findViewById(R.id.textViewNumTotal);
@@ -428,21 +428,52 @@ public class ResultGraphActivity extends BGMActivity implements OnClickListener 
     @Override
     public int compare(Map map, Map t1) {
 
-      int correct = (int)map.get("correct_cnt");
-      int exam = (int)map.get("exam_cnt");
-      float achieve1 = 0.0f;
-      if(exam != 0 ) {
-        achieve1 = (float)correct/(float)exam;
+      int code1 = (int)map.get("syllable_code");
+      int code2 = (int)t1.get("syllable_code");
+      int codeType1 = 0;
+      int codeType2 = 1;
+
+      if(code1<15) {
+        codeType1 = 0;
+      } else {
+        codeType1 = 1;
       }
 
-      correct = (int)t1.get("correct_cnt");
-      exam = (int)t1.get("exam_cnt");
-      float achieve2 = 0.0f;
-      if(exam != 0 ) {
-        achieve2 = (float)correct/(float)exam;
+      if(code2<15) {
+        codeType2 = 0;
+      } else {
+        codeType2 = 1;
       }
 
-      return Float.compare(achieve2, achieve1);
+      if(codeType1 == codeType2) {
+
+        float achieve1 = 0.0f;
+        int correct1 = (int) map.get("correct_cnt");
+        int exam1 = (int) map.get("exam_cnt");
+        if (exam1 != 0) {
+          achieve1 = (float) correct1 / (float) exam1;
+        }
+
+        float achieve2 = 0.0f;
+        int correct2 = (int) t1.get("correct_cnt");
+        int exam2 = (int) t1.get("exam_cnt");
+        if (exam2 != 0) {
+          achieve2 = (float) correct2 / (float) exam2;
+        }
+
+        if(achieve1 == achieve2) {
+          if(achieve1 == 0) {
+            return Integer.compare(exam1, exam2);
+          } else {
+            return Integer.compare(code1, code2);
+          }
+        } else {
+          return Float.compare(achieve2, achieve1);
+        }
+
+      } else {
+        return Integer.compare(codeType1,codeType2);
+      }
     }
   };
 }

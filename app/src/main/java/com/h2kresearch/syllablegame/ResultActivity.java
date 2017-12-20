@@ -86,8 +86,8 @@ public class ResultActivity extends BGMActivity
       @Override
       public void onClick(View view) {
 
-        mButton1.setBackgroundResource(R.drawable.roundcorner);
-        mButton3.setBackgroundResource(R.drawable.roundcorner);
+//        mButton1.setBackgroundResource(R.drawable.roundcorner);
+//        mButton3.setBackgroundResource(R.drawable.roundcorner);
 
         Toast.makeText(getApplicationContext(), "추후 업데이트 될 예정입니다.", Toast.LENGTH_LONG).show();
 //        Handler handler = new Handler();
