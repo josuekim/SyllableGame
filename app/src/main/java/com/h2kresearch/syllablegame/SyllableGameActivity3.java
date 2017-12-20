@@ -2,6 +2,7 @@ package com.h2kresearch.syllablegame;
 
 import android.app.Dialog;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Point;
@@ -13,16 +14,22 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.DragEvent;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.h2kresearch.syllablegame.adapter.HangulListAdapter;
 import com.h2kresearch.syllablegame.database.DatabaseAccess;
 import com.h2kresearch.syllablegame.model.ConfigurationModel;
 import com.h2kresearch.syllablegame.utils.CommonUtils;
@@ -49,14 +56,18 @@ public class SyllableGameActivity3 extends AppCompatActivity {
   FrameLayout frame_fullsize;
   RelativeLayout puzzleLayout;
 
-  LinearLayout consonantList;
-  LinearLayout vowelList;
+  LinearLayout vowelContents;
+
+  ListView consonantList;
+  ListView vowelList;
 
   ImageView[] img_consonant;
   ImageView[] img_vowelRight;
   ImageView[] img_vowelBottom;
-  ImageView img_counting;
+  ImageView[] img_vowel;
   ImageView nextImage;
+  ImageView scrollDown1;
+  ImageView scrollDown2;
   ImageView listenBtn;
 
   TextView backBtn;
@@ -89,6 +100,41 @@ public class SyllableGameActivity3 extends AppCompatActivity {
   int mPuzzleWidth = 240;
   int mPuzzleHeight = 300;
 
+  int scrollIndex = 1;
+  int scrollIndex1 = 1;
+
+  class WordAdapter extends ArrayAdapter {
+    private ImageView[] words;
+
+    public WordAdapter(Context context, int textViewResourceId, ImageView[] words){
+      super(context, textViewResourceId, words);
+      this.words = words;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent){
+      Context context = parent.getContext();
+
+      /* 'listview_custom' Layout을 inflate하여 convertView 참조 획득 */
+      if (convertView == null) {
+        LayoutInflater inflater = (LayoutInflater) context
+            .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        convertView = inflater.inflate(R.layout.list_view_item, parent, false);
+      }
+
+      ImageView iv_img = (ImageView) convertView.findViewById(R.id.iv_img);
+
+      /* (위젯에 대한 이벤트리스너를 지정하고 싶다면 여기에 작성하면된다..)  */
+      iv_img.setImageDrawable(words[position].getDrawable());
+      iv_img.setContentDescription(words[position].getContentDescription());
+      iv_img.setOnTouchListener(mTouchListener);
+      iv_img.setTag(words[position].getTag());
+
+      return convertView;
+    }
+
+  }
+
   public void makeExamples(Object[] dec_cList, Object[] dec_vList){
     ArrayList<Integer> cons = new ArrayList<>();
     ArrayList<Integer> vows = new ArrayList<>();
@@ -113,8 +159,8 @@ public class SyllableGameActivity3 extends AppCompatActivity {
     correctSound[0] = getResources().getIdentifier("sound" + (conInt*11), "raw", getPackageName());
 
     for(int i = 0; i < img_consonant.length; i++){
-      Map tagMap = (Map)img_consonant[i].getTag();
-      if(correctAnswer[0] == (int)tagMap.get("resourceId")){
+      Map param = (Map)img_consonant[i].getTag();
+      if(correctAnswer[0] == (int)param.get("resourceId")){
         consonantsId = img_consonant[i].getId();
         currentConsonant = img_consonant[i].getContentDescription().charAt(0);
       }
@@ -125,8 +171,8 @@ public class SyllableGameActivity3 extends AppCompatActivity {
       correctAnswer[1] = getResources().getIdentifier("vowel" + (vowInt), "drawable", getPackageName());
       correctSound[1] = getResources().getIdentifier("sound" + (vowInt), "raw", getPackageName());
       for(int i = 0; i < img_vowelRight.length; i++){
-        Map tagMap = (Map)img_vowelRight[i].getTag();
-        if(correctAnswer[1] == (int)tagMap.get("resourceId")){
+        Map param = (Map)img_vowelRight[i].getTag();
+        if(correctAnswer[1] == (int)param.get("resourceId")){
           vowelRightId = img_vowelRight[i].getId();
           vowelBottomId = -1;
           currentVowel = img_vowelRight[i].getContentDescription().charAt(0);
@@ -136,8 +182,8 @@ public class SyllableGameActivity3 extends AppCompatActivity {
       correctAnswer[2] = getResources().getIdentifier("vowel" + (vowInt), "drawable", getPackageName());
       correctSound[1] = getResources().getIdentifier("sound" + (vowInt), "raw", getPackageName());
       for(int i = 0; i < img_vowelBottom.length; i++){
-        Map tagMap = (Map)img_vowelBottom[i].getTag();
-        if(correctAnswer[2] == (int)tagMap.get("resourceId")){
+        Map param = (Map)img_vowelBottom[i].getTag();
+        if(correctAnswer[2] == (int)param.get("resourceId")){
           vowelBottomId = img_vowelBottom[i].getId();
           vowelRightId = -1;
           currentVowel = img_vowelBottom[i].getContentDescription().charAt(0);
@@ -154,15 +200,7 @@ public class SyllableGameActivity3 extends AppCompatActivity {
   }
 
   public void makeDragItems(){
-
-    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 0);
-    layoutParams.weight = 1;
-    layoutParams.setMargins(0,10,0,10);
-
-    float xPixels = TypedValue
-        .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 83, getResources().getDisplayMetrics());
-
-    int resourceId = -1;
+    int resourceId;
     img_consonant = new ImageView[dec_consonants.length];
 
     for(ConsonantType ct : ConsonantType.values()) {
@@ -172,16 +210,12 @@ public class SyllableGameActivity3 extends AppCompatActivity {
           resourceId = getResources()
               .getIdentifier("consonant" + (ct.ordinal() + 1), "drawable", getPackageName());
           img_consonant[i].setImageResource(resourceId);
-          consonantList.addView(img_consonant[i]);
 
-          img_consonant[i].setLayoutParams(layoutParams);
-          img_consonant[i].setAdjustViewBounds(true);
-
-          img_consonant[i].setOnTouchListener(mTouchListener);
           img_consonant[i].setId((ct.ordinal() + 1) + 100);
           Map tagMap = new HashMap();
           tagMap.put("resourceId",resourceId);
           tagMap.put("wordId",(ct.ordinal() + 1));
+          tagMap.put("realId",(ct.ordinal() + 1) + 100);
           img_consonant[i].setTag(tagMap);
           img_consonant[i].setContentDescription(dec_consonants[i].toString());
 
@@ -192,6 +226,7 @@ public class SyllableGameActivity3 extends AppCompatActivity {
 
     int countRight = 0;
     int countBottom = 0;
+    int countVowel;
     for(VowelType vt : VowelType.values()){
       for(Object dec_vowel : dec_vowels){
         if(vt.getVow().equals(dec_vowel.toString())){
@@ -206,48 +241,57 @@ public class SyllableGameActivity3 extends AppCompatActivity {
 
     img_vowelRight = new ImageView[countRight];
     img_vowelBottom = new ImageView[countBottom];
+    countVowel = countRight + countBottom;
+    img_vowel = new ImageView[countVowel];
     countRight = 0;
     countBottom = 0;
+    countVowel = 0;
     for(VowelType vt : VowelType.values()){
       for(int i = 0; i <dec_vowels.length; i++) {
         if (vt.getVow().equals(dec_vowels[i].toString())) {
           if(vt.getSide().equals("R")){
-            xPixels = TypedValue
-                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
+
             img_vowelRight[countRight] = new ImageView(this);
+            img_vowel[countVowel] = new ImageView(this);
             resourceId = getResources().getIdentifier("vowel" + (vt.ordinal()+1), "drawable", getPackageName());
-            img_vowelRight[countRight].setImageResource(resourceId);
-            vowelList.addView(img_vowelRight[countRight]);
 
-            img_vowelRight[countRight].setLayoutParams(layoutParams);
-            img_vowelRight[countRight].setAdjustViewBounds(true);
-
-
-            img_vowelRight[countRight].setOnTouchListener(mTouchListener);
             img_vowelRight[countRight].setId((vt.ordinal()+1)+200);
-            Map tagMap = new HashMap();
-            tagMap.put("resourceId",resourceId);
-            tagMap.put("wordId",(vt.ordinal() + 15));
-            img_vowelRight[countRight].setTag(tagMap);
+            Map param = new HashMap();
+            param.put("resourceId",resourceId);
+            param.put("wordId",(vt.ordinal() + 15));
+            param.put("realId",(vt.ordinal() + 1) + 200);
+            img_vowelRight[countRight].setTag(param);
             img_vowelRight[countRight].setContentDescription(dec_vowels[i].toString());
+
+            img_vowel[countVowel].setImageResource(resourceId);
+            img_vowel[countVowel].setTag(param);
+            img_vowel[countVowel].setContentDescription(dec_vowels[i].toString());
+
             countRight++;
+            countVowel++;
+
+            break;
           }else if(vt.getSide().equals("B")){
             img_vowelBottom[countBottom] = new ImageView(this);
+            img_vowel[countVowel] = new ImageView(this);
             resourceId = getResources().getIdentifier("vowel" + (vt.ordinal()+1), "drawable", getPackageName());
-            img_vowelBottom[countBottom].setImageResource(resourceId);
-            vowelList.addView(img_vowelBottom[countBottom]);
 
-            img_vowelBottom[countBottom].setLayoutParams(layoutParams);
-            img_vowelBottom[countBottom].setAdjustViewBounds(true);
-
-            img_vowelBottom[countBottom].setOnTouchListener(mTouchListener);
             img_vowelBottom[countBottom].setId((vt.ordinal()+1)+300);
-            Map tagMap = new HashMap();
-            tagMap.put("resourceId",resourceId);
-            tagMap.put("wordId",(vt.ordinal() + 15));
-            img_vowelBottom[countBottom].setTag(tagMap);
+            Map param = new HashMap();
+            param.put("resourceId",resourceId);
+            param.put("wordId",(vt.ordinal() + 15));
+            param.put("realId",(vt.ordinal() + 1) + 300);
+            img_vowelBottom[countBottom].setTag(param);
             img_vowelBottom[countBottom].setContentDescription(dec_vowels[i].toString());
+
+            img_vowel[countVowel].setImageResource(resourceId);
+            img_vowel[countVowel].setTag(param);
+            img_vowel[countVowel].setContentDescription(dec_vowels[i].toString());
+
             countBottom++;
+            countVowel++;
+
+            break;
           }
         }
       }
@@ -269,8 +313,7 @@ public class SyllableGameActivity3 extends AppCompatActivity {
 
     puzzleLayout = (RelativeLayout) findViewById(R.id.puzzleLayout);
 
-    consonantList = (LinearLayout) findViewById(R.id.consonantList);
-    vowelList = (LinearLayout) findViewById(R.id.vowelList);
+    vowelContents = (LinearLayout) findViewById(R.id.vowelContents);
 
     frame_consonant = (FrameLayout) findViewById(R.id.consonantBlock);
     frame_consonant.setOnDragListener(mDragListener);
@@ -302,11 +345,74 @@ public class SyllableGameActivity3 extends AppCompatActivity {
       }
     });
 
+    scrollDown1 = (ImageView) findViewById(R.id.scrollConsonants);
+    scrollDown1.setOnLongClickListener(new OnLongClickListener() {
+      @Override
+      public boolean onLongClick(View v) {
+        mHandler1.sendEmptyMessageDelayed(10, 0);
+        return false;
+      }
+    });
+    scrollDown1.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        mHandler1.removeMessages(10);
+        consonantList.smoothScrollToPositionFromTop(scrollIndex++,0);
+      }
+    });
+    scrollDown2 = (ImageView) findViewById(R.id.scrollVowels);
+    scrollDown2.setOnLongClickListener(new OnLongClickListener() {
+      @Override
+      public boolean onLongClick(View v) {
+        mHandler2.sendEmptyMessageDelayed(10, 0);
+        return false;
+      }
+    });
+    scrollDown2.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        mHandler2.removeMessages(10);
+        vowelList.smoothScrollToPositionFromTop(scrollIndex1++,0);
+      }
+    });
+
+    nextImage = new ImageView(getApplicationContext());
+    nextImage.setImageDrawable(getResources().getDrawable(R.drawable.arrow_right));
+    nextImage.setOnClickListener(mNextClickListener);
+    vowelContents.addView(nextImage);
+    nextImage.setVisibility(View.GONE);
+
     makeDragItems();
 
-    img_counting = (ImageView) findViewById(R.id.complete_counting);
+    WordAdapter consonantAdapter = new WordAdapter(this, -1, img_consonant);
+    HangulListAdapter hangulListAdapter = new HangulListAdapter(consonantAdapter);
+    WordAdapter vowelAdapter = new WordAdapter(this, -1, img_vowel);
+    HangulListAdapter hangulListAdapter1 = new HangulListAdapter(vowelAdapter);
+
+    consonantList = (ListView) findViewById(R.id.consonantList);
+    consonantList.setAdapter(hangulListAdapter);
+
+    vowelList = (ListView) findViewById(R.id.vowelList);
+    vowelList.setAdapter(hangulListAdapter1);
+
     makeExamples(dec_consonants,dec_vowels);
   }
+
+  Handler mHandler1 = new Handler(){
+    public void handleMessage(Message msg){
+      consonantList.smoothScrollToPositionFromTop(scrollIndex++,0);
+
+      mHandler1.sendEmptyMessageDelayed(10,300);
+    }
+  };
+  Handler mHandler2 = new Handler(){
+    public void handleMessage(Message msg){
+      vowelList.smoothScrollToPositionFromTop(scrollIndex1++,0);
+
+      mHandler2.sendEmptyMessageDelayed(10,300);
+    }
+  };
+
 
   class ImageDrag extends View.DragShadowBuilder {
 
@@ -400,51 +506,51 @@ public class SyllableGameActivity3 extends AppCompatActivity {
             FrameLayout newParent = (FrameLayout) v;
             boolean flag1 = false;
             boolean flag2 = false;
-            Map tagMap = (Map)view.getTag();
+            Map param = (Map)view.getTag();
 
-            mDB.insertExamResponse(mConf.getExamId(),(int)tagMap.get("wordId"));
+            mDB.insertExamResponse(mConf.getExamId(),(int)param.get("wordId"));
 
             if (v.getId() == R.id.consonantBlock) {
               flag1 = true;
-              if (consonantsId == view.getId()) {
+              if (consonantsId == (int)param.get("realId")) {
                 frame_consonant.removeAllViews();
                 flag2 = true;
-                getNum = (int)view.getId() - 100;
+                getNum = (int)param.get("realId") - 100;
                 imageId = getResources()
                     .getIdentifier("consonant" + getNum +"_black", "drawable", getPackageName());
                 currentConsonant = view.getContentDescription().charAt(0);
               }else{
-                mDB.insertWrongAnswer(mConf.getConStudyId(),(int)tagMap.get("wordId"));
+                mDB.insertWrongAnswer(mConf.getConStudyId(),(int)param.get("wordId"));
                 correct_yn = false;
               }
 
             } else if (v.getId() == R.id.vowelRight) {
               flag1 = true;
-              if (vowelRightId == view.getId()) {
+              if (vowelRightId == (int)param.get("realId")) {
                 frame_vowelRight.removeAllViews();
                 frame_vowelBottom.removeAllViews();
                 flag2 = true;
-                getNum = (int)view.getId() - 200;
+                getNum = (int)param.get("realId") - 200;
                 imageId = getResources()
                     .getIdentifier("vowel" + getNum +"_black", "drawable", getPackageName());
                 currentVowel = view.getContentDescription().charAt(0);
               }else{
-                mDB.insertWrongAnswer(mConf.getVowStudyId(),(int)tagMap.get("wordId"));
+                mDB.insertWrongAnswer(mConf.getVowStudyId(),(int)param.get("wordId"));
                 correct_yn = false;
               }
 
             } else if (v.getId() == R.id.vowelBottom) {
               flag1 = true;
-              if (vowelBottomId == view.getId()) {
+              if (vowelBottomId == (int)param.get("realId")) {
                 frame_vowelRight.removeAllViews();
                 frame_vowelBottom.removeAllViews();
                 flag2 = true;
-                getNum = (int)view.getId() - 300;
+                getNum = (int)param.get("realId") - 300;
                 imageId = getResources()
                     .getIdentifier("vowel" + getNum +"_black", "drawable", getPackageName());
                 currentVowel = view.getContentDescription().charAt(0);
               }else{
-                mDB.insertWrongAnswer(mConf.getVowStudyId(),(int)tagMap.get("wordId"));
+                mDB.insertWrongAnswer(mConf.getVowStudyId(),(int)param.get("wordId"));
                 correct_yn = false;
               }
             }
@@ -490,8 +596,10 @@ public class SyllableGameActivity3 extends AppCompatActivity {
           if (frame_consonant.getChildCount() == 1 && (frame_vowelRight.getChildCount() == 1
               || frame_vowelBottom.getChildCount() == 1)) {
 
-            consonantList.removeAllViews();
-            vowelList.removeAllViews();
+            consonantList.setVisibility(View.GONE);
+            scrollDown1.setVisibility(View.GONE);
+            vowelList.setVisibility(View.GONE);
+            scrollDown2.setVisibility(View.GONE);
 
             listenBtn.setVisibility(View.GONE);
 
@@ -499,10 +607,8 @@ public class SyllableGameActivity3 extends AppCompatActivity {
             frame_vowelRight.setClickable(true);
             frame_vowelBottom.setClickable(true);
 
-            nextImage = new ImageView(getApplicationContext());
-            nextImage.setImageDrawable(getResources().getDrawable(R.drawable.arrow_right));
-            nextImage.setOnClickListener(mNextClickListener);
-            vowelList.addView(nextImage);
+            nextImage.setClickable(true);
+            nextImage.setVisibility(View.VISIBLE);
 
           }
           return true;
@@ -677,9 +783,12 @@ public class SyllableGameActivity3 extends AppCompatActivity {
             }, 0);
           }
 
-          nextImage.setClickable(false);
-          vowelList.removeAllViews();
-          makeDragItems();
+          nextImage.setVisibility(View.GONE);
+          consonantList.setVisibility(View.VISIBLE);
+          scrollDown1.setVisibility(View.VISIBLE);
+          vowelList.setVisibility(View.VISIBLE);
+          scrollDown2.setVisibility(View.VISIBLE);
+
           frame_consonant.setVisibility(View.VISIBLE);
           frame_vowelRight.setVisibility(View.VISIBLE);
           frame_vowelBottom.setVisibility(View.VISIBLE);
