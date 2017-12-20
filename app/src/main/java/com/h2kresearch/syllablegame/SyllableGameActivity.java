@@ -281,11 +281,12 @@ public class SyllableGameActivity extends AppCompatActivity {
       }
     });
 
-    nextImage = new ImageView(getApplicationContext());
-    nextImage.setImageDrawable(getResources().getDrawable(R.drawable.arrow_right));
+//    nextImage = new ImageView(getApplicationContext());
+//    nextImage.setImageDrawable(getResources().getDrawable(R.drawable.arrow_right));
+//    vowelContents.addView(nextImage);
+//    nextImage.setVisibility(View.GONE);
+    nextImage = findViewById(R.id.nextImage);
     nextImage.setOnClickListener(mNextClickListener);
-    vowelContents.addView(nextImage);
-    nextImage.setVisibility(View.GONE);
 
     makeDragItems();
 
@@ -824,6 +825,7 @@ public class SyllableGameActivity extends AppCompatActivity {
     WordAdapter vowelAdapter = new WordAdapter(this, -1, img_vowel);
     vowelAdapter.numImage = 5;
     HangulListAdapter hangulListAdapter1 = new HangulListAdapter(vowelAdapter);
+    hangulListAdapter1.minDisplayCount = 5;
 
     consonantList = (ListView) findViewById(R.id.consonantList);
     consonantList.setAdapter(hangulListAdapter);

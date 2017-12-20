@@ -12,7 +12,7 @@ public class HangulListAdapter extends BaseAdapter {
 
   private BaseAdapter mListAdapter;
   private int mListAdapterCount;
-  private static int minDisplayCount = 4;
+  public int minDisplayCount = 4;
 
   public HangulListAdapter(BaseAdapter listAdapter) {
     if(listAdapter == null) {

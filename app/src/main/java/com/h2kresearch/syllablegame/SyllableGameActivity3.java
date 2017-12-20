@@ -99,12 +99,14 @@ public class SyllableGameActivity3 extends AppCompatActivity {
   float mPuzzleGap = 30.0f;
   int mPuzzleWidth = 240;
   int mPuzzleHeight = 300;
+  int mListItemHeight = 1000;
 
   int scrollIndex = 1;
   int scrollIndex1 = 1;
 
   class WordAdapter extends ArrayAdapter {
     private ImageView[] words;
+    public int numImage = 4;
 
     public WordAdapter(Context context, int textViewResourceId, ImageView[] words){
       super(context, textViewResourceId, words);
@@ -129,6 +131,12 @@ public class SyllableGameActivity3 extends AppCompatActivity {
       iv_img.setContentDescription(words[position].getContentDescription());
       iv_img.setOnTouchListener(mTouchListener);
       iv_img.setTag(words[position].getTag());
+
+      LinearLayout linearLayout = (LinearLayout) convertView.findViewById(R.id.itemView);
+      LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) linearLayout.getLayoutParams();
+      params.height = mListItemHeight/numImage;
+      linearLayout.setLayoutParams(params);
+      linearLayout.invalidate();
 
       return convertView;
     }
@@ -376,24 +384,25 @@ public class SyllableGameActivity3 extends AppCompatActivity {
       }
     });
 
-    nextImage = new ImageView(getApplicationContext());
-    nextImage.setImageDrawable(getResources().getDrawable(R.drawable.arrow_right));
+//    nextImage = new ImageView(getApplicationContext());
+//    nextImage.setImageDrawable(getResources().getDrawable(R.drawable.arrow_right));
+//    vowelContents.addView(nextImage);
+//    nextImage.setVisibility(View.GONE);
+    nextImage = findViewById(R.id.nextImage);
     nextImage.setOnClickListener(mNextClickListener);
-    vowelContents.addView(nextImage);
-    nextImage.setVisibility(View.GONE);
 
     makeDragItems();
 
-    WordAdapter consonantAdapter = new WordAdapter(this, -1, img_consonant);
-    HangulListAdapter hangulListAdapter = new HangulListAdapter(consonantAdapter);
-    WordAdapter vowelAdapter = new WordAdapter(this, -1, img_vowel);
-    HangulListAdapter hangulListAdapter1 = new HangulListAdapter(vowelAdapter);
-
-    consonantList = (ListView) findViewById(R.id.consonantList);
-    consonantList.setAdapter(hangulListAdapter);
-
-    vowelList = (ListView) findViewById(R.id.vowelList);
-    vowelList.setAdapter(hangulListAdapter1);
+//    WordAdapter consonantAdapter = new WordAdapter(this, -1, img_consonant);
+//    HangulListAdapter hangulListAdapter = new HangulListAdapter(consonantAdapter);
+//    WordAdapter vowelAdapter = new WordAdapter(this, -1, img_vowel);
+//    HangulListAdapter hangulListAdapter1 = new HangulListAdapter(vowelAdapter);
+//
+//    consonantList = (ListView) findViewById(R.id.consonantList);
+//    consonantList.setAdapter(hangulListAdapter);
+//
+//    vowelList = (ListView) findViewById(R.id.vowelList);
+//    vowelList.setAdapter(hangulListAdapter1);
 
     makeExamples(dec_consonants,dec_vowels);
   }
@@ -922,24 +931,44 @@ public class SyllableGameActivity3 extends AppCompatActivity {
     int margin = (int) imgMargin;
 
     // Assign
-    frame_consonant.getLayoutParams().width = width;
-    frame_consonant.getLayoutParams().height = height+4;
-    ((RelativeLayout.LayoutParams)frame_consonant.getLayoutParams()).leftMargin = margin;
-    ((RelativeLayout.LayoutParams)frame_consonant.getLayoutParams()).topMargin = margin;
+    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) frame_consonant.getLayoutParams();
+    params.width = width;
+    params.height = height + 4;
+    params.leftMargin = margin;
+    params.topMargin = margin;
+    frame_consonant.setLayoutParams(params);
+    frame_consonant.invalidate();
 
-    frame_vowelRight.getLayoutParams().width = height;
-    frame_vowelRight.getLayoutParams().height = width;
-    ((RelativeLayout.LayoutParams)frame_vowelRight.getLayoutParams()).leftMargin = marginInterval;
-    ((RelativeLayout.LayoutParams)frame_vowelRight.getLayoutParams()).setMarginStart(marginInterval);
-    ((RelativeLayout.LayoutParams)frame_vowelRight.getLayoutParams()).setMarginEnd(margin);
+    params = (RelativeLayout.LayoutParams) frame_vowelRight.getLayoutParams();
+    params.width = height;
+    params.height = width;
+    params.leftMargin = marginInterval;
+    params.setMarginStart(marginInterval);
+    params.setMarginEnd(margin);
+    frame_vowelRight.setLayoutParams(params);
+    frame_vowelRight.invalidate();
 
-    frame_vowelBottom.getLayoutParams().width = width;
-    frame_vowelBottom.getLayoutParams().height = width;
-    ((RelativeLayout.LayoutParams)frame_vowelBottom.getLayoutParams()).bottomMargin = margin;
+    params = (RelativeLayout.LayoutParams) frame_vowelBottom.getLayoutParams();
+    params.width = width;
+    params.height = width;
+    params.bottomMargin = margin;
+    frame_vowelBottom.setLayoutParams(params);
+    frame_vowelBottom.invalidate();
 
-    frame_consonant.removeAllViews();
-    frame_vowelRight.removeAllViews();
-    frame_vowelBottom.removeAllViews();
+    ListView listView = (ListView) findViewById(R.id.consonantList);
+    mListItemHeight = listView.getHeight();
+
+    WordAdapter consonantAdapter = new WordAdapter(this, -1, img_consonant);
+    HangulListAdapter hangulListAdapter = new HangulListAdapter(consonantAdapter);
+    WordAdapter vowelAdapter = new WordAdapter(this, -1, img_vowel);
+    vowelAdapter.numImage = 5;
+    HangulListAdapter hangulListAdapter1 = new HangulListAdapter(vowelAdapter);
+
+    consonantList = (ListView) findViewById(R.id.consonantList);
+    consonantList.setAdapter(hangulListAdapter);
+
+    vowelList = (ListView) findViewById(R.id.vowelList);
+    vowelList.setAdapter(hangulListAdapter1);
   }
 
   @Override

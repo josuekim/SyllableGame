@@ -59,48 +59,51 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:gravity="right"
         android:orientation="horizontal">
         <ImageView
           android:id="@+id/complete_counting1"
           android:layout_width="15dp"
           android:layout_height="wrap_content"
-          android:layout_marginRight="5dp"
+          android:layout_marginLeft="5dp"
           android:layout_gravity="right|bottom"
           android:adjustViewBounds="true"
-          app:srcCompat="@drawable/han0"/>
+          app:srcCompat="@drawable/han0" />
         <ImageView
           android:id="@+id/complete_counting2"
           android:layout_width="15dp"
           android:layout_height="wrap_content"
-          android:layout_marginRight="5dp"
+          android:layout_marginLeft="5dp"
           android:layout_gravity="right|bottom"
           android:adjustViewBounds="true"
-          app:srcCompat="@drawable/han0"/>
+          app:srcCompat="@drawable/han0" />
         <ImageView
           android:id="@+id/complete_counting3"
           android:layout_width="15dp"
           android:layout_height="wrap_content"
-          android:layout_marginRight="5dp"
+          android:layout_marginLeft="5dp"
           android:layout_gravity="right|bottom"
           android:adjustViewBounds="true"
-          app:srcCompat="@drawable/han0"/>
+          app:srcCompat="@drawable/han0" />
         <ImageView
           android:id="@+id/complete_counting4"
           android:layout_width="15dp"
           android:layout_height="wrap_content"
-          android:layout_marginRight="5dp"
+          android:layout_marginLeft="5dp"
           android:layout_gravity="right|bottom"
           android:adjustViewBounds="true"
-          app:srcCompat="@drawable/han0"/>
+          app:srcCompat="@drawable/han0" />
         <ImageView
           android:id="@+id/complete_counting5"
           android:layout_width="15dp"
           android:layout_height="wrap_content"
-          android:layout_marginRight="5dp"
+          android:layout_marginLeft="5dp"
           android:layout_gravity="right|bottom"
           android:adjustViewBounds="true"
-          app:srcCompat="@drawable/han0"/>
+          app:srcCompat="@drawable/han0" />
       </LinearLayout>
     </LinearLayout>
 
@@ -278,7 +281,18 @@
           <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.1"/>
+            android:layout_weight="0.05" />
+          <ImageView
+            android:id="@+id/nextImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:adjustViewBounds="true"
+            android:visibility="gone"
+            app:srcCompat="@drawable/arrow_right" />
+          <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.05" />
           <ImageView
             android:id="@+id/scrollVowels"
             android:layout_width="match_parent"
