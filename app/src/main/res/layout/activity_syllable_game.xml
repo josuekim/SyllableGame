@@ -26,20 +26,20 @@
           android:paddingBottom="10dp"
           android:background="@color/titleBarColor"
           android:orientation="horizontal">
-            <TextView
-              android:id="@+id/textViewL"
-              android:textStyle="bold"
-              android:layout_width="0dp"
-              android:layout_height="wrap_content"
-              android:layout_weight="1"
-              android:paddingTop="10dp"
-              android:paddingLeft="10dp"
-              android:paddingRight="10dp"
-              android:gravity="left|center_vertical"
-              android:text="&lt; 오늘의 학습"
-              android:textAlignment="gravity"
-              android:textColor="@color/highlightColor"
-              android:textSize="14dp" />
+          <TextView
+            android:id="@+id/textViewL"
+            android:textStyle="bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:gravity="left|center_vertical"
+            android:text="오늘의 학습"
+            android:textAlignment="gravity"
+            android:textColor="@color/highlightColor"
+            android:textSize="14dp" />
             <TextView
               android:id="@+id/textView"
               android:textStyle="bold"
@@ -143,13 +143,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.1"/>
+                  <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.1"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
                     <ImageView
                       android:id="@+id/scrollConsonants"
-                      android:layout_width="match_parent"
-                      android:layout_height="0dp"
-                      android:layout_weight="0.1"
-                      app:srcCompat="@drawable/arrow_down"/>
-                    <Space
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:adjustViewBounds="true"
+                      app:srcCompat="@drawable/arrow_down" />
+                  </LinearLayout>
+                  <Space
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.1"/>
@@ -251,10 +260,10 @@
                   android:layout_height="0dp"
                   android:layout_weight="1.6">
                 </ListView>
-                  <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.05" />
+                <Space
+                  android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_weight="0.1" />
                   <ImageView
                     android:id="@+id/nextImage"
                     android:layout_width="50dp"
@@ -262,16 +271,21 @@
                     android:adjustViewBounds="true"
                     android:visibility="gone"
                     app:srcCompat="@drawable/arrow_right" />
-                  <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.05" />
-                  <ImageView
-                  android:id="@+id/scrollVowels"
+                <LinearLayout
                   android:layout_width="match_parent"
                   android:layout_height="0dp"
                   android:layout_weight="0.1"
-                  app:srcCompat="@drawable/arrow_down"/>
+                  android:gravity="center_vertical|center_horizontal"
+                  android:orientation="horizontal"
+                  android:weightSum="3">
+                  <ImageView
+                    android:id="@+id/scrollVowels"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    app:srcCompat="@drawable/arrow_down" />
+                </LinearLayout>
                 <Space
                   android:layout_width="match_parent"
                   android:layout_height="0dp"

@@ -9,6 +9,7 @@ import android.graphics.Point;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
@@ -954,6 +955,11 @@ public class SyllableGameActivity3 extends AppCompatActivity {
     params.bottomMargin = margin;
     frame_vowelBottom.setLayoutParams(params);
     frame_vowelBottom.invalidate();
+
+    ConstraintLayout.LayoutParams params2 = (ConstraintLayout.LayoutParams) listenBtn.getLayoutParams();
+    params2.width = height / 3;
+    listenBtn.setLayoutParams(params2);
+    listenBtn.invalidate();
 
     ListView listView = (ListView) findViewById(R.id.consonantList);
     mListItemHeight = listView.getHeight();

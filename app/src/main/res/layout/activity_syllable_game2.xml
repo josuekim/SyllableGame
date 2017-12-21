@@ -38,7 +38,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:gravity="left|center_vertical"
-        android:text="&lt; 오늘의 학습"
+        android:text="오늘의 학습"
         android:textAlignment="gravity"
         android:textColor="@color/highlightColor"
         android:textSize="14dp" />
@@ -144,12 +144,21 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1"/>
-          <ImageView
-            android:id="@+id/scrollConsonants"
+          <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1"
-            app:srcCompat="@drawable/arrow_down"/>
+            android:gravity="center_vertical|center_horizontal"
+            android:orientation="horizontal"
+            android:weightSum="3">
+            <ImageView
+              android:id="@+id/scrollConsonants"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:adjustViewBounds="true"
+              app:srcCompat="@drawable/arrow_down" />
+          </LinearLayout>
           <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -243,7 +252,7 @@
           <ImageView
             android:id="@+id/repeatButton2"
             android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="false"
             android:layout_alignParentEnd="false"
             android:layout_gravity="right"
@@ -282,7 +291,7 @@
           <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.05" />
+            android:layout_weight="0.1" />
           <ImageView
             android:id="@+id/nextImage"
             android:layout_width="50dp"
@@ -290,16 +299,21 @@
             android:adjustViewBounds="true"
             android:visibility="gone"
             app:srcCompat="@drawable/arrow_right" />
-          <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.05" />
-          <ImageView
-            android:id="@+id/scrollVowels"
+          <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1"
-            app:srcCompat="@drawable/arrow_down"/>
+            android:gravity="center_vertical|center_horizontal"
+            android:orientation="horizontal"
+            android:weightSum="3">
+            <ImageView
+              android:id="@+id/scrollVowels"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:adjustViewBounds="true"
+              app:srcCompat="@drawable/arrow_down" />
+          </LinearLayout>
           <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
