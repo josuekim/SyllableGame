@@ -3,6 +3,7 @@ package com.h2kresearch.syllablegame.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TreeSet;
@@ -195,4 +196,25 @@ public class CommonUtils {
     return NONE_STATE;
   }
 
+  public static String passwordEncrypt(String password) {
+
+    try{
+
+      MessageDigest digest = MessageDigest.getInstance("SHA-256");
+      byte[] hash = digest.digest(password.getBytes("UTF-8"));
+      StringBuffer hexString = new StringBuffer();
+
+      for (int i = 0; i < hash.length; i++) {
+        String hex = Integer.toHexString(0xff & hash[i]);
+        if(hex.length() == 1) hexString.append('0');
+        hexString.append(hex);
+      }
+
+    } catch(Exception ex){
+      throw new RuntimeException(ex);
+    }
+
+    return password;
+
+  }
 }
