@@ -21,9 +21,11 @@ public class SignActivity extends BGMActivity {
   EditText mID;
   EditText mPW;
   EditText mPW2;
+  EditText mName;
   boolean mIDComplete;
   boolean mPWComplete;
   boolean mPW2Complete;
+  boolean mNameComplete;
 
   // Button
   Intent mLoginIntent;
@@ -37,6 +39,7 @@ public class SignActivity extends BGMActivity {
     mID = (EditText) findViewById(R.id.editText1);
     mPW = (EditText) findViewById(R.id.editText2);
     mPW2 = (EditText) findViewById(R.id.editText3);
+    mName = (EditText) findViewById(R.id.editText4);
 
     mID.addTextChangedListener(new TextWatcher() {
       @Override
@@ -86,7 +89,7 @@ public class SignActivity extends BGMActivity {
           mPWComplete = false;
         }
 
-        if (mIDComplete && mPWComplete && mPW2Complete) {
+        if (mIDComplete && mPWComplete && mPW2Complete && mNameComplete) {
           mSignButton.setEnabled(true);
           mSignButton.setBackgroundResource(R.drawable.roundcorner_click);
         } else {
@@ -117,7 +120,36 @@ public class SignActivity extends BGMActivity {
           mPW2Complete = false;
         }
 
-        if (mIDComplete && mPWComplete && mPW2Complete) {
+        if (mIDComplete && mPWComplete && mPW2Complete && mNameComplete) {
+          mSignButton.setEnabled(true);
+          mSignButton.setBackgroundResource(R.drawable.roundcorner_click);
+        } else {
+          mSignButton.setEnabled(false);
+          mSignButton.setBackgroundResource(R.drawable.roundcorner);
+        }
+      }
+    });
+
+    mName.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void afterTextChanged(Editable editable) {
+        if (editable.length() > 0) {
+          mNameComplete = true;
+        } else {
+          mNameComplete = false;
+        }
+
+        if (mIDComplete && mPWComplete && mPW2Complete && mNameComplete) {
           mSignButton.setEnabled(true);
           mSignButton.setBackgroundResource(R.drawable.roundcorner_click);
         } else {
@@ -137,6 +169,7 @@ public class SignActivity extends BGMActivity {
         // 회원가입 & 로그인
         String id = mID.getText().toString();
         String pw = mPW.getText().toString();
+        String name = mName.getText().toString();
 
         // Check Network State
         String network = CommonUtils.getWhatKindOfNetwork(getApplicationContext());
@@ -147,7 +180,7 @@ public class SignActivity extends BGMActivity {
           try {
             // Sign up and Login
             String signURL = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidSignup";
-            String param = "u_id=" + id + "&u_pw=" + pw;
+            String param = "u_id=" + id + "&u_pw=" + pw + "&u_name=" + name;
             LoginServer loginServer = new LoginServer(signURL, param);
             signResult = (String) loginServer.execute().get(3, TimeUnit.SECONDS);
           } catch (Exception e) {
@@ -156,14 +189,15 @@ public class SignActivity extends BGMActivity {
 
           if (signResult.equals("0")) {
 
+            // Server DB
+            Toast.makeText(getApplicationContext(), "회원 가입을 위한 인증 메일이 발송되었습니다.", Toast.LENGTH_LONG).show();
+
             // Local DB
             DatabaseAccess db = DatabaseAccess.getInstance(getApplicationContext());
             db.open();
-            long signLocalResult = db.signup(id, pw);
-
+            long signLocalResult = db.signup(id, pw); // Auto-Login False
             if (signLocalResult > 0) { // Sign-up Success
               // Login Intent
-              Toast.makeText(getApplicationContext(), "회원 가입을 위한 인증 메일이 발송되었습니다.", Toast.LENGTH_LONG).show();
               startActivity(mLoginIntent);
             } else {
               Toast.makeText(getApplicationContext(), "Local DB Written Fail.", Toast.LENGTH_LONG).show();

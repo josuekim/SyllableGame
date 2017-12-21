@@ -168,7 +168,7 @@ public class DatabaseAccess {
     ContentValues cv = new ContentValues();
     cv.put("email", id);
     cv.put("password", pw);
-    cv.put("session", "Y");
+    cv.put("session", "N");
 
     // return index
     return database.insert("hangul_user_info", null, cv);

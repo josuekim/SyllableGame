@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity
 
   // Intent
   Intent mIntent;
-  Intent mLoginIntent;
+  Intent mResultIntent;
 
   ConfigurationModel mConf;
   DatabaseAccess mDb;
@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity
     // Intent
     mIntent = new Intent(MainActivity.this, ResizeActivity.class);
     mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-    mLoginIntent = new Intent(MainActivity.this, LoginActivity.class);
-    mLoginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    mResultIntent = new Intent(MainActivity.this, ResultActivity.class);
+    mResultIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
     // LinearLayout (Background)
     mLinearLayout = (LinearLayout) findViewById(R.id.LinearLayout);
@@ -107,16 +107,16 @@ public class MainActivity extends AppCompatActivity
           //mLinearLayout.setBackgroundColor(Color.parseColor("#E0F2F1"));
           mSelectMode = false;
           mRightButton.setText("선택");
-          mLeftButton.setText("로그아웃");
+          mLeftButton.setText("마이페이지");
         } else {
           // 이전
           //onBackPressed();
 
           // DB Update
-          mDb.logout(mConf.getEmail());
+//          mDb.logout(mConf.getEmail());
 
-          // Logout
-          startActivity(mLoginIntent);
+          // My Page
+          startActivity(mResultIntent);
         }
       }
     });

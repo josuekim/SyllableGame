@@ -32,7 +32,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:gravity="left|center_vertical"
-        android:text="&lt; 오늘의 학습"
+        android:text="이전"
         android:textAlignment="gravity"
         android:textColor="@color/highlightColor"
         android:textSize="14dp" />
@@ -46,7 +46,7 @@
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:gravity="center_vertical|center_horizontal"
-        android:text="결과 확인"
+        android:text="마이페이지"
         android:textAlignment="gravity"
         android:textColor="@color/titleBarTextColor"
         android:textSize="18dp" />
@@ -60,7 +60,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:gravity="right|center_vertical"
-        android:text="종료 하기"
+        android:text="종료하기"
         android:textAlignment="gravity"
         android:textColor="@color/highlightColor"
         android:textSize="14dp" />
@@ -125,21 +125,6 @@
           android:layout_height="0dp"
           android:layout_weight="1" />
         <Button
-          android:id="@+id/button2"
-          android:textStyle="bold"
-          android:layout_width="match_parent"
-          android:layout_height="0dp"
-          android:layout_weight="3"
-          android:background="@drawable/roundcorner_click"
-          android:text="단원별 성취도"
-          android:textAllCaps="false"
-          android:textColor="@color/button_text"
-          android:textSize="24dp" />
-        <Space
-          android:layout_width="match_parent"
-          android:layout_height="0dp"
-          android:layout_weight="1" />
-        <Button
           android:id="@+id/button3"
           android:textStyle="bold"
           android:layout_width="match_parent"
@@ -150,6 +135,62 @@
           android:textAllCaps="false"
           android:textColor="@color/button_text"
           android:textSize="24dp" />
+        <Space
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="1" />
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center_vertical"
+          android:orientation="horizontal">
+          <TextView
+            android:id="@+id/textView1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center_vertical"
+            android:text="추천하기"
+            android:textAlignment="center"
+            android:textColor="@color/textLoginMenuColor"
+            android:textSize="18dp" />
+          <TextView
+            android:id="@+id/textView5"
+            android:layout_width="3dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@color/textLoginMenuBarColor"
+            android:text="간격"
+            android:textColor="@android:color/transparent" />
+          <TextView
+            android:id="@+id/textView2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center_vertical"
+            android:text="고객센터"
+            android:textAlignment="center"
+            android:textColor="@color/textLoginMenuColor"
+            android:textSize="18dp" />
+          <TextView
+            android:id="@+id/textView6"
+            android:layout_width="3dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@color/textLoginMenuBarColor"
+            android:text="간격"
+            android:textColor="@android:color/transparent" />
+          <TextView
+            android:id="@+id/textView3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center_vertical"
+            android:text="로그아웃"
+            android:textAlignment="center"
+            android:textColor="@color/textLoginMenuColor"
+            android:textSize="18dp" />
+        </LinearLayout>
         <Space
           android:layout_width="match_parent"
           android:layout_height="0dp"

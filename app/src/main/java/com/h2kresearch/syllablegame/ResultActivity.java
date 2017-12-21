@@ -2,6 +2,7 @@ package com.h2kresearch.syllablegame;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -12,15 +13,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.h2kresearch.syllablegame.database.DatabaseAccess;
+import com.h2kresearch.syllablegame.model.ConfigurationModel;
 import com.h2kresearch.syllablegame.utils.MusicService;
 
 public class ResultActivity extends BGMActivity
-  implements OnClickListener{
+    implements OnClickListener {
 
   // Intent
   Intent mIntent;
-  Intent mIntent2;
+//  Intent mIntent2;
   Intent mIntent3;
+  Intent mLoginIntent;
 
   // Layout
   TextView mLeftButton;
@@ -28,8 +31,13 @@ public class ResultActivity extends BGMActivity
 
   // Button
   Button mButton1;
-  Button mButton2;
+  //  Button mButton2;
   Button mButton3;
+
+  // Bottom Menu
+  TextView mRecommendButton;
+  TextView mServiceCenterButton;
+  TextView mLogoutButton;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +47,12 @@ public class ResultActivity extends BGMActivity
     // Next Intent
     mIntent = new Intent(ResultActivity.this, ResultDailyActivity.class);
     mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-    mIntent2 = new Intent(ResultActivity.this, ResultPartActivity.class);
-    mIntent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//    mIntent2 = new Intent(ResultActivity.this, ResultPartActivity.class);
+//    mIntent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     mIntent3 = new Intent(ResultActivity.this, ResultTotalActivity.class);
     mIntent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    mLoginIntent = new Intent(ResultActivity.this, LoginActivity.class);
+    mLoginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
     // Layout
     mLeftButton = (TextView) findViewById(R.id.textViewL);
@@ -61,15 +71,15 @@ public class ResultActivity extends BGMActivity
     db.updateTotalWrong();
 
     // Button
-    mButton1 = (Button)findViewById(R.id.button1);
-    mButton2 = (Button)findViewById(R.id.button2);
-    mButton3 = (Button)findViewById(R.id.button3);
+    mButton1 = (Button) findViewById(R.id.button1);
+//    mButton2 = (Button)findViewById(R.id.button2);
+    mButton3 = (Button) findViewById(R.id.button3);
 
     mButton1.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
 
-        mButton2.setBackgroundResource(R.drawable.roundcorner);
+//        mButton2.setBackgroundResource(R.drawable.roundcorner);
         mButton3.setBackgroundResource(R.drawable.roundcorner);
 
         Handler handler = new Handler();
@@ -82,30 +92,30 @@ public class ResultActivity extends BGMActivity
       }
     });
 
-    mButton2.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View view) {
-
-//        mButton1.setBackgroundResource(R.drawable.roundcorner);
-//        mButton3.setBackgroundResource(R.drawable.roundcorner);
-
-        Toast.makeText(getApplicationContext(), "추후 업데이트 될 예정입니다.", Toast.LENGTH_LONG).show();
-//        Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//          @Override
-//          public void run() {
-//            startActivity(mIntent2);
-//          }
-//        }, 500);
-      }
-    });
+//    mButton2.setOnClickListener(new OnClickListener() {
+//      @Override
+//      public void onClick(View view) {
+//
+////        mButton1.setBackgroundResource(R.drawable.roundcorner);
+////        mButton3.setBackgroundResource(R.drawable.roundcorner);
+//
+//        Toast.makeText(getApplicationContext(), "추후 업데이트 될 예정입니다.", Toast.LENGTH_LONG).show();
+////        Handler handler = new Handler();
+////        handler.postDelayed(new Runnable() {
+////          @Override
+////          public void run() {
+////            startActivity(mIntent2);
+////          }
+////        }, 500);
+//      }
+//    });
 
     mButton3.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
 
         mButton1.setBackgroundResource(R.drawable.roundcorner);
-        mButton2.setBackgroundResource(R.drawable.roundcorner);
+//        mButton2.setBackgroundResource(R.drawable.roundcorner);
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -114,6 +124,54 @@ public class ResultActivity extends BGMActivity
             startActivity(mIntent3);
           }
         }, 500);
+      }
+    });
+
+    mRecommendButton = (TextView) findViewById(R.id.textView1);
+    mServiceCenterButton = (TextView) findViewById(R.id.textView2);
+    mLogoutButton = (TextView) findViewById(R.id.textView3);
+
+    mRecommendButton.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        // Share
+        Intent i=new Intent(Intent.ACTION_SEND);
+        i.addCategory(Intent.CATEGORY_DEFAULT);
+        i.setType("text/plain");
+//        i.putExtra(Intent.EXTRA_SUBJECT, "소중한글을 추천합니다.");
+        i.putExtra(Intent.EXTRA_TEXT, "소중한글을 추천합니다. 소중한글은 한글을 어려워하는 우리 소중한 아이를 위한 소리 중심의 한글 교육앱입니다. 구글 플레이 스토어에서 지금 바로 확인해보세요! https://play.google.com/store/apps/details?id=com.h2kresearch.syllablegame");
+//        i.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"webmaster@website.com"});
+//        i.putExtra(Intent.EXTRA_CC, new String[]{"webmaster1@website.com", "webmaster2@website.com"});
+//        i.putExtra(Intent.EXTRA_BCC, new String[]{"webmaster@website.com"});
+        startActivity(Intent.createChooser(i, "소중한글 추천하기"));
+
+        // Gallery Pick
+//        Intent i = new Intent(Intent.ACTION_PICK);
+//        i.setType(Media.CONTENT_TYPE);
+//        startActivityForResult(i, 1);
+      }
+    });
+
+    mServiceCenterButton.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://plus.kakao.com/home/@소중한글"));
+        startActivity(i);
+      }
+    });
+
+    mLogoutButton.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        // DB Update
+        DatabaseAccess mDb = DatabaseAccess.getInstance(getApplicationContext());
+        mDb.open();
+
+        ConfigurationModel mConf = ConfigurationModel.getInstance();
+        mDb.logout(mConf.getEmail());
+
+        // Logout
+        startActivity(mLoginIntent);
       }
     });
   }
@@ -148,7 +206,7 @@ public class ResultActivity extends BGMActivity
     super.onResume();
 
     mButton1.setBackgroundResource(R.drawable.roundcorner_click);
-    mButton2.setBackgroundResource(R.drawable.roundcorner_click);
+//    mButton2.setBackgroundResource(R.drawable.roundcorner_click);
     mButton3.setBackgroundResource(R.drawable.roundcorner_click);
   }
 }
