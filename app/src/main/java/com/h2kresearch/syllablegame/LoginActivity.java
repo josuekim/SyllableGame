@@ -1,6 +1,7 @@
 package com.h2kresearch.syllablegame;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -223,7 +224,8 @@ public class LoginActivity extends BGMActivity {
     mFindIDButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
-        Toast.makeText(getApplicationContext(), "고객센터로 문의하세요.", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://plus.kakao.com/home/@소중한글"));
+        startActivity(intent);
       }
     });
     mFindPWButton = (TextView) findViewById(R.id.textView2);

@@ -155,8 +155,8 @@ public class ResultActivity extends BGMActivity
     mServiceCenterButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://plus.kakao.com/home/@소중한글"));
-        startActivity(i);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://plus.kakao.com/home/@소중한글"));
+        startActivity(intent);
       }
     });
 
@@ -185,11 +185,19 @@ public class ResultActivity extends BGMActivity
     builder.setPositiveButton("예",
         new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialog, int which) {
-            Intent intent = new Intent(
-                getApplicationContext(),//현재제어권자
-                MusicService.class); // 이동할 컴포넌트
-            stopService(intent); // 서비스 시작
-            ActivityCompat.finishAffinity(ResultActivity.this);
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+              @Override
+              public void run() {
+
+                Intent intent = new Intent(
+                    getApplicationContext(),//현재제어권자
+                    MusicService.class); // 이동할 컴포넌트
+                stopService(intent); // 서비스 시작
+                ActivityCompat.finishAffinity(ResultActivity.this);
+
+              }
+            }, 1000);
           }
         });
     builder.setNegativeButton("아니오",

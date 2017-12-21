@@ -62,7 +62,7 @@ public class DatabaseAccess {
 
     // Find "Y"
     while (!cursor.isAfterLast()) {
-      if (cursor.getString(3).equals("Y")) {
+      if (cursor.getString(4).equals("Y")) {
 
         // Return User Email
         return cursor.getString(1);
@@ -90,7 +90,7 @@ public class DatabaseAccess {
     // Find User
     while (!cursor.isAfterLast()) {
       if (cursor.getString(1).equals(id)
-          && cursor.getString(2).equals(pw)) {
+          && cursor.getString(3).equals(pw)) {
 
         // Update DB
         int index = cursor.getInt(0);
@@ -116,8 +116,8 @@ public class DatabaseAccess {
 
     // Force to Login
     if(!loginResult) {
-      loginResult = true; // TBA
       signup(id, pw, name);
+      loginResult = login(id, pw);
     }
 
     // Wrong ID or PW

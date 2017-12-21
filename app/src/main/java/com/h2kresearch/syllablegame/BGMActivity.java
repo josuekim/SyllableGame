@@ -62,10 +62,15 @@ public class BGMActivity extends AppCompatActivity {
       if (mService != null) {
         mService.start();
       }
-    } else {
-      if (mService != null) {
-        mService.pause();
-      }
+    }
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+
+    if (mService != null) {
+      mService.pause();
     }
   }
 }

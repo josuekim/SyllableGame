@@ -17,7 +17,7 @@ import com.h2kresearch.syllablegame.utils.CommonUtils;
 import com.h2kresearch.syllablegame.utils.LoginServer;
 import java.util.concurrent.TimeUnit;
 
-public class FindPWActivity extends AppCompatActivity {
+public class FindPWActivity extends BGMActivity {
 
   // Layout
   EditText mEditText1;

@@ -2,6 +2,7 @@ package com.h2kresearch.syllablegame;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
@@ -345,11 +346,19 @@ public class MainActivity extends AppCompatActivity
       builder.setPositiveButton("예",
           new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-              Intent intent = new Intent(
-                  getApplicationContext(),//현재제어권자
-                  MusicService.class); // 이동할 컴포넌트
-              stopService(intent); // 서비스 시작
-              ActivityCompat.finishAffinity(MainActivity.this);
+              Handler handler = new Handler();
+              handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                  Intent intent = new Intent(
+                      getApplicationContext(),//현재제어권자
+                      MusicService.class); // 이동할 컴포넌트
+                  stopService(intent); // 서비스 시작
+                  ActivityCompat.finishAffinity(MainActivity.this);
+
+                }
+              }, 1000);
             }
           });
       builder.setNegativeButton("아니오",

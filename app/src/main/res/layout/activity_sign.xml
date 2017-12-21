@@ -83,7 +83,7 @@
               android:ems="10"
               android:gravity="bottom"
               android:hint="비밀번호"
-              android:imeOptions="flagNoExtractUi"
+              android:imeOptions="actionNext|flagNoExtractUi"
               android:inputType="textPassword"
               android:textColor="@color/textColor"
               android:textColorHint="@color/textHintColor"
