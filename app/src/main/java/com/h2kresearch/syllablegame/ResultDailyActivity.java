@@ -1,5 +1,6 @@
 package com.h2kresearch.syllablegame;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import com.h2kresearch.syllablegame.database.DatabaseAccess;
 import com.h2kresearch.syllablegame.model.ConfigurationModel;
@@ -16,6 +17,11 @@ public class ResultDailyActivity extends ResultGraphActivity {
     // Open DB
     mDB = DatabaseAccess.getInstance(this);
     mDB.open();
+
+    // Nick Name
+    ConfigurationModel conf = ConfigurationModel.getInstance();
+    mNickName = conf.getNickName();
+    mToday = conf.getToday();
 
     // Daily (Total) Achieve
     mAchieve = mDB.updateDailyAverage();
@@ -34,7 +40,7 @@ public class ResultDailyActivity extends ResultGraphActivity {
 
     // Layout
     mTextView.setText("오늘의 결과");
-    mTextViewAchieveText.setText("오늘의 종합 성취도는 ");
+    mTextViewAchieveText.setText(mNickName + " 학생의 " + mToday + " 종합 성취도는 ");
     mTextViewAchieve.setText(mAchieve+"%");
   }
 }

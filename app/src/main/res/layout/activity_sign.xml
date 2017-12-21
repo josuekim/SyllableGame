@@ -71,30 +71,37 @@
             android:textColor="@color/textColor"
             android:textColorHint="@color/textHintColor"
             android:textSize="20dp" />
-          <EditText
-            android:id="@+id/editText2"
+          <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="bottom"
-            android:hint="비밀번호"
-            android:imeOptions="flagNoExtractUi"
-            android:inputType="textPassword"
-            android:textColor="@color/textColor"
-            android:textColorHint="@color/textHintColor"
-            android:textSize="20dp" />
-          <EditText
-            android:id="@+id/editText3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="bottom"
-            android:hint="비밀번호 확인"
-            android:imeOptions="flagNoExtractUi"
-            android:inputType="textPassword"
-            android:textColor="@color/textColor"
-            android:textColorHint="@color/textHintColor"
-            android:textSize="20dp" />
+            android:orientation="horizontal">
+            <EditText
+              android:id="@+id/editText2"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:ems="10"
+              android:gravity="bottom"
+              android:hint="비밀번호"
+              android:imeOptions="flagNoExtractUi"
+              android:inputType="textPassword"
+              android:textColor="@color/textColor"
+              android:textColorHint="@color/textHintColor"
+              android:textSize="20dp" />
+            <EditText
+              android:id="@+id/editText3"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:ems="10"
+              android:gravity="bottom"
+              android:hint="비밀번호 확인"
+              android:imeOptions="flagNoExtractUi"
+              android:inputType="textPassword"
+              android:textColor="@color/textColor"
+              android:textColorHint="@color/textHintColor"
+              android:textSize="20dp" />
+          </LinearLayout>
           <Button
             android:id="@+id/button"
             android:textStyle="bold"
