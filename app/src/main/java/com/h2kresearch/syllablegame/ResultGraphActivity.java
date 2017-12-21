@@ -46,6 +46,8 @@ public class ResultGraphActivity extends BGMActivity implements OnClickListener 
   DatabaseAccess mDB;
 
   String mEmail;
+  String mNickName;
+  String mToday;
 
   int mAchieve;
   ArrayList<Map> mAchieveSound; // {Sound, Achieve}

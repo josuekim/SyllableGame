@@ -109,7 +109,7 @@ public class DatabaseAccess {
     return false;
   }
 
-  public boolean loginForce(String id, String pw) {
+  public boolean loginForce(String id, String pw, String name) {
 
     // Login
     boolean loginResult = login(id, pw);
@@ -117,7 +117,7 @@ public class DatabaseAccess {
     // Force to Login
     if(!loginResult) {
       loginResult = true; // TBA
-      signup(id, pw);
+      signup(id, pw, name);
     }
 
     // Wrong ID or PW
@@ -162,12 +162,13 @@ public class DatabaseAccess {
    * @param pw
    * @return db에 사용자정보 입력 성공 여부 flag 값
    */
-  public long signup(String id, String pw) {
+  public long signup(String id, String pw, String name) {
 
     // Insert DB
     ContentValues cv = new ContentValues();
     cv.put("email", id);
     cv.put("password", pw);
+    cv.put("nickname", name);
     cv.put("session", "N");
 
     // return index
@@ -1057,5 +1058,29 @@ public class DatabaseAccess {
     cursor.close();
 
     return list;
+  }
+
+  public String getNickName(String id) {
+
+    // Return Value
+    String nickName = "";
+
+    // Access DB
+    Cursor cursor = database.rawQuery("SELECT * FROM hangul_user_info", null);
+    cursor.moveToFirst();
+
+    // Find User
+    while (!cursor.isAfterLast()) {
+      if (cursor.getString(1).equals(id)) {
+
+        // Update DB
+        nickName = cursor.getString(2);
+        break;
+      }
+      cursor.moveToNext();
+    }
+    cursor.close();
+
+    return nickName;
   }
 }

@@ -19,6 +19,7 @@ public class ResultTotalActivity extends ResultGraphActivity {
     // Get User Email and Date
     ConfigurationModel conf = ConfigurationModel.getInstance();
     mEmail = conf.getEmail();
+    mNickName = conf.getNickName();
 
     // Total Achieve
     mAchieve = mDB.getTotalAchieve();
@@ -37,7 +38,7 @@ public class ResultTotalActivity extends ResultGraphActivity {
 
     // Layout
     mTextView.setText("종합 성취도");
-    mTextViewAchieveText.setText("종합 성취도는 ");
+    mTextViewAchieveText.setText(mNickName + " 학생의 종합 성취도는 ");
     mTextViewAchieve.setText(mAchieve+"%");
 
   }

@@ -209,6 +209,7 @@ public class CommonUtils {
         if(hex.length() == 1) hexString.append('0');
         hexString.append(hex);
       }
+      password = hexString.toString();
 
     } catch(Exception ex){
       throw new RuntimeException(ex);

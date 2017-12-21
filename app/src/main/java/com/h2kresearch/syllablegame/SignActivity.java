@@ -169,51 +169,61 @@ public class SignActivity extends BGMActivity {
         // 회원가입 & 로그인
         String id = mID.getText().toString();
         String pw = mPW.getText().toString();
+        pw = CommonUtils.passwordEncrypt(pw);
         String name = mName.getText().toString();
 
-        // Check Network State
-        String network = CommonUtils.getWhatKindOfNetwork(getApplicationContext());
-        if (!network.equals(CommonUtils.NONE_STATE)) {
+        try {
+          // Check Network State
+          String network = CommonUtils.getWhatKindOfNetwork(getApplicationContext());
+          if (!network.equals(CommonUtils.NONE_STATE)) {
 
-          // Sign Result
-          String signResult = "";
-          try {
+            // Sign Result
+            String signResult = "";
             // Sign up and Login
             String signURL = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidSignup";
             String param = "u_id=" + id + "&u_pw=" + pw + "&u_name=" + name;
             LoginServer loginServer = new LoginServer(signURL, param);
             signResult = (String) loginServer.execute().get(3, TimeUnit.SECONDS);
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
-
-          if (signResult.equals("0")) {
 
             // Server DB
-            Toast.makeText(getApplicationContext(), "회원 가입을 위한 인증 메일이 발송되었습니다.", Toast.LENGTH_LONG).show();
+            if (signResult.equals("0")) {
+              Toast
+                  .makeText(getApplicationContext(), "회원 가입을 위한 인증 메일이 발송되었습니다.", Toast.LENGTH_LONG)
+                  .show();
 
-            // Local DB
-            DatabaseAccess db = DatabaseAccess.getInstance(getApplicationContext());
-            db.open();
-            long signLocalResult = db.signup(id, pw); // Auto-Login False
-            if (signLocalResult > 0) { // Sign-up Success
+              // Local DB
+              DatabaseAccess db = DatabaseAccess.getInstance(getApplicationContext());
+              db.open();
+              long signLocalResult = db.signup(id, pw, name); // Auto-Login False
+              if (signLocalResult > 0) { // Sign-up Success
+                // Login Intent
+                startActivity(mLoginIntent);
+              } else {
+                Toast.makeText(getApplicationContext(), "Local DB Written Fail.", Toast.LENGTH_LONG)
+                    .show();
+              }
+
+            } else if (signResult.equals("2")) {
+              Toast.makeText(getApplicationContext(), "인증 메일을 확인해 주세요.", Toast.LENGTH_LONG)
+                  .show();
+
               // Login Intent
               startActivity(mLoginIntent);
+            } else if (signResult.equals("1")) {
+              Toast.makeText(getApplicationContext(), "이미 등록된 계정입니다.", Toast.LENGTH_LONG).show();
+            } else if (signResult.equals("3")) {
+              Toast.makeText(getApplicationContext(), "Database Issues!", Toast.LENGTH_LONG)
+                  .show();
             } else {
-              Toast.makeText(getApplicationContext(), "Local DB Written Fail.", Toast.LENGTH_LONG).show();
+              Toast.makeText(getApplicationContext(), "서버에 접속하지 못했습니다.", Toast.LENGTH_LONG)
+                  .show();
             }
-
-          } else if (signResult.equals("1")) {
-            Toast.makeText(getApplicationContext(), "이미 등록된 계정입니다.", Toast.LENGTH_LONG).show();
-          } else if (signResult.equals("2")) {
-            Toast.makeText(getApplicationContext(), "인증 메일을 확인해 주세요.", Toast.LENGTH_LONG)
-                .show();
-          } else if (signResult.equals("3")) {
-            Toast.makeText(getApplicationContext(), "Database Issues!", Toast.LENGTH_LONG)
-                .show();
+          } else {
+            Toast.makeText(getApplicationContext(), "인터넷에 연결하세요.", Toast.LENGTH_LONG).show();
           }
-        } else {
-          Toast.makeText(getApplicationContext(), "인터넷에 연결하세요.", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+          Toast.makeText(getApplicationContext(), "인터넷 연결 상태를 확인해주세요.", Toast.LENGTH_LONG).show();
+          e.printStackTrace();
         }
       }
     });

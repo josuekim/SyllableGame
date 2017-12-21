@@ -13,6 +13,7 @@ public class ConfigurationModel {
   private long mExamId;
   private int mConStudyId;
   private int mVowStudyId;
+  private String mNickName;
 
   private ConfigurationModel() {}
 
@@ -43,4 +44,11 @@ public class ConfigurationModel {
 
   public void setVowStudyId(int id) {this.mVowStudyId = id;}
   public int getVowStudyId() {return mVowStudyId;}
+
+  public void setNickName(String nickName) {
+    this.mNickName = nickName;
+  }
+  public String getNickName() {
+    return mNickName;
+  }
 }
