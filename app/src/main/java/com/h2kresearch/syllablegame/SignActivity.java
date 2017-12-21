@@ -26,7 +26,7 @@ public class SignActivity extends BGMActivity {
   boolean mPW2Complete;
 
   // Button
-  Intent mMainIntent;
+  Intent mLoginIntent;
   Button mSignButton;
 
   @Override
@@ -127,8 +127,8 @@ public class SignActivity extends BGMActivity {
       }
     });
 
-    mMainIntent = new Intent(SignActivity.this, MainActivity.class);
-    mMainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    mLoginIntent = new Intent(SignActivity.this, LoginActivity.class);
+    mLoginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     mSignButton = (Button) findViewById(R.id.button);
     mSignButton.setOnClickListener(new OnClickListener() {
       @Override
@@ -147,7 +147,8 @@ public class SignActivity extends BGMActivity {
           try {
             // Sign up and Login
             String signURL = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidSignup";
-            LoginServer loginServer = new LoginServer(signURL, id, pw);
+            String param = "u_id=" + id + "&u_pw=" + pw;
+            LoginServer loginServer = new LoginServer(signURL, param);
             signResult = (String) loginServer.execute().get(3, TimeUnit.SECONDS);
           } catch (Exception e) {
             e.printStackTrace();
@@ -161,10 +162,9 @@ public class SignActivity extends BGMActivity {
             long signLocalResult = db.signup(id, pw);
 
             if (signLocalResult > 0) { // Sign-up Success
-              // Main Start
-              ConfigurationModel conf = ConfigurationModel.getInstance();
-              conf.setEmail(id);
-              startActivity(mMainIntent);
+              // Login Intent
+              Toast.makeText(getApplicationContext(), "회원 가입을 위한 인증 메일이 발송되었습니다.", Toast.LENGTH_LONG).show();
+              startActivity(mLoginIntent);
             } else {
               Toast.makeText(getApplicationContext(), "Local DB Written Fail.", Toast.LENGTH_LONG).show();
             }
@@ -172,10 +172,10 @@ public class SignActivity extends BGMActivity {
           } else if (signResult.equals("1")) {
             Toast.makeText(getApplicationContext(), "이미 등록된 계정입니다.", Toast.LENGTH_LONG).show();
           } else if (signResult.equals("2")) {
-            Toast.makeText(getApplicationContext(), "Database Addition Fail.", Toast.LENGTH_LONG)
+            Toast.makeText(getApplicationContext(), "인증 메일을 확인해 주세요.", Toast.LENGTH_LONG)
                 .show();
           } else if (signResult.equals("3")) {
-            Toast.makeText(getApplicationContext(), "Database Search Fail.", Toast.LENGTH_LONG)
+            Toast.makeText(getApplicationContext(), "Database Issues!", Toast.LENGTH_LONG)
                 .show();
           }
         } else {
