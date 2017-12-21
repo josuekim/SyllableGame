@@ -189,7 +189,11 @@ public class ResizeActivity extends AppCompatActivity implements SelectViewListe
 
           // Sound at the second time
 //          mTTS.speak(view.mStr, TextToSpeech.QUEUE_FLUSH, null);
-          MusicService.MediaPlay(getApplicationContext(), view.getSoundID());
+          try{
+            MusicService.MediaPlay(getApplicationContext(), view.getSoundID());
+          }catch (Exception e){
+            //(0,0) 클릭했을 때 소리가 없기 때문에 에러나는부분 try-catch로 예외처리
+          }
         }
       }
     }
