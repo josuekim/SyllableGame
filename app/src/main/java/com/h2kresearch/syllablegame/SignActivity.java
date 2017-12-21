@@ -180,7 +180,7 @@ public class SignActivity extends BGMActivity {
             // Sign Result
             String signResult = "";
             // Sign up and Login
-            String signURL = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidSignup";
+            String signURL = getString(R.string.url_sign_up);
             String param = "u_id=" + id + "&u_pw=" + pw + "&u_name=" + name;
             LoginServer loginServer = new LoginServer(signURL, param);
             signResult = (String) loginServer.execute().get(3, TimeUnit.SECONDS);

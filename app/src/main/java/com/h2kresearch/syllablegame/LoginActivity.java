@@ -153,7 +153,7 @@ public class LoginActivity extends BGMActivity {
             String loginResult = "";
 
             // Login
-            String loginURL = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidLogin";
+            String loginURL = getString(R.string.url_login);
             String param = "u_id=" + id + "&u_pw=" + pw;
             LoginServer loginServer = new LoginServer(loginURL, param);
             loginResult = (String) loginServer.execute().get(3, TimeUnit.SECONDS);
@@ -162,7 +162,7 @@ public class LoginActivity extends BGMActivity {
             if (loginResult != null && !loginResult.equals("") && loginResult.substring(0, 1).equals("0")) { // Login Success
 
               // File Upload
-              String uploadURL = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidDBUpload";
+              String uploadURL = getString(R.string.url_upload);
               UploadServer uploadServer = new UploadServer(uploadURL, id, pw);
               uploadServer.execute();
 
@@ -224,7 +224,7 @@ public class LoginActivity extends BGMActivity {
     mFindIDButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://plus.kakao.com/home/@소중한글"));
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_plus_home)));
         startActivity(intent);
       }
     });

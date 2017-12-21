@@ -138,12 +138,12 @@ public class ResultActivity extends BGMActivity
         Intent i=new Intent(Intent.ACTION_SEND);
         i.addCategory(Intent.CATEGORY_DEFAULT);
         i.setType("text/plain");
-//        i.putExtra(Intent.EXTRA_SUBJECT, "소중한글을 추천합니다.");
-        i.putExtra(Intent.EXTRA_TEXT, "소중한글을 추천합니다. 소중한글은 한글을 어려워하는 우리 소중한 아이를 위한 소리 중심의 한글 교육앱입니다. 구글 플레이 스토어에서 지금 바로 확인해보세요! https://play.google.com/store/apps/details?id=com.h2kresearch.syllablegame");
+//        i.putExtra(Intent.EXTRA_SUBJECT, "title");
+        i.putExtra(Intent.EXTRA_TEXT, getString(R.string.app_recommend));
 //        i.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"webmaster@website.com"});
 //        i.putExtra(Intent.EXTRA_CC, new String[]{"webmaster1@website.com", "webmaster2@website.com"});
 //        i.putExtra(Intent.EXTRA_BCC, new String[]{"webmaster@website.com"});
-        startActivity(Intent.createChooser(i, "소중한글 추천하기"));
+        startActivity(Intent.createChooser(i, getString(R.string.app_recommend_title)));
 
         // Gallery Pick
 //        Intent i = new Intent(Intent.ACTION_PICK);
@@ -155,7 +155,7 @@ public class ResultActivity extends BGMActivity
     mServiceCenterButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://plus.kakao.com/home/@소중한글"));
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_plus_home)));
         startActivity(intent);
       }
     });

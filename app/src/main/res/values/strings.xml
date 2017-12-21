@@ -1,3 +1,11 @@
 <resources>
   <string name="app_name">소중한글</string>
+  <string name="url_login">"http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidLogin"</string>
+  <string name="url_upload">"http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidDBUpload"</string>
+  <string name="url_sign_up">"http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidSignup"</string>
+  <string name="url_find_pw">"http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidFindPassword"</string>
+  <string name="url_change_pw">"http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidChangePassword"</string>
+  <string name="url_plus_home">"http://plus.kakao.com/home/@소중한글"</string>
+  <string name="app_recommend_title">"소중한글 추천하기"</string>
+  <string name="app_recommend">"소중한글을 추천합니다. 소중한글은 한글을 어려워하는 우리 소중한 아이를 위한 소리 중심의 한글 교육앱입니다. 구글 플레이 스토어에서 지금 바로 확인해보세요! https://play.google.com/store/apps/details?id=com.h2kresearch.syllablegame"</string>
 </resources>

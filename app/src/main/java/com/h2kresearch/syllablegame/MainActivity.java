@@ -334,7 +334,7 @@ public class MainActivity extends AppCompatActivity
       // 취소
       cancelAllView();
 
-      mTextView.setText("똑똑한 음절표");
+      mTextView.setText("음절표");
       //mLinearLayout.setBackgroundColor(Color.parseColor("#E0F2F1"));
       mSelectMode = false;
       mRightButton.setText("선택");

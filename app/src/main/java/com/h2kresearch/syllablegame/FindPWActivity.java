@@ -72,7 +72,7 @@ public class FindPWActivity extends BGMActivity {
             // Temporal PW Server
             String serverResult = "";
             try {
-              String temporalPWURL = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidFindPassword";
+              String temporalPWURL = getString(R.string.url_find_pw);
               String param = "u_id=" + mEmail;
               LoginServer loginServer = new LoginServer(temporalPWURL, param);
               serverResult = (String) loginServer.execute().get(3, TimeUnit.SECONDS);
@@ -110,11 +110,12 @@ public class FindPWActivity extends BGMActivity {
             // Get New PW
             String temporalPW = mEditText1.getText().toString();
             String pw = mEditText2.getText().toString();
+            pw = CommonUtils.passwordEncrypt(pw);
 
             // New PW Server
             String serverResult = "";
             try {
-              String temporalPWURL = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidChangePassword";
+              String temporalPWURL = getString(R.string.url_change_pw);
               String param = "u_id=" + mEmail + "&u_currPW=" + temporalPW + "&u_newPW=" + pw;
               LoginServer loginServer = new LoginServer(temporalPWURL, param);
               serverResult = (String) loginServer.execute().get(3, TimeUnit.SECONDS);
