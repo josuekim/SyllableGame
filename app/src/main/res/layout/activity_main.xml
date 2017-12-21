@@ -36,7 +36,7 @@
           android:paddingLeft="10dp"
           android:paddingRight="10dp"
           android:gravity="left|center_vertical"
-          android:text="로그아웃"
+          android:text="마이페이지"
           android:textAlignment="gravity"
           android:textColor="@color/colorAccent"
           android:textSize="14dp" />

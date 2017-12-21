@@ -32,7 +32,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:gravity="left|center_vertical"
-        android:text="&lt; 오늘의 음절표"
+        android:text="오늘의 음절표"
         android:textAlignment="gravity"
         android:textColor="@color/highlightColor"
         android:textSize="14dp" />
@@ -60,7 +60,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:gravity="right|center_vertical"
-        android:text="결과 확인 &gt;"
+        android:text="마이페이지"
         android:textAlignment="gravity"
         android:textColor="@color/highlightColor"
         android:textSize="14dp" />

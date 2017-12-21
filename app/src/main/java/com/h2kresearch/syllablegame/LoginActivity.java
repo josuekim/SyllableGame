@@ -158,7 +158,7 @@ public class LoginActivity extends BGMActivity {
           }
 
           // Login Result
-          if (loginResult.equals("0")) { // Login Success
+          if (loginResult.substring(0,1).equals("0")) { // Login Success
 
             // File Upload
             String uploadURL = "http://ec2-13-125-80-58.ap-northeast-2.compute.amazonaws.com:3000/androidDBUpload";
@@ -211,7 +211,7 @@ public class LoginActivity extends BGMActivity {
     mFindIDButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
-        Toast.makeText(getApplicationContext(), "추후 업데이트 될 예정입니다.", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "고객센터로 문의하세요.", Toast.LENGTH_LONG).show();
       }
     });
     mFindPWButton = (TextView) findViewById(R.id.textView2);
